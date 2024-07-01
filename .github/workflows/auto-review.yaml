@@ -22,6 +22,33 @@ jobs:
 
             -   run: make composer_validate
 
+    php_cs_fixer-lint:
+        runs-on: ubuntu-latest
+        name: PHP-CS-Fixer Lint
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v4
+
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: '8.3'
+                    tools: composer
+                    coverage: none
+
+            -   name: Install dependencies
+                uses: ramsey/composer-install@v2
+
+            -   name: Install PHP-CS-Fixer dependencies
+                uses: ramsey/composer-install@v2
+                with:
+                    working-directory: vendor-bin/php-cs-fixer
+
+            -   name: Ensure the make targets are up to date
+                run: make php_cs_fixer_install
+
+            -   run: make php_cs_fixer_lint
+
     rector_lint:
         runs-on: ubuntu-latest
         name: Rector Lint

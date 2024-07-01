@@ -45,7 +45,7 @@ class InitCommand extends Command
             mkdir($root, 0755, true);
         }
 
-        $paths = array();
+        $paths = [];
         $paths[] = $home;
         $paths[] = $root;
         $paths[] = $buildDir;
@@ -61,10 +61,7 @@ class InitCommand extends Command
         }
 
         $this->logger->debug('Creating .metadata_never_index to prevent SpotLight indexing');
-        $indexFiles = array(
-            $root . DIRECTORY_SEPARATOR . '.metadata_never_index',
-            $home . DIRECTORY_SEPARATOR . '.metadata_never_index',
-        );
+        $indexFiles = [$root . DIRECTORY_SEPARATOR . '.metadata_never_index', $home . DIRECTORY_SEPARATOR . '.metadata_never_index'];
         foreach ($indexFiles as $indexFile) {
             if (!file_exists($indexFile)) {
                 touch($indexFile); // prevent spotlight index here
@@ -148,7 +145,7 @@ EOS;
         if ($path) {
             $path = $path . DIRECTORY_SEPARATOR . 'shell';
         } else {
-            $path = dirname(dirname(dirname(__DIR__))) . DIRECTORY_SEPARATOR . 'shell';
+            $path = dirname(__DIR__, 3) . DIRECTORY_SEPARATOR . 'shell';
         }
 
         return $path;

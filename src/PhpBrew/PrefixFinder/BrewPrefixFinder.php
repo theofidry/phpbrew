@@ -55,7 +55,7 @@ final class BrewPrefixFinder implements PrefixFinder
 
     private function execLine($command)
     {
-        $output = array();
+        $output = [];
         exec($command, $output, $retval);
 
         if ($retval === 0) {

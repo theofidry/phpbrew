@@ -55,7 +55,7 @@ class ConfigureTask extends BaseTask
 
     private function renderOptions(ConfigureParameters $parameters)
     {
-        $args = array();
+        $args = [];
 
         foreach ($parameters->getOptions() as $option => $value) {
             $arg = $option;

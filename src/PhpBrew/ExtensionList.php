@@ -31,11 +31,7 @@ class ExtensionList
         if ($providers) {
             return $providers;
         }
-        $providers = array(
-            new GithubProvider(),
-            new BitbucketProvider(),
-            new PeclProvider($this->logger, $this->options),
-        );
+        $providers = [new GithubProvider(), new BitbucketProvider(), new PeclProvider($this->logger, $this->options)];
 
         return $providers;
     }

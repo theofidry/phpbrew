@@ -10,11 +10,11 @@ class PhpStreamDownloader extends BaseDownloader
     {
         $this->logger->info("Downloading $url via php stream");
 
-        $opts = array();
+        $opts = [];
         if ($proxy = $this->options->{'http-proxy'}) {
             $opts['http']['proxy'] = $proxy;
             $opts['http']['request_fulluri'] = true;
-            $opts['http']['header'] = array();
+            $opts['http']['header'] = [];
             if ($proxyAuth = $this->options->{'http-proxy-auth'}) {
                 $opts['http']['header'][] = "Proxy-Authorization: Basic $proxyAuth";
             }

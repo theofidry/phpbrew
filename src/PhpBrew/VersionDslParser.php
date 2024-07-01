@@ -6,23 +6,14 @@ use Exception;
 
 class VersionDslParser
 {
-    protected static $schemes = array(
-        'git@github.com:',
-        'github.com:',
-        'github.com/',
-        'github:',
-    );
+    protected static $schemes = ['git@github.com:', 'github.com:', 'github.com/', 'github:'];
 
     public function parse($dsl)
     {
         if (preg_match('/^(php-)?(\d+\.\d+\.\d+(alpha|beta|RC)\d+)$/', $dsl, $matches)) {
             $version = 'php-' . $matches[2];
 
-            return array(
-                'version' => $version,
-                'url' => $this->buildGitHubUrl('php', $version),
-                'is_tag' => true,
-            );
+            return ['version' => $version, 'url' => $this->buildGitHubUrl('php', $version), 'is_tag' => true];
         }
 
         // make url
@@ -37,17 +28,14 @@ class VersionDslParser
             )
         ) {
             $owner = $matches[2];
-            $branch = isset($matches[4]) ? $matches[4] : 'master';
+            $branch = $matches[4] ?? 'master';
             $version = preg_replace('/^php-/', '', $branch);
 
             if ($owner !== 'php') {
                 $version = $owner . '-' . $version;
             }
 
-            return array(
-                'version' => 'php-' . $version,
-                'url' => $this->buildGitHubUrl($owner, $branch),
-            );
+            return ['version' => 'php-' . $version, 'url' => $this->buildGitHubUrl($owner, $branch)];
         }
 
         // non github url
@@ -56,10 +44,7 @@ class VersionDslParser
                 throw new Exception("Can not find version name from the given URL: $url");
             }
 
-            return array(
-                'version' => "php-{$matches[2]}",
-                'url' => $url,
-            );
+            return ['version' => "php-{$matches[2]}", 'url' => $url];
         }
 
         return false;

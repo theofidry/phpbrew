@@ -42,17 +42,9 @@ class ShowCommand extends BaseCommand
 
     public function describeExtension(Extension $ext)
     {
-        $info = array(
-            'Name' => $ext->getExtensionName(),
-            'Source Directory' => $ext->getSourceDirectory(),
-            'Config' => $ext->getConfigM4Path(),
-            'INI File' => $ext->getConfigFilePath(),
-            'Extension' => ($ext instanceof PeclExtension) ? 'Pecl' : 'Core',
-            'Zend' => $ext->isZend() ? 'yes' : 'no',
-            'Loaded' => (extension_loaded($ext->getExtensionName())
-                ? $this->formatter->format('yes', 'green')
-                : $this->formatter->format('no', 'red')),
-        );
+        $info = ['Name' => $ext->getExtensionName(), 'Source Directory' => $ext->getSourceDirectory(), 'Config' => $ext->getConfigM4Path(), 'INI File' => $ext->getConfigFilePath(), 'Extension' => ($ext instanceof PeclExtension) ? 'Pecl' : 'Core', 'Zend' => $ext->isZend() ? 'yes' : 'no', 'Loaded' => (extension_loaded($ext->getExtensionName())
+            ? $this->formatter->format('yes', 'green')
+            : $this->formatter->format('no', 'red'))];
 
         foreach ($info as $label => $val) {
             $this->logger->writeln(sprintf('%20s: %s', $label, $val));
@@ -93,7 +85,7 @@ class ShowCommand extends BaseCommand
             $downloader = new ExtensionDownloader($this->logger, $this->options);
             $extDir = $downloader->download($hosting, 'latest');
             // Reload the extension
-            $ext = ExtensionFactory::lookupRecursive($extensionName, array($extDir));
+            $ext = ExtensionFactory::lookupRecursive($extensionName, [$extDir]);
         }
         if (!$ext) {
             throw new Exception("$extensionName extension not found.");

@@ -24,12 +24,12 @@ class Build implements Buildable
     /**
      * States that describe finished task.
      */
-    const STATE_NONE = 0;
-    const STATE_DOWNLOAD = 1;
-    const STATE_EXTRACT = 2;
-    const STATE_CONFIGURE = 3;
-    const STATE_BUILD = 4;
-    const STATE_INSTALL = 5;
+    public const STATE_NONE = 0;
+    public const STATE_DOWNLOAD = 1;
+    public const STATE_EXTRACT = 2;
+    public const STATE_CONFIGURE = 3;
+    public const STATE_BUILD = 4;
+    public const STATE_INSTALL = 5;
 
     public $name;
 
@@ -250,6 +250,6 @@ class Build implements Buildable
 
     public function __call($m, $a)
     {
-        return call_user_func_array(array($this->settings, $m), $a);
+        return call_user_func_array([$this->settings, $m], $a);
     }
 }

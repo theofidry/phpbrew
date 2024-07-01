@@ -31,9 +31,8 @@ class FreeTypePatch extends Patch
      */
     public function rules()
     {
-        return array(
-            DiffPatchRule::fromPatch(
-                <<<'EOP'
+        return [DiffPatchRule::fromPatch(
+            <<<'EOP'
 diff -u -r php-7.2.5/ext/gd/config.m4 php-7.2.5-freetype/ext/gd/config.m4
 --- php-7.2.5/ext/gd/config.m4	2018-04-24 17:09:54.000000000 +0200
 +++ php-7.2.5-freetype/ext/gd/config.m4	2018-05-09 14:49:03.647108948 +0200
@@ -73,7 +72,6 @@ diff -u -r php-7.2.5/ext/gd/config.m4 php-7.2.5-freetype/ext/gd/config.m4
      PHP_EVAL_LIBLINE($FREETYPE2_LIBS, GD_SHARED_LIBADD)
      AC_DEFINE(HAVE_LIBFREETYPE,1,[ ])
 EOP
-            )->strip(1)
-        );
+        )->strip(1)];
     }
 }

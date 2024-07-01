@@ -15,7 +15,7 @@ class ExtractTask extends BaseTask
      *
      * @var string[]
      */
-    private $rmDirs = array();
+    private $rmDirs = [];
 
     /**
      * Unpacks the source tarball file.

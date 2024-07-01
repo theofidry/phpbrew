@@ -14,7 +14,7 @@ class ExtensionCommand extends BaseCommand
 {
     public function aliases()
     {
-        return array('ext');
+        return ['ext'];
     }
 
     public function usage()
@@ -87,11 +87,11 @@ class ExtensionCommand extends BaseCommand
         $extDir = $buildDir . DIRECTORY_SEPARATOR . 'ext';
 
         // list for extensions which are not enabled
-        $extensions = array();
-        $extensionNames = array();
+        $extensions = [];
+        $extensionNames = [];
 
         // some extension source not in root directory
-        $lookupDirectories = array('', 'ext', 'extension');
+        $lookupDirectories = ['', 'ext', 'extension'];
 
         if (file_exists($extDir) && is_dir($extDir)) {
             $this->logger->debug("Scanning $extDir...");

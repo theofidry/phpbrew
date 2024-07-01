@@ -35,7 +35,7 @@ class RemoveCommand extends Command
             throw new Exception("$prefix does not exist.");
         }
         $prompter = new Prompter();
-        $answer = $prompter->ask("Are you sure to delete $buildName?", array('Y', 'n'), 'Y');
+        $answer = $prompter->ask("Are you sure to delete $buildName?", ['Y', 'n'], 'Y');
         if (strtolower($answer) == 'y') {
             Utils::recursive_unlink($prefix, $this->logger);
             $this->logger->info("$buildName is removed.  I hope you're not surprised. :)");

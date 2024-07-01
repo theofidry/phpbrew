@@ -36,7 +36,7 @@ class DownloadCommand extends Command
                 $collection->group($major, "PHP $major", array_keys($versions));
             }
 
-            $collection->group('pseudo', 'pseudo', array('latest', 'next'));
+            $collection->group('pseudo', 'pseudo', ['latest', 'next']);
 
             return $collection;
         });

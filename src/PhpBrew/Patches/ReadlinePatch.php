@@ -30,9 +30,8 @@ class ReadlinePatch extends Patch
      */
     public function rules()
     {
-        return array(
-            DiffPatchRule::fromPatch(
-                <<<'EOP'
+        return [DiffPatchRule::fromPatch(
+            <<<'EOP'
 From: =?UTF-8?q?Ond=C5=99ej=20Sur=C3=BD?= <ondrej@sury.org>
 Date: Mon, 17 Dec 2018 09:56:06 +0000
 Subject: Fix rl_completion_matches detection
@@ -91,7 +90,6 @@ index d63df8bef9..3995bd7587 100644
 2.27.0
 
 EOP
-            )->strip(1)
-        );
+        )->strip(1)];
     }
 }

@@ -15,39 +15,13 @@ class PathCommand extends Command
     public function usage()
     {
         return 'phpbrew path ['
-            . implode(', ', array(
-                'root',
-                'home',
-                'build',
-                'bin',
-                'include',
-                'etc',
-                'ext',
-                'ext-src',
-                'extension-src',
-                'extension-dir',
-                'config-scan',
-                'dist'
-            )) . ']';
+            . implode(', ', ['root', 'home', 'build', 'bin', 'include', 'etc', 'ext', 'ext-src', 'extension-src', 'extension-dir', 'config-scan', 'dist']) . ']';
     }
 
     public function arguments($args)
     {
         $args->add('type')
-            ->validValues(array(
-                'root',
-                'home',
-                'build',
-                'bin',
-                'include',
-                'etc',
-                'ext',
-                'ext-src',
-                'extension-src',
-                'extension-dir',
-                'config-scan',
-                'dist',
-            ));
+            ->validValues(['root', 'home', 'build', 'bin', 'include', 'etc', 'ext', 'ext-src', 'extension-src', 'extension-dir', 'config-scan', 'dist']);
     }
 
     public function execute($name)

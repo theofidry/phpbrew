@@ -11,7 +11,7 @@ class CommandBuilder
     public $script;
 
     /* arguments */
-    public $args = array();
+    public $args = [];
 
     public $stdout;
 
@@ -92,7 +92,7 @@ class CommandBuilder
 
     public function buildCommand($handleRedirect = true)
     {
-        $cmd = array();
+        $cmd = [];
 
         if ($this->nice) {
             $cmd[] = 'nice';

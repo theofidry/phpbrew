@@ -34,11 +34,7 @@ class PHP56WithOpenSSL11PatchTest extends PatchTestCase
         $expectedDirectory = getenv('PHPBREW_EXPECTED_PHP_DIR') . '/' . $version . '-php56-openssl11-patch';
 
         foreach (
-            array(
-            'ext/openssl/openssl.c',
-            'ext/openssl/xp_ssl.c',
-            'ext/phar/util.c',
-                 ) as $path
+            ['ext/openssl/openssl.c', 'ext/openssl/xp_ssl.c', 'ext/phar/util.c'] as $path
         ) {
             $this->assertFileEquals(
                 $expectedDirectory . '/' .  $path,
@@ -49,8 +45,6 @@ class PHP56WithOpenSSL11PatchTest extends PatchTestCase
 
     public static function versionProvider()
     {
-        return array(
-            array('5.6.40'),
-        );
+        return [['5.6.40']];
     }
 }

@@ -2,6 +2,9 @@
 
 namespace PhpBrew;
 
+use PhpBrew\Command\ListIniCommand;
+use PhpBrew\Command\SelfUpdateCommand;
+use PhpBrew\Command\SwitchOffCommand;
 use BadMethodCallException;
 use CLIFramework\Application;
 use CLIFramework\Exception\CommandArgumentNotEnoughException;
@@ -13,8 +16,8 @@ use PhpBrew\Exception\SystemCommandException;
 
 class Console extends Application
 {
-    const NAME = 'phpbrew';
-    const VERSION = '2.2.0';
+    public const NAME = 'phpbrew';
+    public const VERSION = '2.2.0';
 
     public function options($opts)
     {
@@ -49,14 +52,14 @@ class Console extends Application
 
         $this->command('fpm');
 
-        $this->command('list-ini', 'PhpBrew\Command\ListIniCommand');
-        $this->command('self-update', 'PhpBrew\Command\SelfUpdateCommand');
+        $this->command('list-ini', ListIniCommand::class);
+        $this->command('self-update', SelfUpdateCommand::class);
 
         $this->command('remove');
         $this->command('purge');
 
         $this->command('off');
-        $this->command('switch-off', 'PhpBrew\Command\SwitchOffCommand');
+        $this->command('switch-off', SwitchOffCommand::class);
 
         $this->command('system');
         $this->command('system-off');
@@ -88,7 +91,7 @@ class Console extends Application
         date_default_timezone_set(Utils::readTimeZone() ?: 'America/Los_Angeles');
 
         // fix bold output so it looks good on light and dark terminals
-        $this->getFormatter()->addStyle('bold', array('bold' => 1));
+        $this->getFormatter()->addStyle('bold', ['bold' => 1]);
 
         $this->logger->levelStyles['warn'] = 'yellow';
         $this->logger->levelStyles['error'] = 'red';

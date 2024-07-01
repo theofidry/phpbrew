@@ -14,116 +14,7 @@ class VariantBuilderTest extends TestCase
 {
     public function variantOptionProvider()
     {
-        return array(
-            'apxs2' => array(
-                array('apxs2'),
-                array('--with-apxs2'),
-            ),
-            'bz2' => array(
-                array('bz2'),
-                array('--with-bz2'),
-            ),
-            'curl' => array(
-                array('curl'),
-                array('--with-curl'),
-            ),
-            'debug' => array(
-                array('debug'),
-                array('--enable-debug'),
-            ),
-            'editline' => array(
-                array('editline'),
-                array('--with-libedit'),
-            ),
-            'gd' => array(
-                array('gd'),
-                array(
-                    '--with-gd',
-                    '--with-png-dir',
-                    '--with-jpeg-dir',
-                ),
-            ),
-            'gettext' => array(
-                array('gettext'),
-                array('--with-gettext'),
-            ),
-            'gmp' => array(
-                array('gmp'),
-                array('--with-gmp'),
-            ),
-            'iconv' => array(
-                array('iconv'),
-                array('--with-iconv'),
-            ),
-            'intl' => array(
-                array('intl'),
-                array('--enable-intl'),
-            ),
-            'ipc' => array(
-                array('ipc'),
-                array(
-                    '--enable-shmop',
-                    '--enable-sysvshm',
-                ),
-            ),
-            'mcrypt' => array(
-                array('mcrypt'),
-                array('--with-mcrypt'),
-            ),
-            'mhash' => array(
-                array('mhash'),
-                array('--with-mhash'),
-            ),
-            'mysql' => array(
-                array('mysql'),
-                array('--with-mysqli'),
-            ),
-            'openssl' => array(
-                array('openssl'),
-                array('--with-openssl'),
-            ),
-            'pdo-mysql' => array(
-                array('mysql', 'pdo'),
-                array('--with-pdo-mysql'),
-            ),
-            'pdo-pgsql' => array(
-                array('pgsql', 'pdo'),
-                array('--with-pdo-pgsql'),
-            ),
-            'pdo-sqlite' => array(
-                array('sqlite', 'pdo'),
-                array('--with-pdo-sqlite'),
-            ),
-            'pgsql' => array(
-                array('pgsql'),
-                array('--with-pgsql'),
-            ),
-            'readline' => array(
-                array('readline'),
-                array('--with-readline'),
-            ),
-            'sqlite' => array(
-                array('sqlite'),
-                array('--with-sqlite3'),
-            ),
-            'xml' => array(
-                array('xml'),
-                array(
-                    '--enable-dom',
-                    '--enable-libxml',
-                    '--enable-simplexml',
-                    '--with-libxml-dir',
-                ),
-            ),
-            'zlib' => array(
-                array('zlib'),
-                array('--with-zlib'),
-            ),
-            'snmp' => array(
-                array('snmp'),
-                array('--with-snmp'),
-            ),
-        );
+        return ['apxs2' => [['apxs2'], ['--with-apxs2']], 'bz2' => [['bz2'], ['--with-bz2']], 'curl' => [['curl'], ['--with-curl']], 'debug' => [['debug'], ['--enable-debug']], 'editline' => [['editline'], ['--with-libedit']], 'gd' => [['gd'], ['--with-gd', '--with-png-dir', '--with-jpeg-dir']], 'gettext' => [['gettext'], ['--with-gettext']], 'gmp' => [['gmp'], ['--with-gmp']], 'iconv' => [['iconv'], ['--with-iconv']], 'intl' => [['intl'], ['--enable-intl']], 'ipc' => [['ipc'], ['--enable-shmop', '--enable-sysvshm']], 'mcrypt' => [['mcrypt'], ['--with-mcrypt']], 'mhash' => [['mhash'], ['--with-mhash']], 'mysql' => [['mysql'], ['--with-mysqli']], 'openssl' => [['openssl'], ['--with-openssl']], 'pdo-mysql' => [['mysql', 'pdo'], ['--with-pdo-mysql']], 'pdo-pgsql' => [['pgsql', 'pdo'], ['--with-pdo-pgsql']], 'pdo-sqlite' => [['sqlite', 'pdo'], ['--with-pdo-sqlite']], 'pgsql' => [['pgsql'], ['--with-pgsql']], 'readline' => [['readline'], ['--with-readline']], 'sqlite' => [['sqlite'], ['--with-sqlite3']], 'xml' => [['xml'], ['--enable-dom', '--enable-libxml', '--enable-simplexml', '--with-libxml-dir']], 'zlib' => [['zlib'], ['--with-zlib']], 'snmp' => [['snmp'], ['--with-snmp']]];
     }
 
     /**
@@ -133,7 +24,7 @@ class VariantBuilderTest extends TestCase
     {
         $build = new Build('5.5.0');
         foreach ($variants as $variant) {
-            if (getenv('GITHUB_ACTIONS') && in_array($variant, array("apxs2", "gd", "editline"))) {
+            if (getenv('GITHUB_ACTIONS') && in_array($variant, ["apxs2", "gd", "editline"])) {
                 $this->markTestSkipped("GitHub actions doesn't support $variant}.");
             }
 
@@ -242,7 +133,7 @@ class VariantBuilderTest extends TestCase
         // ignore `--with-libdir` because this option should be set depending on client environments
         unset($options['--with-libdir']);
 
-        $this->assertEquals(array(), $options);
+        $this->assertEquals([], $options);
     }
 
     /**
@@ -264,12 +155,11 @@ class VariantBuilderTest extends TestCase
 
     public static function libXmlProvider()
     {
-        return array(
-            array('7.3.0', '--enable-libxml'),
-
+        return [
+            ['7.3.0', '--enable-libxml'],
             // see https://github.com/php/php-src/pull/4037
-            array('7.4.0-dev', '--with-libxml'),
-        );
+            ['7.4.0-dev', '--with-libxml'],
+        ];
     }
 
     /**
@@ -291,12 +181,11 @@ class VariantBuilderTest extends TestCase
 
     public static function zipProvider()
     {
-        return array(
-            array('7.3.0', '--enable-zip'),
-
+        return [
+            ['7.3.0', '--enable-zip'],
             // see https://github.com/php/php-src/pull/4072
-            array('7.4.0-dev', '--with-zip'),
-        );
+            ['7.4.0-dev', '--with-zip'],
+        ];
     }
 
     /**
@@ -318,17 +207,7 @@ class VariantBuilderTest extends TestCase
 
     public static function ztsProvider()
     {
-        return array(
-            array('5.3.0', '--enable-maintainer-zts'),
-            array('5.4.0', '--enable-maintainer-zts'),
-            array('5.5.0', '--enable-maintainer-zts'),
-            array('5.6.0', '--enable-maintainer-zts'),
-            array('7.0.0', '--enable-maintainer-zts'),
-            array('7.1.0', '--enable-maintainer-zts'),
-            array('7.3.0', '--enable-maintainer-zts'),
-            array('7.4.0', '--enable-maintainer-zts'),
-            array('8.0.0', '--enable-zts'),
-        );
+        return [['5.3.0', '--enable-maintainer-zts'], ['5.4.0', '--enable-maintainer-zts'], ['5.5.0', '--enable-maintainer-zts'], ['5.6.0', '--enable-maintainer-zts'], ['7.0.0', '--enable-maintainer-zts'], ['7.1.0', '--enable-maintainer-zts'], ['7.3.0', '--enable-maintainer-zts'], ['7.4.0', '--enable-maintainer-zts'], ['8.0.0', '--enable-zts']];
     }
 
     /**
@@ -350,13 +229,6 @@ class VariantBuilderTest extends TestCase
 
     public static function snmpProvider()
     {
-        return array(
-            array('5.6.0', '--with-snmp'),
-            array('7.0.0', '--with-snmp'),
-            array('7.1.0', '--with-snmp'),
-            array('7.3.0', '--with-snmp'),
-            array('7.4.0', '--with-snmp'),
-            array('8.0.0', '--with-snmp'),
-        );
+        return [['5.6.0', '--with-snmp'], ['7.0.0', '--with-snmp'], ['7.1.0', '--with-snmp'], ['7.3.0', '--with-snmp'], ['7.4.0', '--with-snmp'], ['8.0.0', '--with-snmp']];
     }
 }

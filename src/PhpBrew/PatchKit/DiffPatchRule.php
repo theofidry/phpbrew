@@ -57,11 +57,7 @@ final class DiffPatchRule implements PatchRule
 
         $process = proc_open(
             sprintf('patch --forward --backup -p%d', $this->strip),
-            array(
-                array('pipe', 'r'),
-                array('pipe', 'w'),
-                array('pipe', 'w'),
-            ),
+            [['pipe', 'r'], ['pipe', 'w'], ['pipe', 'w']],
             $pipes,
             $build->getSourceDirectory()
         );

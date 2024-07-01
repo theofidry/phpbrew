@@ -15,10 +15,7 @@ class Apache2ModuleNamePatchTest extends PatchTestCase
 
     public function versionProvider()
     {
-        return array(
-            array('5.5.17', 107, '/Makefile.global'),
-            array('7.4.0', 25, '/build/Makefile.global')
-        );
+        return [['5.5.17', 107, '/Makefile.global'], ['7.4.0', 25, '/build/Makefile.global']];
     }
 
     /**

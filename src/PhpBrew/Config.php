@@ -160,11 +160,7 @@ class Config
 
     public static function getSapis()
     {
-        return array(
-            'cli',
-            'fpm',
-            'apache'
-        );
+        return ['cli', 'fpm', 'apache'];
     }
 
     /**
@@ -213,7 +209,7 @@ class Config
     {
         $configFile = self::getRoot() . DIRECTORY_SEPARATOR . 'config.yaml';
         if (!file_exists($configFile)) {
-            return array();
+            return [];
         }
 
         return Yaml::parse(file_get_contents($configFile));

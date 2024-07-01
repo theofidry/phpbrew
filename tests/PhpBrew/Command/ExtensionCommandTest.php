@@ -12,10 +12,7 @@ class ExtensionCommandTest extends CommandTestCase
 {
     public function extensionNameProvider()
     {
-        return array(
-            array('APCu', 'latest'),
-            array('xdebug', 'latest'),
-        );
+        return [['APCu', 'latest'], ['xdebug', 'latest']];
     }
 
     /**

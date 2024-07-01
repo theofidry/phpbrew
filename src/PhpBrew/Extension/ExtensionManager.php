@@ -20,10 +20,11 @@ class ExtensionManager
      *
      * @var array
      */
-    protected $conflicts = array(
-        'json' => array('jsonc'),   // enabling jsonc disables json
-        'jsonc' => array('json'),    // enabling json disables jsonc
-    );
+    protected $conflicts = [
+        'json' => ['jsonc'],
+        // enabling jsonc disables json
+        'jsonc' => ['json'],
+    ];
 
     public function __construct(Logger $logger)
     {
@@ -61,7 +62,7 @@ class ExtensionManager
      * Whenever you call this method, you shall have already downloaded the extension
      * And have set the source directory on the Extension object.
      */
-    public function installExtension(Extension $ext, array $options = array())
+    public function installExtension(Extension $ext, array $options = [])
     {
         $this->disableExtension($ext);
 

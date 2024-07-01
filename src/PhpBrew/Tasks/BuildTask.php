@@ -11,7 +11,7 @@ use PhpBrew\Exception\SystemCommandException;
  */
 class BuildTask extends BaseTask
 {
-    public function run(Build $build, $targets = array())
+    public function run(Build $build, $targets = [])
     {
         if ($build->getState() >= Build::STATE_BUILD) {
             $this->info('===> Already built, skipping...');

@@ -9,7 +9,7 @@ class PrepareDirectoryTask extends BaseTask
 {
     public function run(Build $build = null)
     {
-        $dirs = array();
+        $dirs = [];
         $dirs[] = Config::getRoot();
         $dirs[] = Config::getHome();
         $dirs[] = Config::getBuildDir();

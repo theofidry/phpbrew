@@ -1,35 +1,46 @@
-TARGET        = phpbrew
-SIGNATURE     = $(TARGET).asc
+# See https://tech.davis-hansson.com/p/make/
+MAKEFLAGS += --warn-undefined-variables
+MAKEFLAGS += --no-builtin-rules
+
+PHPBREW_PHAR  = phpbrew
 CP            = cp
 INSTALL_PATH  = /usr/local/bin
 TEST          = phpunit
+
+PHAR_SRC_FILES := $(shell find bin/ shell/ src/ -type f)
 
 COMPOSER_BIN_PLUGIN_VENDOR = vendor/bamarni/composer-bin-plugin
 
 RECTOR_BIN = vendor-bin/rector/vendor/bin/rector
 RECTOR = $(RECTOR_BIN)
 
-$(TARGET): vendor $(shell find bin/ shell/ src/ -type f) box.json.dist .git/HEAD
-	box compile
-	touch -c $@
+
+.DEFAULT_GOAL := help
+
+
+.PHONY: help
+help:
+	@printf "\033[33mUsage:\033[0m\n  make TARGET\n\n\033[32m#\n# Commands\n#---------------------------------------------------------------------------\033[0m\n\n"
+	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//' | awk 'BEGIN {FS = ":"}; {printf "\033[33m%s:\033[0m%s\n", $$1, $$2}'
+
+
+.PHONY: build
+build:	## Builds PHPBrew PHAR
+build:
+	rm $(PHPBREW_PHAR) 2>/dev/null || true
+	$(MAKE) _build
+
+.PHONY: _build
+_build:
+	$(MAKE) $(PHPBREW_PHAR)
+
+install: PHPBREW_PHAR
+	$(CP) $(PHPBREW_PHAR) $(INSTALL_PATH)
 
 .PHONY: composer_validate
 composer_validate:
 	# TODO: the --strict flag should be used once the warnings are addressed.
 	composer validate --ansi
-
-vendor: composer.lock
-	composer install
-	touch $@
-
-.PHONY: sign
-sign: $(SIGNATURE)
-
-$(SIGNATURE): $(TARGET)
-	gpg --armor --detach-sign $(TARGET)
-
-install: $(TARGET)
-	$(CP) $(TARGET) $(INSTALL_PATH)
 
 update/completion:
 	bin/phpbrew zsh --bind phpbrew --program phpbrew > completion/zsh/_phpbrew
@@ -47,7 +58,14 @@ test:
 	$(TEST)
 
 clean:
-	git checkout -- $(TARGET)
+	git checkout -- $(PHPBREW_PHAR)
+
+$(PHPBREW_PHAR): vendor \
+		$(PHAR_SRC_FILES) \
+		box.json.dist \
+		.git/HEAD
+	box compile
+	touch -c $@
 
 PHONY: vendor_install
 vendor_install:

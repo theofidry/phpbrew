@@ -24,7 +24,7 @@ jobs:
 
     rector_lint:
         runs-on: ubuntu-latest
-        name: Composer Validate
+        name: Rector Lint
         steps:
             -   name: Checkout
                 uses: actions/checkout@v4

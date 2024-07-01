@@ -13,6 +13,15 @@ $(TARGET): vendor $(shell find bin/ shell/ src/ -type f) box.json.dist .git/HEAD
 	box compile
 	touch -c $@
 
+.PHONY: composer_validate
+composer_validate:
+	# TODO: the --strict flag should be used once the warnings are addressed.
+	composer validate --ansi
+
+vendor: composer.lock
+	composer install
+	touch $@
+
 .PHONY: sign
 sign: $(SIGNATURE)
 

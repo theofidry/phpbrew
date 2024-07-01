@@ -32,6 +32,11 @@ _build:
 install: PHPBREW_PHAR
 	$(CP) $(PHPBREW_PHAR) $(INSTALL_PATH)
 
+.PHONY: composer_validate
+composer_validate:
+	# TODO: the --strict flag should be used once the warnings are addressed.
+	composer validate --ansi
+
 update/completion:
 	bin/phpbrew zsh --bind phpbrew --program phpbrew > completion/zsh/_phpbrew
 	bin/phpbrew bash --bind phpbrew --program phpbrew > completion/bash/_phpbrew

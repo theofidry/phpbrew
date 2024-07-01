@@ -13,7 +13,36 @@ class PathCommandTest extends CommandTestCase
 
     public function argumentsProvider()
     {
-        return [["build", "#\.phpbrew/build/.+#"], ["ext-src", "#\.phpbrew/build/.+/ext$#"], ["include", "#\.phpbrew/php/.+/include$#"], ["etc", "#\.phpbrew/php/.+/etc$#"], ["dist", "#\.phpbrew/distfiles$#"], ["root", "#\.phpbrew$#"], ["home", "#\.phpbrew$#"]];
+        return [
+            [
+                "build",
+                "#\.phpbrew/build/.+#",
+            ],
+            [
+                "ext-src",
+                "#\.phpbrew/build/.+/ext$#",
+            ],
+            [
+                "include",
+                "#\.phpbrew/php/.+/include$#",
+            ],
+            [
+                "etc",
+                "#\.phpbrew/php/.+/etc$#",
+            ],
+            [
+                "dist",
+                "#\.phpbrew/distfiles$#",
+            ],
+            [
+                "root",
+                "#\.phpbrew$#",
+            ],
+            [
+                "home",
+                "#\.phpbrew$#",
+            ],
+        ];
     }
 
     /**

@@ -65,7 +65,10 @@ class InstallCommand extends BaseCommand
             }
         }
 
-        return (object) ['version' => $version, 'options' => $options];
+        return (object)[
+            'version' => $version,
+            'options' => $options,
+        ];
     }
 
     public function prepare()

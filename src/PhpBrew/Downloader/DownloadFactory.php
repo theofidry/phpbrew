@@ -8,12 +8,17 @@ use GetOptionKit\OptionResult;
 
 class DownloadFactory
 {
-    public const METHOD_PHP_CURL = 'php_curl';
-    public const METHOD_PHP_STREAM = 'php_stream';
-    public const METHOD_WGET = 'wget';
-    public const METHOD_CURL = 'curl';
+    private const METHOD_PHP_CURL = 'php_curl';
+    private const METHOD_PHP_STREAM = 'php_stream';
+    private const METHOD_WGET = 'wget';
+    private const METHOD_CURL = 'curl';
 
-    private static $availableDownloaders = [self::METHOD_PHP_CURL => PhpCurlDownloader::class, self::METHOD_PHP_STREAM => PhpStreamDownloader::class, self::METHOD_WGET => WgetCommandDownloader::class, self::METHOD_CURL => CurlCommandDownloader::class];
+    private static $availableDownloaders = [
+        self::METHOD_PHP_CURL   => PhpCurlDownloader::class,
+        self::METHOD_PHP_STREAM => PhpStreamDownloader::class,
+        self::METHOD_WGET       => WgetCommandDownloader::class,
+        self::METHOD_CURL       => CurlCommandDownloader::class,
+    ];
 
     /**
      * When php built-in extensions don't support openssl, we can use curl or wget instead.

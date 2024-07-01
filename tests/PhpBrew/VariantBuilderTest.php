@@ -14,7 +14,125 @@ class VariantBuilderTest extends TestCase
 {
     public function variantOptionProvider()
     {
-        return ['apxs2' => [['apxs2'], ['--with-apxs2']], 'bz2' => [['bz2'], ['--with-bz2']], 'curl' => [['curl'], ['--with-curl']], 'debug' => [['debug'], ['--enable-debug']], 'editline' => [['editline'], ['--with-libedit']], 'gd' => [['gd'], ['--with-gd', '--with-png-dir', '--with-jpeg-dir']], 'gettext' => [['gettext'], ['--with-gettext']], 'gmp' => [['gmp'], ['--with-gmp']], 'iconv' => [['iconv'], ['--with-iconv']], 'intl' => [['intl'], ['--enable-intl']], 'ipc' => [['ipc'], ['--enable-shmop', '--enable-sysvshm']], 'mcrypt' => [['mcrypt'], ['--with-mcrypt']], 'mhash' => [['mhash'], ['--with-mhash']], 'mysql' => [['mysql'], ['--with-mysqli']], 'openssl' => [['openssl'], ['--with-openssl']], 'pdo-mysql' => [['mysql', 'pdo'], ['--with-pdo-mysql']], 'pdo-pgsql' => [['pgsql', 'pdo'], ['--with-pdo-pgsql']], 'pdo-sqlite' => [['sqlite', 'pdo'], ['--with-pdo-sqlite']], 'pgsql' => [['pgsql'], ['--with-pgsql']], 'readline' => [['readline'], ['--with-readline']], 'sqlite' => [['sqlite'], ['--with-sqlite3']], 'xml' => [['xml'], ['--enable-dom', '--enable-libxml', '--enable-simplexml', '--with-libxml-dir']], 'zlib' => [['zlib'], ['--with-zlib']], 'snmp' => [['snmp'], ['--with-snmp']]];
+        return [
+            'apxs2'      => [
+                ['apxs2'],
+                ['--with-apxs2'],
+            ],
+            'bz2'        => [
+                ['bz2'],
+                ['--with-bz2'],
+            ],
+            'curl'       => [
+                ['curl'],
+                ['--with-curl'],
+            ],
+            'debug'      => [
+                ['debug'],
+                ['--enable-debug'],
+            ],
+            'editline'   => [
+                ['editline'],
+                ['--with-libedit'],
+            ],
+            'gd'         => [
+                ['gd'],
+                [
+                    '--with-gd',
+                    '--with-png-dir',
+                    '--with-jpeg-dir',
+                ],
+            ],
+            'gettext'    => [
+                ['gettext'],
+                ['--with-gettext'],
+            ],
+            'gmp'        => [
+                ['gmp'],
+                ['--with-gmp'],
+            ],
+            'iconv'      => [
+                ['iconv'],
+                ['--with-iconv'],
+            ],
+            'intl'       => [
+                ['intl'],
+                ['--enable-intl'],
+            ],
+            'ipc'        => [
+                ['ipc'],
+                [
+                    '--enable-shmop',
+                    '--enable-sysvshm',
+                ],
+            ],
+            'mcrypt'     => [
+                ['mcrypt'],
+                ['--with-mcrypt'],
+            ],
+            'mhash'      => [
+                ['mhash'],
+                ['--with-mhash'],
+            ],
+            'mysql'      => [
+                ['mysql'],
+                ['--with-mysqli'],
+            ],
+            'openssl'    => [
+                ['openssl'],
+                ['--with-openssl'],
+            ],
+            'pdo-mysql'  => [
+                [
+                    'mysql',
+                    'pdo',
+                ],
+                ['--with-pdo-mysql'],
+            ],
+            'pdo-pgsql'  => [
+                [
+                    'pgsql',
+                    'pdo',
+                ],
+                ['--with-pdo-pgsql'],
+            ],
+            'pdo-sqlite' => [
+                [
+                    'sqlite',
+                    'pdo',
+                ],
+                ['--with-pdo-sqlite'],
+            ],
+            'pgsql'      => [
+                ['pgsql'],
+                ['--with-pgsql'],
+            ],
+            'readline'   => [
+                ['readline'],
+                ['--with-readline'],
+            ],
+            'sqlite'     => [
+                ['sqlite'],
+                ['--with-sqlite3'],
+            ],
+            'xml'        => [
+                ['xml'],
+                [
+                    '--enable-dom',
+                    '--enable-libxml',
+                    '--enable-simplexml',
+                    '--with-libxml-dir',
+                ],
+            ],
+            'zlib'       => [
+                ['zlib'],
+                ['--with-zlib'],
+            ],
+            'snmp'       => [
+                ['snmp'],
+                ['--with-snmp'],
+            ],
+        ];
     }
 
     /**
@@ -207,7 +325,44 @@ class VariantBuilderTest extends TestCase
 
     public static function ztsProvider()
     {
-        return [['5.3.0', '--enable-maintainer-zts'], ['5.4.0', '--enable-maintainer-zts'], ['5.5.0', '--enable-maintainer-zts'], ['5.6.0', '--enable-maintainer-zts'], ['7.0.0', '--enable-maintainer-zts'], ['7.1.0', '--enable-maintainer-zts'], ['7.3.0', '--enable-maintainer-zts'], ['7.4.0', '--enable-maintainer-zts'], ['8.0.0', '--enable-zts']];
+        return [
+            [
+                '5.3.0',
+                '--enable-maintainer-zts',
+            ],
+            [
+                '5.4.0',
+                '--enable-maintainer-zts',
+            ],
+            [
+                '5.5.0',
+                '--enable-maintainer-zts',
+            ],
+            [
+                '5.6.0',
+                '--enable-maintainer-zts',
+            ],
+            [
+                '7.0.0',
+                '--enable-maintainer-zts',
+            ],
+            [
+                '7.1.0',
+                '--enable-maintainer-zts',
+            ],
+            [
+                '7.3.0',
+                '--enable-maintainer-zts',
+            ],
+            [
+                '7.4.0',
+                '--enable-maintainer-zts',
+            ],
+            [
+                '8.0.0',
+                '--enable-zts',
+            ],
+        ];
     }
 
     /**
@@ -229,6 +384,31 @@ class VariantBuilderTest extends TestCase
 
     public static function snmpProvider()
     {
-        return [['5.6.0', '--with-snmp'], ['7.0.0', '--with-snmp'], ['7.1.0', '--with-snmp'], ['7.3.0', '--with-snmp'], ['7.4.0', '--with-snmp'], ['8.0.0', '--with-snmp']];
+        return [
+            [
+                '5.6.0',
+                '--with-snmp',
+            ],
+            [
+                '7.0.0',
+                '--with-snmp',
+            ],
+            [
+                '7.1.0',
+                '--with-snmp',
+            ],
+            [
+                '7.3.0',
+                '--with-snmp',
+            ],
+            [
+                '7.4.0',
+                '--with-snmp',
+            ],
+            [
+                '8.0.0',
+                '--with-snmp',
+            ],
+        ];
     }
 }

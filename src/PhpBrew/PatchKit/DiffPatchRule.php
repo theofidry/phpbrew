@@ -62,7 +62,7 @@ final class DiffPatchRule implements PatchRule
             $build->getSourceDirectory()
         );
 
-        if (!fwrite($pipes[0], $this->patch)) {
+        if (fwrite($pipes[0], $this->patch) === false) {
             return 0;
         }
 

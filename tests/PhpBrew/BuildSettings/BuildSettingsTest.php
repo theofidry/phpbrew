@@ -9,14 +9,18 @@ class BuildSettingsTest extends TestCase
 {
     public function testConstructorWithEnabledVariants()
     {
-        $settings = new BuildSettings(['enabled_variants' => ['sqlite' => null]]);
+        $settings = new BuildSettings([
+            'enabled_variants' => ['sqlite' => null],
+        ]);
 
         $this->assertTrue($settings->isEnabledVariant('sqlite'));
     }
 
     public function testConstructorWithDisabledVariants()
     {
-        $settings = new BuildSettings(['disabled_variants' => ['sqlite' => true]]);
+        $settings = new BuildSettings([
+            'disabled_variants' => ['sqlite' => true],
+        ]);
 
         $this->assertFalse($settings->isEnabledVariant('sqlite'));
     }
@@ -26,9 +30,17 @@ class BuildSettingsTest extends TestCase
         $enabledVariants = ['sqlite' => null, 'curl' => 'yes'];
         $disabledVariants = ['dom' => null];
         $extraOptions = [];
-        $settings = new BuildSettings(['enabled_variants'  => $enabledVariants, 'disabled_variants' => $disabledVariants, 'extra_options'     => $extraOptions]);
+        $settings = new BuildSettings([
+            'enabled_variants'  => $enabledVariants,
+            'disabled_variants' => $disabledVariants,
+            'extra_options'     => $extraOptions,
+        ]);
 
-        $expected = ['enabled_variants'  => $enabledVariants, 'disabled_variants' => $disabledVariants, 'extra_options'     => $extraOptions];
+        $expected = [
+            'enabled_variants'  => $enabledVariants,
+            'disabled_variants' => $disabledVariants,
+            'extra_options'     => $extraOptions,
+        ];
         $this->assertEquals($expected, $settings->toArray());
     }
 
@@ -42,7 +54,11 @@ class BuildSettingsTest extends TestCase
 
     public function testEnableVariants()
     {
-        $variants = ['sqlite' => null, 'curl'   => 'yes', 'dom'    => null];
+        $variants = [
+            'sqlite' => null,
+            'curl'   => 'yes',
+            'dom'    => null,
+        ];
         $settings = new BuildSettings();
         $settings->enableVariants($variants);
 
@@ -51,11 +67,16 @@ class BuildSettingsTest extends TestCase
 
     public function testDisableVariants()
     {
-        $variants = ['sqlite' => null, 'curl'   => 'yes', 'dom'    => null];
+        $variants = [
+            'sqlite' => null, 'curl'   => 'yes', 'dom'    => null];
         $settings = new BuildSettings();
         $settings->disableVariants($variants);
 
-        $expected = ['sqlite' => null, 'curl'   => null, 'dom'    => null];
+        $expected = [
+            'sqlite' => null,
+            'curl'   => null,
+            'dom'    => null,
+        ];
         $this->assertEquals($expected, $settings->getDisabledVariants());
     }
 

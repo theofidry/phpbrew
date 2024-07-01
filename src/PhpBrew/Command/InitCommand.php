@@ -61,7 +61,10 @@ class InitCommand extends Command
         }
 
         $this->logger->debug('Creating .metadata_never_index to prevent SpotLight indexing');
-        $indexFiles = [$root . DIRECTORY_SEPARATOR . '.metadata_never_index', $home . DIRECTORY_SEPARATOR . '.metadata_never_index'];
+        $indexFiles = [
+            $root . DIRECTORY_SEPARATOR . '.metadata_never_index',
+            $home . DIRECTORY_SEPARATOR . '.metadata_never_index',
+        ];
         foreach ($indexFiles as $indexFile) {
             if (!file_exists($indexFile)) {
                 touch($indexFile); // prevent spotlight index here

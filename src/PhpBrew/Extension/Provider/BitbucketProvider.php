@@ -133,7 +133,10 @@ class BitbucketProvider implements Provider
             . $this->getRepository()
             . '-*';
 
-        $cmds = ["rm -rf $targetPkgDir", "mv $extractDir $targetPkgDir"];
+        $cmds = [
+            "rm -rf $targetPkgDir",
+            "mv $extractDir $targetPkgDir",
+        ];
 
         return $cmds;
     }

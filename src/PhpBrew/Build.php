@@ -24,12 +24,12 @@ class Build implements Buildable
     /**
      * States that describe finished task.
      */
-    public const STATE_NONE = 0;
-    public const STATE_DOWNLOAD = 1;
-    public const STATE_EXTRACT = 2;
-    public const STATE_CONFIGURE = 3;
-    public const STATE_BUILD = 4;
-    public const STATE_INSTALL = 5;
+    private const STATE_NONE = 0;
+    private const STATE_DOWNLOAD = 1;
+    private const STATE_EXTRACT = 2;
+    private const STATE_CONFIGURE = 3;
+    private const STATE_BUILD = 4;
+    private const STATE_INSTALL = 5;
 
     public $name;
 

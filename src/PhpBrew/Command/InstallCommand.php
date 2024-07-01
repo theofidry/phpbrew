@@ -76,7 +76,11 @@ class InstallCommand extends Command
     {
         $settings = [];
 
-        $definitions = ['as' => '*', 'like' => '*', 'using' => '*+'];
+        $definitions = [
+            'as'    => '*',
+            'like'  => '*',
+            'using' => '*+',
+        ];
 
         // XXX: support 'using'
         foreach ($definitions as $k => $requirement) {
@@ -423,17 +427,26 @@ class InstallCommand extends Command
         if (!$this->options->{'no-configure'}) {
             $options = $parameters->getOptions();
             // https://gist.github.com/tvlooy/953a7c0658e70b573ab4
-            $sapis = ['cli' => ['enable' => ['--enable-cli'], 'disable' => ['--disable-cli']]];
+            $sapis = [
+                'cli' => [
+                    'enable' => ['--enable-cli'],
+                    'disable' => ['--disable-cli'],
+                ],
+            ];
 
             if ($build->isEnabledVariant('apxs2')) {
-                $sapis['apache2'] = ['enable' => ['--with-apxs2'], 'disable' => []];
+                $sapis['apache2'] = ['enable'  => ['--with-apxs2'],
+                                     'disable' => [],
+                ];
             }
             if ($build->isEnabledVariant('fpm')) {
                 $addedOptions = ['--enable-fpm'];
                 if (PHP_OS === 'Linux') {
                     $addedOptions[] = '--with-fpm-systemd';
                 }
-                $sapis['fpm'] = ['enable' => $addedOptions, 'disable' => []];
+                $sapis['fpm'] = ['enable'  => $addedOptions,
+                                 'disable' => [],
+                ];
             }
 
             foreach ($sapis as $sapi => $enableDisable) {

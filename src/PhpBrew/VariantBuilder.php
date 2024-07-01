@@ -70,13 +70,64 @@ class VariantBuilder
     private $builtList = [];
 
     public $virtualVariants = [
-        'dbs' => ['sqlite', 'mysql', 'pgsql', 'pdo'],
-        'mb' => ['mbstring', 'mbregex'],
+        'dbs' => [
+            'sqlite',
+            'mysql',
+            'pgsql',
+            'pdo',
+        ],
+        'mb' => [
+            'mbstring',
+            'mbregex',
+        ],
         // provide no additional feature
         'neutral' => [],
-        'small' => ['bz2', 'cli', 'dom', 'filter', 'ipc', 'json', 'mbregex', 'mbstring', 'pcre', 'phar', 'posix', 'readline', 'xml', 'curl', 'openssl'],
+        'small' => [
+            'bz2',
+            'cli',
+            'dom',
+            'filter',
+            'ipc',
+            'json',
+            'mbregex',
+            'mbstring',
+            'pcre',
+            'phar',
+            'posix',
+            'readline',
+            'xml',
+            'curl',
+            'openssl',
+        ],
         // provide all basic features
-        'default' => ['bcmath', 'bz2', 'calendar', 'cli', 'ctype', 'dom', 'fileinfo', 'filter', 'ipc', 'json', 'mbregex', 'mbstring', 'mhash', 'pcntl', 'pcre', 'pdo', 'pear', 'phar', 'posix', 'readline', 'sockets', 'tokenizer', 'xml', 'curl', 'openssl', 'zip'],
+        'default' => [
+            'bcmath',
+            'bz2',
+            'calendar',
+            'cli',
+            'ctype',
+            'dom',
+            'fileinfo',
+            'filter',
+            'ipc',
+            'json',
+            'mbregex',
+            'mbstring',
+            'mhash',
+            'pcntl',
+            'pcre',
+            'pdo',
+            'pear',
+            'phar',
+            'posix',
+            'readline',
+            'sockets',
+            'tokenizer',
+            'xml',
+            'curl',
+            'openssl',
+            'zip',
+        ],
     ];
 
     public function __construct()
@@ -119,7 +170,13 @@ class VariantBuilder
             $params = $params->withOption('--enable-mbstring');
 
             if ($build->compareVersion('7.4') >= 0 && !$build->isDisabledVariant('mbregex')) {
-                $prefix = Utils::findPrefix([new UserProvidedPrefix($value), new IncludePrefixFinder('oniguruma.h'), new BrewPrefixFinder('oniguruma')]);
+                $prefix = Utils::findPrefix(
+                    [
+                        new UserProvidedPrefix($value),
+                        new IncludePrefixFinder('oniguruma.h'),
+                        new BrewPrefixFinder('oniguruma'),
+                    ]
+                );
 
                 if ($prefix !== null) {
                     $params = $params->withPkgConfigPath($prefix . '/lib/pkgconfig');
@@ -162,11 +219,22 @@ class VariantBuilder
         $this->variants['opcache'] = '--enable-opcache';
 
         $this->variants['imap'] = function (ConfigureParameters $params, Build $build, $value) {
-            $imapPrefix = Utils::findPrefix([new UserProvidedPrefix($value), new BrewPrefixFinder('imap-uw')]);
+            $imapPrefix = Utils::findPrefix(
+                [
+                    new UserProvidedPrefix($value),
+                    new BrewPrefixFinder('imap-uw'),
+                ]
+            );
 
             $kerberosPrefix = Utils::findPrefix([new BrewPrefixFinder('krb5')]);
 
-            $opensslPrefix = Utils::findPrefix([new BrewPrefixFinder('openssl'), new PkgConfigPrefixFinder('openssl'), new IncludePrefixFinder('openssl/opensslv.h')]);
+            $opensslPrefix = Utils::findPrefix(
+                [
+                    new BrewPrefixFinder('openssl'),
+                    new PkgConfigPrefixFinder('openssl'),
+                    new IncludePrefixFinder('openssl/opensslv.h'),
+                ]
+            );
 
             return $params->withOption('--with-imap', $imapPrefix)
                 ->withOptionOrPkgConfigPath($build, '--with-kerberos', $kerberosPrefix)
@@ -174,7 +242,13 @@ class VariantBuilder
         };
 
         $this->variants['ldap'] = function (ConfigureParameters $params, Build $_, $value) {
-            $prefix = Utils::findPrefix([new UserProvidedPrefix($value), new IncludePrefixFinder('ldap.h'), new BrewPrefixFinder('openldap')]);
+            $prefix = Utils::findPrefix(
+                [
+                    new UserProvidedPrefix($value),
+                    new IncludePrefixFinder('ldap.h'),
+                    new BrewPrefixFinder('openldap'),
+                ]
+            );
 
             if ($prefix !== null) {
                 $params = $params->withOption('--with-ldap', $prefix);
@@ -226,7 +300,13 @@ class VariantBuilder
 
             $params = $params->withOption('--with-pcre-regex');
 
-            $prefix = Utils::findPrefix([new UserProvidedPrefix($value), new IncludePrefixFinder('pcre.h'), new BrewPrefixFinder('pcre')]);
+            $prefix = Utils::findPrefix(
+                [
+                    new UserProvidedPrefix($value),
+                    new IncludePrefixFinder('pcre.h'),
+                    new BrewPrefixFinder('pcre'),
+                ]
+            );
 
             if ($prefix !== null) {
                 $params = $params->withOption('--with-pcre-dir', $prefix);
@@ -236,25 +316,50 @@ class VariantBuilder
         };
 
         $this->variants['mhash'] = function (ConfigureParameters $params, Build $build, $value) {
-            $prefix = Utils::findPrefix([new UserProvidedPrefix($value), new IncludePrefixFinder('mhash.h'), new BrewPrefixFinder('mhash')]);
+            $prefix = Utils::findPrefix(
+                [
+                    new UserProvidedPrefix($value),
+                    new IncludePrefixFinder('mhash.h'),
+                    new BrewPrefixFinder('mhash'),
+                ]
+            );
 
             return $params->withOption('--with-mhash', $prefix);
         };
 
         $this->variants['mcrypt'] = function (ConfigureParameters $params, Build $build, $value) {
-            $prefix = Utils::findPrefix([new UserProvidedPrefix($value), new IncludePrefixFinder('mcrypt.h'), new BrewPrefixFinder('mcrypt')]);
+            $prefix = Utils::findPrefix(
+                [
+                    new UserProvidedPrefix($value),
+                    new IncludePrefixFinder('mcrypt.h'),
+                    new BrewPrefixFinder('mcrypt'),
+                ]
+            );
 
             return $params->withOption('--with-mcrypt', $prefix);
         };
 
         $this->variants['zlib'] = function (ConfigureParameters $params, Build $build, $value) {
-            $prefix = Utils::findPrefix([new UserProvidedPrefix($value), new BrewPrefixFinder('zlib'), new IncludePrefixFinder('zlib.h')]);
+            $prefix = Utils::findPrefix(
+                [
+                    new UserProvidedPrefix($value),
+                    new BrewPrefixFinder('zlib'),
+                    new IncludePrefixFinder('zlib.h'),
+                ]
+            );
 
             return $params->withOptionOrPkgConfigPath($build, '--with-zlib', $prefix);
         };
 
         $this->variants['curl'] = function (ConfigureParameters $params, Build $build, $value) {
-            $prefix = Utils::findPrefix([new UserProvidedPrefix($value), new BrewPrefixFinder('curl'), new PkgConfigPrefixFinder('libcurl'), new IncludePrefixFinder('curl/curl.h')]);
+            $prefix = Utils::findPrefix(
+                [
+                    new UserProvidedPrefix($value),
+                    new BrewPrefixFinder('curl'),
+                    new PkgConfigPrefixFinder('libcurl'),
+                    new IncludePrefixFinder('curl/curl.h'),
+                ]
+            );
 
             return $params->withOptionOrPkgConfigPath($build, '--with-curl', $prefix);
         };
@@ -275,7 +380,13 @@ class VariantBuilder
         @see https://bugs.php.net/bug.php?id=48608
         */
         $this->variants['readline'] = function (ConfigureParameters $params, Build $build, $value) {
-            $prefix = Utils::findPrefix([new UserProvidedPrefix($value), new BrewPrefixFinder('readline'), new IncludePrefixFinder('readline/readline.h')]);
+            $prefix = Utils::findPrefix(
+                [
+                    new UserProvidedPrefix($value),
+                    new BrewPrefixFinder('readline'),
+                    new IncludePrefixFinder('readline/readline.h'),
+                ]
+            );
 
             return $params->withOption('--with-readline', $prefix);
         };
@@ -288,7 +399,13 @@ class VariantBuilder
          *      brew tap homebrew/dupes
          */
         $this->variants['editline'] = function (ConfigureParameters $parameters, Build $build, $value) {
-            $prefix = Utils::findPrefix([new UserProvidedPrefix($value), new IncludePrefixFinder('editline/readline.h'), new BrewPrefixFinder('libedit')]);
+            $prefix = Utils::findPrefix(
+                [
+                    new UserProvidedPrefix($value),
+                    new IncludePrefixFinder('editline/readline.h'),
+                    new BrewPrefixFinder('libedit'),
+                ]
+            );
 
             return $parameters->withOption('--with-libedit', $prefix);
         };
@@ -312,7 +429,13 @@ class VariantBuilder
          * @see https://github.com/phpbrew/phpbrew/issues/461
          */
         $this->variants['gd'] = function (ConfigureParameters $parameters, Build $build, $value) {
-            $prefix = Utils::findPrefix([new UserProvidedPrefix($value), new IncludePrefixFinder('gd.h'), new BrewPrefixFinder('gd')]);
+            $prefix = Utils::findPrefix(
+                [
+                    new UserProvidedPrefix($value),
+                    new IncludePrefixFinder('gd.h'),
+                    new BrewPrefixFinder('gd'),
+                ]
+            );
 
             if ($build->compareVersion('7.4') < 0) {
                 $option = '--with-gd';
@@ -333,7 +456,12 @@ class VariantBuilder
             }
 
             if (
-                ($prefix = Utils::findPrefix([new IncludePrefixFinder('jpeglib.h'), new BrewPrefixFinder('libjpeg')])) !== null
+                ($prefix = Utils::findPrefix(
+                    [
+                        new IncludePrefixFinder('jpeglib.h'),
+                        new BrewPrefixFinder('libjpeg'),
+                    ]
+                )) !== null
             ) {
                 if ($build->compareVersion('7.4') < 0) {
                     $option = '--with-jpeg-dir';
@@ -345,7 +473,13 @@ class VariantBuilder
             }
 
             if (
-                $build->compareVersion('7.4') < 0 && ($prefix = Utils::findPrefix([new IncludePrefixFinder('png.h'), new IncludePrefixFinder('libpng12/pngconf.h'), new BrewPrefixFinder('libpng')])) !== null
+                $build->compareVersion('7.4') < 0 && ($prefix = Utils::findPrefix(
+                    [
+                        new IncludePrefixFinder('png.h'),
+                        new IncludePrefixFinder('libpng12/pngconf.h'),
+                        new BrewPrefixFinder('libpng'),
+                    ]
+                )) !== null
             ) {
                 $parameters = $parameters->withOption('--with-png-dir', $prefix);
             }
@@ -356,7 +490,13 @@ class VariantBuilder
             // from configure:
             //   for path in $i/include/freetype2/freetype/freetype.h
             if (
-                ($prefix = Utils::findPrefix([new IncludePrefixFinder('freetype2/freetype.h'), new IncludePrefixFinder('freetype2/freetype/freetype.h'), new BrewPrefixFinder('freetype')])) !== null
+                ($prefix = Utils::findPrefix(
+                    [
+                        new IncludePrefixFinder('freetype2/freetype.h'),
+                        new IncludePrefixFinder('freetype2/freetype/freetype.h'),
+                        new BrewPrefixFinder('freetype'),
+                    ]
+                )) !== null
             ) {
                 if ($build->compareVersion('7.4') < 0) {
                     $option = '--with-freetype-dir';
@@ -390,7 +530,12 @@ class VariantBuilder
         $this->variants['intl'] = function (ConfigureParameters $parameters, Build $build) {
             $parameters = $parameters->withOption('--enable-intl');
 
-            $prefix = Utils::findPrefix([new PkgConfigPrefixFinder('icu-i18n'), new BrewPrefixFinder('icu4c')]);
+            $prefix = Utils::findPrefix(
+                [
+                    new PkgConfigPrefixFinder('icu-i18n'),
+                    new BrewPrefixFinder('icu4c'),
+                ]
+            );
 
             if ($build->compareVersion('7.4') < 0) {
                 if ($prefix !== null) {
@@ -406,7 +551,15 @@ class VariantBuilder
         };
 
         $this->variants['sodium'] = function (ConfigureParameters $parameters, Build $build, $value) {
-            $prefix = Utils::findPrefix([new UserProvidedPrefix($value), new BrewPrefixFinder('libsodium'), new PkgConfigPrefixFinder('libsodium'), new IncludePrefixFinder('sodium.h'), new LibPrefixFinder('libsodium.a')]);
+            $prefix = Utils::findPrefix(
+                [
+                    new UserProvidedPrefix($value),
+                    new BrewPrefixFinder('libsodium'),
+                    new PkgConfigPrefixFinder('libsodium'),
+                    new IncludePrefixFinder('sodium.h'),
+                    new LibPrefixFinder('libsodium.a'),
+                ]
+            );
 
             return $parameters->withOption('--with-sodium', $prefix);
         };
@@ -420,7 +573,14 @@ class VariantBuilder
          * On ubuntu you need to install libssl-dev
          */
         $this->variants['openssl'] = function (ConfigureParameters $parameters, Build $build, $value) {
-            $prefix = Utils::findPrefix([new UserProvidedPrefix($value), new BrewPrefixFinder('openssl'), new PkgConfigPrefixFinder('openssl'), new IncludePrefixFinder('openssl/opensslv.h')]);
+            $prefix = Utils::findPrefix(
+                [
+                    new UserProvidedPrefix($value),
+                    new BrewPrefixFinder('openssl'),
+                    new PkgConfigPrefixFinder('openssl'),
+                    new IncludePrefixFinder('openssl/opensslv.h'),
+                ]
+            );
 
             return $parameters->withOptionOrPkgConfigPath($build, '--with-openssl', $prefix);
         };
@@ -525,7 +685,13 @@ class VariantBuilder
          * The --with-pgsql=[DIR] and --with-pdo-pgsql=[DIR] requires [DIR]/bin/pg_config to be found.
          */
         $this->variants['pgsql'] = function (ConfigureParameters $parameters, Build $build, $value) {
-            $prefix = Utils::findPrefix([new UserProvidedPrefix($value), new ExecutablePrefixFinder('pg_config'), new BrewPrefixFinder('libpq')]);
+            $prefix = Utils::findPrefix(
+                [
+                    new UserProvidedPrefix($value),
+                    new ExecutablePrefixFinder('pg_config'),
+                    new BrewPrefixFinder('libpq'),
+                ]
+            );
 
             $parameters = $parameters->withOption('--with-pgsql', $prefix);
 
@@ -539,7 +705,15 @@ class VariantBuilder
         $this->variants['xml'] = function (ConfigureParameters $parameters, Build $build, $value) {
             $parameters = $parameters->withOption('--enable-dom');
 
-            $prefix = Utils::findPrefix([new UserProvidedPrefix($value), new BrewPrefixFinder('libxml2'), new PkgConfigPrefixFinder('libxml'), new IncludePrefixFinder('libxml2/libxml/globals.h'), new LibPrefixFinder('libxml2.a')]);
+            $prefix = Utils::findPrefix(
+                [
+                    new UserProvidedPrefix($value),
+                    new BrewPrefixFinder('libxml2'),
+                    new PkgConfigPrefixFinder('libxml'),
+                    new IncludePrefixFinder('libxml2/libxml/globals.h'),
+                    new LibPrefixFinder('libxml2.a'),
+                ]
+            );
 
             if ($build->compareVersion('7.4') < 0) {
                 $parameters = $parameters->withOption('--enable-libxml');
@@ -597,7 +771,13 @@ class VariantBuilder
         };
 
         $this->variants['gettext'] = function (ConfigureParameters $parameters, Build $build, $value) {
-            $prefix = Utils::findPrefix([new UserProvidedPrefix($value), new IncludePrefixFinder('libintl.h'), new BrewPrefixFinder('gettext')]);
+            $prefix = Utils::findPrefix(
+                [
+                    new UserProvidedPrefix($value),
+                    new IncludePrefixFinder('libintl.h'),
+                    new BrewPrefixFinder('gettext'),
+                ]
+            );
 
             return $parameters->withOption('--with-gettext', $prefix);
         };
@@ -614,7 +794,13 @@ class VariantBuilder
         };
 
         $this->variants['bz2'] = function (ConfigureParameters $parameters, Build $build, $value) {
-            $prefix = Utils::findPrefix([new UserProvidedPrefix($value), new BrewPrefixFinder('bzip2'), new IncludePrefixFinder('bzlib.h')]);
+            $prefix = Utils::findPrefix(
+                [
+                    new UserProvidedPrefix($value),
+                    new BrewPrefixFinder('bzip2'),
+                    new IncludePrefixFinder('bzlib.h'),
+                ]
+            );
 
             return $parameters->withOption('--with-bz2', $prefix);
         };
@@ -628,7 +814,12 @@ class VariantBuilder
         };
 
         $this->variants['gmp'] = function (ConfigureParameters $parameters, Build $build, $value) {
-            $prefix = Utils::findPrefix([new UserProvidedPrefix($value), new IncludePrefixFinder('gmp.h')]);
+            $prefix = Utils::findPrefix(
+                [
+                    new UserProvidedPrefix($value),
+                    new IncludePrefixFinder('gmp.h'),
+                ]
+            );
 
             return $parameters->withOption('--with-gmp', $prefix);
         };
@@ -653,7 +844,14 @@ class VariantBuilder
          * On Ubuntu 22.04+, it should ensure the pkg-config --variable=prefix netsnmp can find the net-snmp prefix.
          */
         $this->variants['snmp'] = function (ConfigureParameters $parameters, Build $build, $value) {
-            $prefix = Utils::findPrefix([new UserProvidedPrefix($value), new BrewPrefixFinder('net-snmp'), new PkgConfigPrefixFinder('netsnmp'), new IncludePrefixFinder('net-snmp/net-snmp-config.h')]);
+            $prefix = Utils::findPrefix(
+                [
+                    new UserProvidedPrefix($value),
+                    new BrewPrefixFinder('net-snmp'),
+                    new PkgConfigPrefixFinder('netsnmp'),
+                    new IncludePrefixFinder('net-snmp/net-snmp-config.h'),
+                ]
+            );
 
             return $parameters->withOptionOrPkgConfigPath($build, '--with-snmp', $prefix);
         };

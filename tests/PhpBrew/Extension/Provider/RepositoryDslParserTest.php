@@ -68,7 +68,11 @@ class ExtensionDslParserTest extends TestCase
     public function testGithubDsl($dsl, $repo, $owner, $package)
     {
         $this->assertSame(
-            ['repository' => $repo, 'owner' => $owner, 'package' => $package],
+            [
+                'repository' => $repo,
+                'owner'      => $owner,
+                'package'    => $package,
+            ],
             $this->parser->parse($dsl)
         );
     }

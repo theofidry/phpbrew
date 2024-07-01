@@ -21,7 +21,11 @@ class ConfigTest extends TestCase
      */
     public function testGetPhpbrewHomeWhenHOMEIsNotDefined()
     {
-        $env = ['PHPBREW_HOME' => null, 'PHPBREW_ROOT' => null, 'HOME'         => null];
+        $env = [
+            'PHPBREW_HOME' => null,
+            'PHPBREW_ROOT' => null,
+            'HOME'         => null,
+        ];
         $this->withEnv($env, function () {
             Config::getHome();
         });
@@ -29,7 +33,10 @@ class ConfigTest extends TestCase
 
     public function testGetPhpbrewHomeWhenHOMEIsDefined()
     {
-        $env = ['HOME'         => getenv('PHPBREW_ROOT'), 'PHPBREW_HOME' => null];
+        $env = [
+            'HOME'         => getenv('PHPBREW_ROOT'),
+            'PHPBREW_HOME' => null,
+        ];
         $this->withEnv($env, function ($self) {
             $self->assertStringEndsWith('.phpbrew/.phpbrew', Config::getHome());
         });
@@ -51,7 +58,10 @@ class ConfigTest extends TestCase
 
     public function testGetPhpbrewRootWhenHOMEIsDefined()
     {
-        $env = ['HOME'         => getenv('PHPBREW_ROOT'), 'PHPBREW_ROOT' => null];
+        $env = [
+            'HOME'         => getenv('PHPBREW_ROOT'),
+            'PHPBREW_ROOT' => null,
+        ];
         $this->withEnv($env, function ($self) {
             $self->assertStringEndsWith('.phpbrew/.phpbrew', Config::getRoot());
         });
@@ -200,7 +210,16 @@ class ConfigTest extends TestCase
     public function withEnv($newEnv, $callback)
     {
         // reset environment variables
-        $oldEnv = $this->resetEnv($newEnv + ['HOME'                  => null, 'PHPBREW_HOME'          => getenv('PHPBREW_HOME'), 'PHPBREW_PATH'          => null, 'PHPBREW_PHP'           => null, 'PHPBREW_ROOT'          => getenv('PHPBREW_ROOT'), 'PHPBREW_LOOKUP_PREFIX' => null]);
+        $oldEnv = $this->resetEnv(
+            $newEnv + [
+                'HOME'                  => null,
+                'PHPBREW_HOME'          => getenv('PHPBREW_HOME'),
+                'PHPBREW_PATH'          => null,
+                'PHPBREW_PHP'           => null,
+                'PHPBREW_ROOT'          => getenv('PHPBREW_ROOT'),
+                'PHPBREW_LOOKUP_PREFIX' => null,
+            ]
+        );
 
         try {
             $callback($this);

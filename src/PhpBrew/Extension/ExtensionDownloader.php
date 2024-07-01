@@ -72,7 +72,10 @@ class ExtensionDownloader
         if ($name != $extName) {
             $this->logger->info("===> Rename source directory to $extensionDir...");
 
-            $cmds = ["rm -rf $extensionDir", "mv $extensionExtractDir $extensionDir"];
+            $cmds = [
+                "rm -rf $extensionDir",
+                "mv $extensionExtractDir $extensionDir",
+            ];
 
             foreach ($cmds as $cmd) {
                 $this->logger->debug($cmd);

@@ -20,6 +20,9 @@ class CompletionTest extends CommandTestCase
 
     public static function completionProvider()
     {
-        return ['bash' => ['bash'], 'zsh' => ['zsh']];
+        return [
+            'bash' => ['bash'],
+            'zsh'  => ['zsh'],
+        ];
     }
 }

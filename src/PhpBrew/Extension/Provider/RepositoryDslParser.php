@@ -4,7 +4,16 @@ namespace PhpBrew\Extension\Provider;
 
 class RepositoryDslParser
 {
-    protected static $macros = ['https://bitbucket.org/' => ['git@bitbucket.org:', 'bitbucket:'], 'https://github.com/' => ['github:', 'git@github.com:']];
+    protected static $macros = [
+        'https://bitbucket.org/' => [
+            'git@bitbucket.org:',
+            'bitbucket:',
+        ],
+        'https://github.com/'    => [
+            'github:',
+            'git@github.com:',
+        ],
+    ];
 
     public function parse($dsl)
     {

@@ -32,8 +32,9 @@ class PHP56WithOpenSSL11Patch extends Patch
      */
     public function rules()
     {
-        return [DiffPatchRule::fromPatch(
-            <<<'EOP'
+        return [
+            DiffPatchRule::fromPatch(
+                <<<'EOP'
 diff --git a/ext/openssl/openssl.c b/ext/openssl/openssl.c
 index a78a8fb10f82..6c3ae3cde80a 100644
 --- a/ext/openssl/openssl.c
@@ -1304,6 +1305,7 @@ index 6c3ae3cde80a..b53114cdf34d 100644
  static int X509_get_signature_nid(const X509 *x)
  {
 EOP
-        )->strip(1)];
+            )->strip(1),
+        ];
     }
 }

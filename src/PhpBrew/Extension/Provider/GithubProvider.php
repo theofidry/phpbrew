@@ -152,7 +152,10 @@ class GithubProvider implements Provider
         $targetPkgDir = $currentPhpExtensionDirectory . DIRECTORY_SEPARATOR . $this->getPackageName();
         $extractDir = $currentPhpExtensionDirectory . DIRECTORY_SEPARATOR . $this->getRepository() . '-*';
 
-        $cmds = ["rm -rf $targetPkgDir", "mv $extractDir $targetPkgDir"];
+        $cmds = [
+            "rm -rf $targetPkgDir",
+            "mv $extractDir $targetPkgDir",
+        ];
 
         return $cmds;
     }

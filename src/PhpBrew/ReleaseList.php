@@ -159,7 +159,13 @@ class ReleaseList
 
     private static function downloadReleaseListFromOfficialSite($version, $max, OptionResult $options)
     {
-        $url = 'https://www.php.net/releases/index.php?' . http_build_query(['json'    => true, 'version' => $version, 'max'     => $max]);
+        $url = 'https://www.php.net/releases/index.php?' . http_build_query(
+                [
+                    'json' => true,
+                    'version' => $version,
+                    'max' => $max,
+                ]
+            );
 
         $file = DownloadFactory::getInstance(Logger::getInstance(), $options)->download($url);
         $json = file_get_contents($file);

@@ -36,7 +36,11 @@ class BuildSettings
 
     public function toArray()
     {
-        return ['enabled_variants' => $this->enabledVariants, 'disabled_variants' => $this->disabledVariants, 'extra_options' => $this->extraOptions];
+        return [
+            'enabled_variants'  => $this->enabledVariants,
+            'disabled_variants' => $this->disabledVariants,
+            'extra_options'     => $this->extraOptions,
+        ];
     }
 
     public function enableVariants(array $settings)
@@ -135,7 +139,16 @@ class BuildSettings
 
     public function writeVariantInfoFile($variantInfoFile)
     {
-        return file_put_contents($variantInfoFile, serialize(['enabled_variants' => $this->enabledVariants, 'disabled_variants' => $this->disabledVariants, 'extra_options' => array_unique($this->extraOptions)]));
+        return file_put_contents(
+            $variantInfoFile,
+            serialize(
+                [
+                    'enabled_variants' => $this->enabledVariants,
+                    'disabled_variants' => $this->disabledVariants,
+                    'extra_options' => array_unique($this->extraOptions),
+                ]
+            )
+        );
     }
 
     public function loadVariantInfo(array $variantInfo)

@@ -24,7 +24,11 @@ class Config
     {
         if ($custom = getenv('PHPBREW_HOME')) {
             if (!file_exists($custom)) {
-                mkdir($custom, 0755, true);
+                mkdir(
+                    $custom,
+                    0755,
+                    true
+                );
             }
 
             return $custom;
@@ -32,7 +36,11 @@ class Config
         if ($home = getenv('HOME')) {
             $path = $home . DIRECTORY_SEPARATOR . '.phpbrew';
             if (!file_exists($path)) {
-                mkdir($path, 0755, true);
+                mkdir(
+                    $path,
+                    0755,
+                    true
+                );
             }
 
             return $path;
@@ -54,7 +62,11 @@ class Config
     {
         if ($root = getenv('PHPBREW_ROOT')) {
             if (!file_exists($root)) {
-                mkdir($root, 0755, true);
+                mkdir(
+                    $root,
+                    0755,
+                    true
+                );
             }
 
             return $root;
@@ -90,7 +102,11 @@ class Config
     {
         $dir = self::getRoot() . DIRECTORY_SEPARATOR . 'distfiles';
         if (!file_exists($dir)) {
-            mkdir($dir, 0755, true);
+            mkdir(
+                $dir,
+                0755,
+                true
+            );
         }
 
         return $dir;
@@ -100,7 +116,11 @@ class Config
     {
         $dir = self::getRoot() . DIRECTORY_SEPARATOR . 'tmp';
         if (!file_exists($dir)) {
-            mkdir($dir, 0755, true);
+            mkdir(
+                $dir,
+                0755,
+                true
+            );
         }
 
         return $dir;
@@ -160,7 +180,11 @@ class Config
 
     public static function getSapis()
     {
-        return ['cli', 'fpm', 'apache'];
+        return [
+            'cli',
+            'fpm',
+            'apache',
+        ];
     }
 
     /**

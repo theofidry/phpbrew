@@ -56,7 +56,11 @@ class VariantParser
             $target[$name] = $value;
         }
 
-        return ['enabled_variants' => $enabledVariants, 'disabled_variants' => $disabledVariants, 'extra_options' => $extra];
+        return [
+            'enabled_variants'  => $enabledVariants,
+            'disabled_variants' => $disabledVariants,
+            'extra_options'     => $extra,
+        ];
     }
 
     /**

@@ -35,7 +35,12 @@ class OpenSSLDSOPatch extends Patch
         $dylibssl = null;
         $dylibcrypto = null;
 
-        $paths = ['/opt/local/lib/libssl.dylib', '/usr/local/opt/openssl/lib/libssl.dylib', '/usr/local/lib/libssl.dylib', '/usr/lib/libssl.dylib'];
+        $paths = [
+            '/opt/local/lib/libssl.dylib',
+            '/usr/local/opt/openssl/lib/libssl.dylib',
+            '/usr/local/lib/libssl.dylib',
+            '/usr/lib/libssl.dylib',
+        ];
         foreach ($paths as $path) {
             if (file_exists($path)) {
                 $dylibssl = $path;
@@ -43,7 +48,12 @@ class OpenSSLDSOPatch extends Patch
             }
         }
 
-        $paths = ['/opt/local/lib/libcrypto.dylib', '/usr/local/opt/openssl/lib/libcrypto.dylib', '/usr/local/lib/libcrypto.dylib', '/usr/lib/libcrypto.dylib'];
+        $paths = [
+            '/opt/local/lib/libcrypto.dylib',
+            '/usr/local/opt/openssl/lib/libcrypto.dylib',
+            '/usr/local/lib/libcrypto.dylib',
+            '/usr/lib/libcrypto.dylib',
+        ];
         foreach ($paths as $path) {
             if (file_exists($path)) {
                 $dylibcrypto = $path;

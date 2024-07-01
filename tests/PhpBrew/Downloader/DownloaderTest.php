@@ -1,20 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Tests\Downloader;
 
-use PhpBrew\Downloader\WgetCommandDownloader;
-use PhpBrew\Downloader\CurlCommandDownloader;
-use PhpBrew\Downloader\PhpCurlDownloader;
-use PhpBrew\Downloader\PhpStreamDownloader;
 use CLIFramework\Logger;
 use GetOptionKit\OptionResult;
 use PhpBrew\Config;
+use PhpBrew\Downloader\CurlCommandDownloader;
 use PhpBrew\Downloader\DownloadFactory;
+use PhpBrew\Downloader\PhpCurlDownloader;
+use PhpBrew\Downloader\PhpStreamDownloader;
+use PhpBrew\Downloader\WgetCommandDownloader;
 use PhpBrew\Testing\VCRAdapter;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @large
+ * @internal
  */
 class DownloaderTest extends TestCase
 {
@@ -36,7 +39,7 @@ class DownloaderTest extends TestCase
     /**
      * @group noVCR
      */
-    public function testDownloadByWgetCommand()
+    public function test_download_by_wget_command(): void
     {
         $this->assertDownloaderWorks(WgetCommandDownloader::class);
     }
@@ -44,30 +47,30 @@ class DownloaderTest extends TestCase
     /**
      * @group noVCR
      */
-    public function testDownloadByCurlCommand()
+    public function test_download_by_curl_command(): void
     {
         $this->assertDownloaderWorks(CurlCommandDownloader::class);
     }
 
-    public function testDownloadByCurlExtension()
+    public function test_download_by_curl_extension(): void
     {
         $this->assertDownloaderWorks(PhpCurlDownloader::class);
     }
 
-    public function testDownloadByFileFunction()
+    public function test_download_by_file_function(): void
     {
         $this->assertDownloaderWorks(PhpStreamDownloader::class);
     }
 
-    private function assertDownloaderWorks($downloader)
+    private function assertDownloaderWorks($downloader): void
     {
         $instance = DownloadFactory::getInstance($this->logger, new OptionResult(), $downloader);
         if ($instance->hasSupport(false)) {
             $actualFilePath = tempnam(Config::getTempFileDir(), '');
             $instance->download('http://httpbin.org/', $actualFilePath);
-            $this->assertFileExists($actualFilePath);
+            self::assertFileExists($actualFilePath);
         } else {
-            $this->markTestSkipped();
+            self::markTestSkipped();
         }
     }
 }

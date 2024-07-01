@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Downloader;
 
 use CLIFramework\Logger;
@@ -14,10 +16,10 @@ class DownloadFactory
     private const METHOD_CURL = 'curl';
 
     private static $availableDownloaders = [
-        self::METHOD_PHP_CURL   => PhpCurlDownloader::class,
+        self::METHOD_PHP_CURL => PhpCurlDownloader::class,
         self::METHOD_PHP_STREAM => PhpStreamDownloader::class,
-        self::METHOD_WGET       => WgetCommandDownloader::class,
-        self::METHOD_CURL       => CurlCommandDownloader::class,
+        self::METHOD_WGET => WgetCommandDownloader::class,
+        self::METHOD_CURL => CurlCommandDownloader::class,
     ];
 
     /**
@@ -44,21 +46,17 @@ class DownloadFactory
                 }
             }
         }
-
-        return;
     }
 
     /**
-     * @param Logger       $logger
-     * @param OptionResult $options
-     * @param string       $downloader
+     * @param string $downloader
      *
      * @return BaseDownloader
      */
     public static function getInstance(Logger $logger, OptionResult $options, $downloader = null)
     {
         if (is_string($downloader)) {
-            //if we specific a downloader class clearly, then it's the only choice
+            // if we specific a downloader class clearly, then it's the only choice
             if (class_exists($downloader) && is_subclass_of($downloader, BaseDownloader::class)) {
                 return new $downloader($logger, $options);
             }
@@ -68,8 +66,8 @@ class DownloadFactory
             $downloader = array_keys(self::$availableDownloaders);
         }
 
-        //if --downloader presents, we will use it as the first choice,
-        //even if the caller specific downloader by alias/array
+        // if --downloader presents, we will use it as the first choice,
+        // even if the caller specific downloader by alias/array
         if ($options->has('downloader')) {
             $logger->info("Found --downloader option, try to use {$options->downloader} as default downloader.");
             $downloader = array_merge([$options->downloader], $downloader);
@@ -78,11 +76,12 @@ class DownloadFactory
         $instance = self::create($logger, $options, $downloader);
         if ($instance === null) {
             $logger->debug('Downloader not found, falling back to command-based downloader.');
-            //if all downloader not available, maybe we should throw exceptions here instead of returning null?
+
+            // if all downloader not available, maybe we should throw exceptions here instead of returning null?
             return self::create($logger, $options, self::$fallbackDownloaders);
-        } else {
-            return $instance;
         }
+
+        return $instance;
     }
 
     public static function addOptionsForCommand(OptionCollection $opts)

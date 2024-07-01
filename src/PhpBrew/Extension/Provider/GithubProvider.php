@@ -1,16 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Extension\Provider;
 
 use Exception;
 
 class GithubProvider implements Provider
 {
-    public $auth = null;
+    public $auth;
     public $site = 'github.com';
-    public $owner = null;
-    public $repository = null;
-    public $packageName = null;
+    public $owner;
+    public $repository;
+    public $packageName;
     public $defaultVersion = 'master';
 
     public static function getName()
@@ -20,6 +22,7 @@ class GithubProvider implements Provider
 
     /**
      * By default we install extension from master branch.
+     * @param mixed $version
      */
     public function buildPackageDownloadUrl($version = 'master')
     {
@@ -47,18 +50,17 @@ class GithubProvider implements Provider
     /**
      * @param string $auth
      */
-    public function setAuth($auth)
+    public function setAuth($auth): void
     {
         $this->auth = $auth;
     }
-
 
     public function getOwner()
     {
         return $this->owner;
     }
 
-    public function setOwner($owner)
+    public function setOwner($owner): void
     {
         $this->owner = $owner;
     }
@@ -68,7 +70,7 @@ class GithubProvider implements Provider
         return $this->repository;
     }
 
-    public function setRepository($repository)
+    public function setRepository($repository): void
     {
         $this->repository = $repository;
     }
@@ -78,7 +80,7 @@ class GithubProvider implements Provider
         return $this->packageName;
     }
 
-    public function setPackageName($packageName)
+    public function setPackageName($packageName): void
     {
         $this->packageName = $packageName;
     }
@@ -104,7 +106,7 @@ class GithubProvider implements Provider
     {
         return sprintf(
             'https://%sapi.github.com/repos/%s/%s/tags',
-            ($this->auth ? $this->auth . '@' : ''),
+            $this->auth ? $this->auth . '@' : '',
             $this->getOwner(),
             $this->getRepository()
         );
@@ -113,11 +115,10 @@ class GithubProvider implements Provider
     public function parseKnownReleasesResponse($content)
     {
         $info = json_decode($content, true);
-        $versionList = array_map(function ($version) {
+
+        return array_map(static function ($version) {
             return $version['name'];
         }, $info);
-
-        return $versionList;
     }
 
     public function getDefaultVersion()
@@ -125,7 +126,7 @@ class GithubProvider implements Provider
         return $this->defaultVersion;
     }
 
-    public function setDefaultVersion($version)
+    public function setDefaultVersion($version): void
     {
         $this->defaultVersion = $version;
     }
@@ -142,9 +143,7 @@ class GithubProvider implements Provider
 
     public function extractPackageCommands($currentPhpExtensionDirectory, $targetFilePath)
     {
-        $cmds = ["tar -C $currentPhpExtensionDirectory -xzf $targetFilePath"];
-
-        return $cmds;
+        return ["tar -C {$currentPhpExtensionDirectory} -xzf {$targetFilePath}"];
     }
 
     public function postExtractPackageCommands($currentPhpExtensionDirectory, $targetFilePath)
@@ -152,11 +151,9 @@ class GithubProvider implements Provider
         $targetPkgDir = $currentPhpExtensionDirectory . DIRECTORY_SEPARATOR . $this->getPackageName();
         $extractDir = $currentPhpExtensionDirectory . DIRECTORY_SEPARATOR . $this->getRepository() . '-*';
 
-        $cmds = [
-            "rm -rf $targetPkgDir",
-            "mv $extractDir $targetPkgDir",
+        return [
+            "rm -rf {$targetPkgDir}",
+            "mv {$extractDir} {$targetPkgDir}",
         ];
-
-        return $cmds;
     }
 }

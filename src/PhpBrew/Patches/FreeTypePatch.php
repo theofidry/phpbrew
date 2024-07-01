@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Patches;
 
 use CLIFramework\Logger;
@@ -24,14 +26,14 @@ class FreeTypePatch extends Patch
         Logger $logger
     ) {
         return $build->isEnabledVariant('gd') && version_compare(
-                $build->getVersion(),
-                '7.4',
-                '<='
-            );
+            $build->getVersion(),
+            '7.4',
+            '<='
+        );
     }
 
     /**
-     * @link https://git.archlinux.org/svntogit/packages.git/commit/?id=65fd0dc1649537b7fd1d539b769251aacec88719
+     * @see https://git.archlinux.org/svntogit/packages.git/commit/?id=65fd0dc1649537b7fd1d539b769251aacec88719
      *
      * @codeCoverageIgnore
      */

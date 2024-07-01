@@ -1,14 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Patches;
 
 use CLIFramework\Logger;
 use PhpBrew\Build;
 use PhpBrew\Testing\PatchTestCase;
 
+/**
+ * @internal
+ */
 class FreeTypePatchTest extends PatchTestCase
 {
-    public function testPatch()
+    public function test_patch(): void
     {
         $logger = new Logger();
         $logger->setQuiet();
@@ -22,10 +27,10 @@ class FreeTypePatchTest extends PatchTestCase
         $build->enableVariant('gd');
 
         $patch = new FreeTypePatch();
-        $this->assertTrue($patch->match($build, $logger));
-        $this->assertGreaterThan(0, $patch->apply($build, $logger));
+        self::assertTrue($patch->match($build, $logger));
+        self::assertGreaterThan(0, $patch->apply($build, $logger));
 
         $expectedDirectory = getenv('PHPBREW_EXPECTED_PHP_DIR') . DIRECTORY_SEPARATOR . '7.3.12-freetype-patch';
-        $this->assertFileEquals($expectedDirectory . '/ext/gd/config.m4', $sourceDirectory . '/ext/gd/config.m4');
+        self::assertFileEquals($expectedDirectory . '/ext/gd/config.m4', $sourceDirectory . '/ext/gd/config.m4');
     }
 }

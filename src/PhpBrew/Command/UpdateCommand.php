@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Command;
 
 use CLIFramework\Command;
@@ -13,14 +15,14 @@ class UpdateCommand extends Command
         return 'Update PHP release source file';
     }
 
-    public function options($opts)
+    public function options($opts): void
     {
         $opts->add('o|old', 'List versions older than PHP 7.0');
 
         DownloadFactory::addOptionsForCommand($opts);
     }
 
-    public function execute()
+    public function execute(): void
     {
         $fetchTask = new FetchReleaseListTask($this->logger, $this->options);
         $releases = $fetchTask->fetch();

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Tests;
 
 use PhpBrew\PrefixFinder\ExecutablePrefixFinder;
@@ -7,18 +9,19 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @group prefixfinder
+ * @internal
  */
 class ExecutablePrefixFinderTest extends TestCase
 {
-    public function testFindValid()
+    public function test_find_valid(): void
     {
         $epf = new ExecutablePrefixFinder('ls');
-        $this->assertNotNull($epf->findPrefix());
+        self::assertNotNull($epf->findPrefix());
     }
 
-    public function testFindInvalid()
+    public function test_find_invalid(): void
     {
         $epf = new ExecutablePrefixFinder('inexistent-binary');
-        $this->assertNull($epf->findPrefix());
+        self::assertNull($epf->findPrefix());
     }
 }

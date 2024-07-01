@@ -1,14 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Tests;
 
 use PhpBrew\VersionDslParser;
 use PHPUnit\Framework\TestCase;
 
 /**
- * VersionDslParserTest
+ * VersionDslParserTest.
  *
  * @small
+ * @internal
  */
 class VersionDslParserTest extends TestCase
 {
@@ -22,7 +25,7 @@ class VersionDslParserTest extends TestCase
         $this->parser = new VersionDslParser();
     }
 
-    public static function dslProvider()
+    public static function dslProvider(): iterable
     {
         return [
             // official
@@ -159,12 +162,15 @@ class VersionDslParserTest extends TestCase
 
     /**
      * @dataProvider dslProvider
+     * @param mixed $dsl
+     * @param mixed $url
+     * @param mixed $version
      */
-    public function testGithubDsl($dsl, $url, $version)
+    public function test_github_dsl($dsl, $url, $version): void
     {
         $info = $this->parser->parse($dsl);
 
-        $this->assertSame($version, $info['version']);
-        $this->assertSame($url, $info['url']);
+        self::assertSame($version, $info['version']);
+        self::assertSame($url, $info['url']);
     }
 }

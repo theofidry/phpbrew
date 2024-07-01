@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Command;
 
 use CLIFramework\Command as BaseCommand;
@@ -13,17 +15,16 @@ class EnvCommand extends BaseCommand
         return 'Export environment variables';
     }
 
-    public function arguments($args)
+    public function arguments($args): void
     {
         $args->add('PHP build')
             ->optional()
-            ->validValues(function () {
+            ->validValues(static function () {
                 return BuildFinder::findInstalledBuilds();
-            })
-            ;
+            });
     }
 
-    public function execute($buildName = null)
+    public function execute($buildName = null): void
     {
         // get current version
         if (!$buildName) {
@@ -51,12 +52,12 @@ class EnvCommand extends BaseCommand
         $this->logger->writeln('# eval "$(phpbrew env)"');
     }
 
-    private function export($varName, $value)
+    private function export($varName, $value): void
     {
         $this->logger->writeln(sprintf('export %s=%s', $varName, $value));
     }
 
-    private function replicate($varName)
+    private function replicate($varName): void
     {
         $value = getenv($varName);
 

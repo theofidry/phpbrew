@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Command;
 
 use CLIFramework\Command;
@@ -11,7 +13,7 @@ class ListIniCommand extends Command
         return 'List loaded ini config files.';
     }
 
-    public function execute()
+    public function execute(): void
     {
         $this->logger->warn(
             'The list-ini command is deprecated and will be removed in the future.' . PHP_EOL
@@ -19,8 +21,8 @@ class ListIniCommand extends Command
         );
 
         if ($filelist = php_ini_scanned_files()) {
-            echo "Loaded ini files:" . PHP_EOL;
-            if (strlen($filelist) > 0) {
+            echo 'Loaded ini files:' . PHP_EOL;
+            if ($filelist !== '') {
                 $files = explode(',', $filelist);
                 foreach ($files as $file) {
                     echo ' - ' . trim($file) . PHP_EOL;

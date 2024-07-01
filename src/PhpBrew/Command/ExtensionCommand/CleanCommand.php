@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Command\ExtensionCommand;
 
 use PhpBrew\Config;
@@ -13,30 +15,30 @@ class CleanCommand extends BaseCommand
         return 'Clean up the compiled objects in the extension source directory.';
     }
 
-    public function options($opts)
+    public function options($opts): void
     {
         $opts->add('p|purge', 'Remove all the source files.');
     }
 
-    public function arguments($args)
+    public function arguments($args): void
     {
         $args->add('extensions')
-            ->suggestions(function () {
+            ->suggestions(static function () {
                 $extdir = Config::getBuildDir() . '/' . Config::getCurrentPhpName() . '/ext';
 
                 return array_filter(
                     scandir($extdir),
-                    function ($d) use ($extdir) {
+                    static function ($d) use ($extdir) {
                         return $d != '.' && $d != '..' && is_dir($extdir . DIRECTORY_SEPARATOR . $d);
                     }
                 );
             });
     }
 
-    public function execute($extensionName)
+    public function execute($extensionName): void
     {
         if ($ext = ExtensionFactory::lookup($extensionName)) {
-            $this->logger->info("Cleaning $extensionName...");
+            $this->logger->info("Cleaning {$extensionName}...");
             $manager = new ExtensionManager($this->logger);
 
             if ($this->options->purge) {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Extension\Provider;
 
 use Exception;
@@ -7,9 +9,9 @@ use Exception;
 class BitbucketProvider implements Provider
 {
     public $site = 'bitbucket.org';
-    public $owner = null;
-    public $repository = null;
-    public $packageName = null;
+    public $owner;
+    public $repository;
+    public $packageName;
     public $defaultVersion = 'master';
 
     public static function getName()
@@ -37,7 +39,7 @@ class BitbucketProvider implements Provider
         return $this->owner;
     }
 
-    public function setOwner($owner)
+    public function setOwner($owner): void
     {
         $this->owner = $owner;
     }
@@ -47,7 +49,7 @@ class BitbucketProvider implements Provider
         return $this->repository;
     }
 
-    public function setRepository($repository)
+    public function setRepository($repository): void
     {
         $this->repository = $repository;
     }
@@ -57,7 +59,7 @@ class BitbucketProvider implements Provider
         return $this->packageName;
     }
 
-    public function setPackageName($packageName)
+    public function setPackageName($packageName): void
     {
         $this->packageName = $packageName;
     }
@@ -91,9 +93,8 @@ class BitbucketProvider implements Provider
     public function parseKnownReleasesResponse($content)
     {
         $info = json_decode($content, true);
-        $versionList = array_keys($info);
 
-        return $versionList;
+        return array_keys($info);
     }
 
     public function getDefaultVersion()
@@ -101,7 +102,7 @@ class BitbucketProvider implements Provider
         return $this->defaultVersion;
     }
 
-    public function setDefaultVersion($version)
+    public function setDefaultVersion($version): void
     {
         $this->defaultVersion = $version;
     }
@@ -118,9 +119,7 @@ class BitbucketProvider implements Provider
 
     public function extractPackageCommands($currentPhpExtensionDirectory, $targetFilePath)
     {
-        $cmds = ["tar -C $currentPhpExtensionDirectory -xzf $targetFilePath"];
-
-        return $cmds;
+        return ["tar -C {$currentPhpExtensionDirectory} -xzf {$targetFilePath}"];
     }
 
     public function postExtractPackageCommands($currentPhpExtensionDirectory, $targetFilePath)
@@ -133,11 +132,9 @@ class BitbucketProvider implements Provider
             . $this->getRepository()
             . '-*';
 
-        $cmds = [
-            "rm -rf $targetPkgDir",
-            "mv $extractDir $targetPkgDir",
+        return [
+            "rm -rf {$targetPkgDir}",
+            "mv {$extractDir} {$targetPkgDir}",
         ];
-
-        return $cmds;
     }
 }

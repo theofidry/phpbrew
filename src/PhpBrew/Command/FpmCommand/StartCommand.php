@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Command\FpmCommand;
 
 use PhpBrew\Command\VirtualCommand;

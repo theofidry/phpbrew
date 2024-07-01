@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\PrefixFinder;
 
 use PhpBrew\PrefixFinder;
@@ -23,9 +25,6 @@ final class BrewPrefixFinder implements PrefixFinder
         $this->formula = $formula;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function findPrefix()
     {
         $brew = Utils::findBin('brew');

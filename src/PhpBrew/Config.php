@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew;
 
 use Exception;
@@ -11,7 +13,7 @@ use Symfony\Component\Yaml\Yaml;
  */
 class Config
 {
-    protected static $currentPhpVersion = null;
+    protected static $currentPhpVersion;
 
     /**
      * Return optional home directory.
@@ -45,15 +47,16 @@ class Config
 
             return $path;
         }
+
         throw new Exception('Environment variable PHPBREW_HOME or HOME is required');
     }
 
-    public static function setPhpbrewHome($home)
+    public static function setPhpbrewHome($home): void
     {
         putenv('PHPBREW_HOME=' . $home);
     }
 
-    public static function setPhpbrewRoot($root)
+    public static function setPhpbrewRoot($root): void
     {
         putenv('PHPBREW_ROOT=' . $root);
     }
@@ -74,6 +77,7 @@ class Config
         if ($home = getenv('HOME')) {
             return $home . DIRECTORY_SEPARATOR . '.phpbrew';
         }
+
         throw new Exception('Environment variable PHPBREW_ROOT is required');
     }
 
@@ -189,6 +193,7 @@ class Config
 
     /**
      * XXX: This method should be migrated to PhpBrew\Build class.
+     * @param mixed $home
      */
     public static function getCurrentPhpConfigScanPath($home = false)
     {

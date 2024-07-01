@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Extension\Provider;
 
 class RepositoryDslParser
@@ -9,7 +11,7 @@ class RepositoryDslParser
             'git@bitbucket.org:',
             'bitbucket:',
         ],
-        'https://github.com/'    => [
+        'https://github.com/' => [
             'github:',
             'git@github.com:',
         ],
@@ -22,7 +24,7 @@ class RepositoryDslParser
         $url = $this->toUrl($dsl);
 
         // parse provider, owner and repository
-        if (preg_match("#https?://(?:www\.)?([0-9a-zA-Z-_]*).+/([0-9a-zA-Z-._]*)/([0-9a-zA-Z-._]*)#", $url, $matches)) {
+        if (preg_match('#https?://(?:www\\.)?([0-9a-zA-Z-_]*).+/([0-9a-zA-Z-._]*)/([0-9a-zA-Z-._]*)#', $url, $matches)) {
             $ast['repository'] = $matches[1];
             $ast['owner'] = $matches[2];
             $ast['package'] = $matches[3];

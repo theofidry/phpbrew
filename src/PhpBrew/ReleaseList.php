@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew;
 
 use CLIFramework\Logger;
@@ -27,12 +29,12 @@ class ReleaseList
         $this->setReleases($releases);
     }
 
-    public function setReleases(array $releases)
+    public function setReleases(array $releases): void
     {
         $this->releases = $releases;
         foreach ($this->releases as $major => $versionReleases) {
             foreach ($versionReleases as $version => $release) {
-                $this->versions[ $version ] = $release;
+                $this->versions[$version] = $release;
             }
         }
     }
@@ -51,12 +53,12 @@ class ReleaseList
             $this->setReleases($releases);
 
             return $releases;
-        } else {
-            throw new RuntimeException("Can't decode release json, invalid JSON string: " . substr($json, 0, 125));
         }
+
+        throw new RuntimeException("Can't decode release json, invalid JSON string: " . substr($json, 0, 125));
     }
 
-    public function loadJsonFile($file)
+    public function loadJsonFile($file): void
     {
         $this->loadJson(file_get_contents($file));
     }
@@ -89,15 +91,14 @@ class ReleaseList
     {
         if (isset($this->releases[$version])) {
             return $this->getLatestPatchVersion($version);
-        } elseif (isset($this->versions[$version])) {
-            return $this->versions[$version];
         }
 
-        return false;
+        return $this->versions[$version] ?? false;
     }
 
     /**
      * Get version by minor version number.
+     * @param mixed $key
      */
     public function getVersions($key)
     {
@@ -122,7 +123,7 @@ class ReleaseList
         }
     }
 
-    public function save()
+    public function save(): void
     {
         $localFilepath = Config::getPHPReleaseListPath();
         $json = json_encode($this->releases, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
@@ -131,14 +132,14 @@ class ReleaseList
         }
     }
 
-    public function fetchRemoteReleaseList(OptionResult $options)
+    public function fetchRemoteReleaseList(OptionResult $options): void
     {
         $releases = self::buildReleaseListFromOfficialSite($options);
         $this->setReleases($releases);
         $this->save();
     }
 
-    public static function getReadyInstance(OptionResult $options = null)
+    public static function getReadyInstance(?OptionResult $options = null)
     {
         static $instance;
 
@@ -160,12 +161,12 @@ class ReleaseList
     private static function downloadReleaseListFromOfficialSite($version, $max, OptionResult $options)
     {
         $url = 'https://www.php.net/releases/index.php?' . http_build_query(
-                [
-                    'json' => true,
-                    'version' => $version,
-                    'max' => $max,
-                ]
-            );
+            [
+                'json' => true,
+                'version' => $version,
+                'max' => $max,
+            ]
+        );
 
         $file = DownloadFactory::getInstance(Logger::getInstance(), $options)->download($url);
         $json = file_get_contents($file);
@@ -212,12 +213,12 @@ class ReleaseList
                     }
                 }
                 $release['museum'] = isset($v['museum']) && $v['museum'];
-                $releaseVersions["$major.$minor"][$k] = $release;
+                $releaseVersions["{$major}.{$minor}"][$k] = $release;
             }
         }
 
         foreach ($releaseVersions as $key => $_) {
-            uksort($releaseVersions[$key], function ($a, $b) {
+            uksort($releaseVersions[$key], static function ($a, $b) {
                 return version_compare($b, $a);
             });
         }

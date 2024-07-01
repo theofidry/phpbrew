@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew;
 
-use PhpBrew\Extension\Provider\GithubProvider;
-use PhpBrew\Extension\Provider\BitbucketProvider;
-use PhpBrew\Extension\Provider\PeclProvider;
 use CLIFramework\Logger;
 use GetOptionKit\OptionResult;
+use PhpBrew\Extension\Provider\BitbucketProvider;
+use PhpBrew\Extension\Provider\GithubProvider;
+use PhpBrew\Extension\Provider\PeclProvider;
 use PhpBrew\Extension\Provider\Provider;
 
 class ExtensionList
@@ -21,7 +23,7 @@ class ExtensionList
     }
 
     /**
-     * Returns available extension providers
+     * Returns available extension providers.
      *
      * @return Provider[]
      */
@@ -44,9 +46,9 @@ class ExtensionList
     }
 
     /**
-     * Returns provider for the given extension
+     * Returns provider for the given extension.
      *
-     * @param string $extensionName
+     * @param  string        $extensionName
      * @return Provider|null
      */
     public function exists($extensionName)

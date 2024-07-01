@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Testing;
 
 use PHPUnit_Framework_TestCase;
@@ -8,7 +10,7 @@ use RecursiveIteratorIterator;
 
 abstract class PatchTestCase extends PHPUnit_Framework_TestCase
 {
-    protected function setupBuildDirectory($version)
+    protected function setupBuildDirectory($version): void
     {
         $sourceDirectory = getenv('PHPBREW_BUILD_PHP_DIR');
         $sourceFixtureDirectory = getenv('PHPBREW_FIXTURES_PHP_DIR') . DIRECTORY_SEPARATOR . $version;
@@ -32,7 +34,7 @@ abstract class PatchTestCase extends PHPUnit_Framework_TestCase
         }
     }
 
-    protected function cleanupBuildDirectory()
+    protected function cleanupBuildDirectory(): void
     {
         $sourceDirectory = getenv('PHPBREW_BUILD_PHP_DIR');
         if (!is_dir($sourceDirectory)) {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Command;
 
 use CLIFramework\Command\HelpCommand as BaseHelpCommand;
@@ -11,7 +13,7 @@ class HelpCommand extends BaseHelpCommand
         $args = func_get_args();
 
         if (empty($args)) {
-            $headline = <<<EOS
+            $headline = <<<'EOS'
   ______ _   _ ____________                   
   | ___ \ | | || ___ \ ___ \                  
   | |_/ / |_| || |_/ / |_/ /_ __ _____      __

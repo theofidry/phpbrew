@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\PatchKit;
 
 use CLIFramework\Logger;
@@ -47,7 +49,7 @@ final class DiffPatchRule implements PatchRule
         return $instance;
     }
 
-    public function backup(Buildable $build, Logger $logger)
+    public function backup(Buildable $build, Logger $logger): void
     {
     }
 

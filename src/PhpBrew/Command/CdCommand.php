@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Command;
 
-/*
+/**
  * @codeCoverageIgnore
  */
-
 class CdCommand extends VirtualCommand
 {
     public function brief()
@@ -13,12 +14,11 @@ class CdCommand extends VirtualCommand
         return 'Change to directories';
     }
 
-    public function arguments($args)
+    public function arguments($args): void
     {
         $args->add('directory')
             ->isa('string')
-            ->validValues(explode('|', 'var|etc|build|dist'))
-            ;
+            ->validValues(explode('|', 'var|etc|build|dist'));
     }
 
     public function usage()

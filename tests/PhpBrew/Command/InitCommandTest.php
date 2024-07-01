@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Tests\Command;
 
 use PhpBrew\Testing\CommandTestCase;
@@ -7,16 +9,17 @@ use PhpBrew\Testing\CommandTestCase;
 /**
  * @large
  * @group command
+ * @internal
  */
 class InitCommandTest extends CommandTestCase
 {
     /**
      * @outputBuffering enabled
      */
-    public function testInitCommand()
+    public function test_init_command(): void
     {
         ob_start();
-        $this->assertTrue($this->runCommand("phpbrew init"));
+        self::assertTrue($this->runCommand('phpbrew init'));
         ob_end_clean();
     }
 }

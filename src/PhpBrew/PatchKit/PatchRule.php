@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\PatchKit;
 
 use CLIFramework\Logger;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Tests\Command;
 
 use PhpBrew\BuildFinder;
@@ -16,6 +18,7 @@ use PhpBrew\Testing\CommandTestCase;
  * @large
  * @group command
  * @group noVCR
+ * @internal
  */
 class InstallCommandTest extends CommandTestCase
 {
@@ -25,14 +28,14 @@ class InstallCommandTest extends CommandTestCase
      * @group install
      * @group mayignore
      */
-    public function testInstallCommand()
+    public function test_install_command(): void
     {
         if (getenv('GITHUB_ACTIONS')) {
-            $this->markTestSkipped('Skip heavy test on Travis');
+            self::markTestSkipped('Skip heavy test on Travis');
         }
 
-        $this->assertCommandSuccess("phpbrew init");
-        $this->assertCommandSuccess("phpbrew known --update");
+        $this->assertCommandSuccess('phpbrew init');
+        $this->assertCommandSuccess('phpbrew known --update');
 
         $versionName = $this->getPrimaryVersion();
         $this->assertCommandSuccess("phpbrew install php-{$versionName} +cli+posix+intl+gd");
@@ -40,19 +43,19 @@ class InstallCommandTest extends CommandTestCase
     }
 
     /**
-     * @depends testInstallCommand
+     * @depends test_install_command
      */
-    public function testEnvCommand()
+    public function test_env_command(): void
     {
         $versionName = $this->getPrimaryVersion();
         $this->assertCommandSuccess("phpbrew env php-{$versionName}");
     }
 
     /**
-     * @depends testInstallCommand
+     * @depends test_install_command
      * @group mayignore
      */
-    public function testCtagsCommand()
+    public function test_ctags_command(): void
     {
         $versionName = $this->getPrimaryVersion();
         $this->assertCommandSuccess("phpbrew ctags php-{$versionName}");
@@ -62,10 +65,10 @@ class InstallCommandTest extends CommandTestCase
      * @group install
      * @group mayignore
      */
-    public function testGitHubInstallCommand()
+    public function test_git_hub_install_command(): void
     {
         if (getenv('GITHUB_ACTIONS')) {
-            $this->markTestSkipped('Skip heavy test on Travis');
+            self::markTestSkipped('Skip heavy test on Travis');
         }
 
         $this->assertCommandSuccess(
@@ -74,27 +77,27 @@ class InstallCommandTest extends CommandTestCase
     }
 
     /**
-     * @depends testInstallCommand
+     * @depends test_install_command
      * @group install
      */
-    public function testInstallAsCommand()
+    public function test_install_as_command(): void
     {
         $versionName = $this->getPrimaryVersion();
         $this->assertCommandSuccess("phpbrew install php-{$versionName} as myphp +cli+soap");
-        $this->assertListContains("myphp");
+        $this->assertListContains('myphp');
     }
 
     /**
-     * @depends testInstallCommand
+     * @depends test_install_command
      */
-    public function testCleanCommand()
+    public function test_clean_command(): void
     {
         $versionName = $this->getPrimaryVersion();
         $this->assertCommandSuccess("phpbrew clean php-{$versionName}");
     }
 
-    protected function assertListContains($string)
+    protected function assertListContains($string): void
     {
-        $this->assertContains($string, BuildFinder::findInstalledBuilds());
+        self::assertContains($string, BuildFinder::findInstalledBuilds());
     }
 }

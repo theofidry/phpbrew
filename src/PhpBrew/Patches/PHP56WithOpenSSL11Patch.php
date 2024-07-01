@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Patches;
 
-use PhpBrew\Buildable;
-use PhpBrew\PatchKit\Patch;
-use PhpBrew\PatchKit\DiffPatchRule;
 use CLIFramework\Logger;
+use PhpBrew\Buildable;
+use PhpBrew\PatchKit\DiffPatchRule;
+use PhpBrew\PatchKit\Patch;
 
 class PHP56WithOpenSSL11Patch extends Patch
 {
@@ -24,9 +26,9 @@ class PHP56WithOpenSSL11Patch extends Patch
     }
 
     /**
-     * phpcs:disable Generic.Files.LineLength.TooLong
+     * phpcs:disable Generic.Files.LineLength.TooLong.
      *
-     * @link https://github.com/php/php-src/pull/2667
+     * @see https://github.com/php/php-src/pull/2667
      *
      * @codeCoverageIgnore
      */

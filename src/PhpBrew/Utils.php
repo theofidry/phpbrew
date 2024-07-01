@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew;
 
 use CLIFramework\Logger;
@@ -12,7 +14,7 @@ class Utils
     public static function readTimeZone()
     {
         if (is_readable($tz = '/etc/timezone')) {
-            $lines = array_filter(file($tz), function ($line) {
+            $lines = array_filter(file($tz), static function ($line) {
                 return !preg_match('/^#/', $line);
             });
             if (!empty($lines)) {
@@ -26,18 +28,19 @@ class Utils
     public static function support64bit()
     {
         $int = '9223372036854775807';
-        $int = intval($int);
+        $int = (int) $int;
         if ($int == 9223372036854775807) {
             /* 64bit */
 
             return true;
-        } elseif ($int == 2147483647) {
+        }
+        if ($int == 2147483647) {
             /* 32bit */
 
             return false;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**
@@ -64,8 +67,6 @@ class Utils
                 return $binPath;
             }
         }
-
-        return;
     }
 
     public static function detectArch($prefix)
@@ -96,7 +97,7 @@ class Utils
             'lib/i386-linux-gnu',
         ];
 
-        return array_filter($multiArchs, function ($archName) use ($prefix) {
+        return array_filter($multiArchs, static function ($archName) use ($prefix) {
             return file_exists($prefix . '/' . $archName);
         });
     }
@@ -122,7 +123,7 @@ class Utils
         // append detected lib paths to the end
         foreach ($prefixes as $prefix) {
             foreach (self::detectArch($prefix) as $arch) {
-                $prefixes[] = "$prefix/$arch";
+                $prefixes[] = "{$prefix}/{$arch}";
             }
         }
 
@@ -159,8 +160,6 @@ class Utils
                 }
             }
         }
-
-        return;
     }
 
     /**
@@ -199,8 +198,9 @@ class Utils
 
         $lastline = system($command, $returnValue);
         if ($returnValue !== 0) {
-            throw new SystemCommandException("Command failed: $command returns: $lastline", $build);
+            throw new SystemCommandException("Command failed: {$command} returns: {$lastline}", $build);
         }
+
         return $returnValue;
     }
 
@@ -247,7 +247,7 @@ class Utils
         return null;
     }
 
-    public static function recursive_unlink($path, Logger $logger)
+    public static function recursive_unlink($path, Logger $logger): void
     {
         $directoryIterator = new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS);
         $it = new RecursiveIteratorIterator($directoryIterator, RecursiveIteratorIterator::CHILD_FIRST);

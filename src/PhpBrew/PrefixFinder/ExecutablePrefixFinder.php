@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\PrefixFinder;
 
 use PhpBrew\PrefixFinder;
@@ -23,9 +25,6 @@ final class ExecutablePrefixFinder implements PrefixFinder
         $this->name = $name;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function findPrefix()
     {
         $bin = Utils::findBin($this->name);

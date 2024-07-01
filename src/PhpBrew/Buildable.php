@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew;
 
 interface Buildable
@@ -10,7 +12,7 @@ interface Buildable
     public function getSourceDirectory();
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isBuildable();
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Tasks;
 
 use PhpBrew\Build;
@@ -11,7 +13,7 @@ use PhpBrew\Exception\SystemCommandException;
  */
 class BuildTask extends BaseTask
 {
-    public function run(Build $build, $targets = [])
+    public function run(Build $build, $targets = []): void
     {
         if ($build->getState() >= Build::STATE_BUILD) {
             $this->info('===> Already built, skipping...');
@@ -46,10 +48,10 @@ class BuildTask extends BaseTask
             $startTime = microtime(true);
             $code = $cmd->execute($lastline);
             if ($code !== 0) {
-                throw new SystemCommandException("Make failed: $lastline", $build, $build->getBuildLogPath());
+                throw new SystemCommandException("Make failed: {$lastline}", $build, $build->getBuildLogPath());
             }
             $buildTime = round((microtime(true) - $startTime) / 60, 1);
-            $this->info("Build finished: $buildTime minutes.");
+            $this->info("Build finished: {$buildTime} minutes.");
         }
         $build->setState(Build::STATE_BUILD);
     }

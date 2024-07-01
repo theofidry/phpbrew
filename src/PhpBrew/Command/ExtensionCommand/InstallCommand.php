@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Command\ExtensionCommand;
 
 use Exception;
@@ -26,7 +28,7 @@ class InstallCommand extends BaseCommand
     /**
      * @param OptionSpecCollection $opts
      */
-    public function options($opts)
+    public function options($opts): void
     {
         $opts->add('pecl', 'Try to download from PECL even when ext source is bundled with php-src.');
         $opts->add('redownload', 'Force to redownload extension source even if it is already available.');
@@ -34,15 +36,15 @@ class InstallCommand extends BaseCommand
         DownloadFactory::addOptionsForCommand($opts);
     }
 
-    public function arguments($args)
+    public function arguments($args): void
     {
         $args->add('extensions')
-            ->suggestions(function () {
+            ->suggestions(static function () {
                 $extdir = Config::getBuildDir() . '/' . Config::getCurrentPhpName() . '/ext';
 
                 return array_filter(
                     scandir($extdir),
-                    function ($d) use ($extdir) {
+                    static function ($d) use ($extdir) {
                         return $d != '.' && $d != '..' && is_dir($extdir . DIRECTORY_SEPARATOR . $d);
                     }
                 );
@@ -55,7 +57,7 @@ class InstallCommand extends BaseCommand
         $options = [];
 
         if (count($args) > 0) {
-            $pos = array_search('--', $args);
+            $pos = array_search('--', $args, true);
             if ($pos !== false) {
                 $options = array_slice($args, $pos + 1);
             }
@@ -65,7 +67,7 @@ class InstallCommand extends BaseCommand
             }
         }
 
-        return (object)[
+        return (object) [
             'version' => $version,
             'options' => $options,
         ];
@@ -78,9 +80,9 @@ class InstallCommand extends BaseCommand
         $buildDir = Config::getCurrentBuildDir();
         $extDir = $buildDir . DIRECTORY_SEPARATOR . 'ext';
         if (!is_dir($extDir)) {
-            $this->logger->error("Error: The ext directory '$extDir' does not exist.");
+            $this->logger->error("Error: The ext directory '{$extDir}' does not exist.");
             $this->logger->error(
-                "It looks like you don't have the PHP source in $buildDir or you didn't extract the tarball."
+                "It looks like you don't have the PHP source in {$buildDir} or you didn't extract the tarball."
             );
             $this->logger->error(
                 'Suggestion: Please install at least one PHP with your prefered version and switch to it.'
@@ -92,7 +94,7 @@ class InstallCommand extends BaseCommand
         return true;
     }
 
-    public function execute($extName, $version = 'stable')
+    public function execute($extName, $version = 'stable'): void
     {
         if (strtolower($extName) === 'apc' && version_compare(PHP_VERSION, '5.6.0') > 0) {
             $this->logger->warn('apc is not compatible with php 5.6+ versions, install apcu instead.');
@@ -115,7 +117,7 @@ class InstallCommand extends BaseCommand
                 . $extName;
 
             if (!file_exists($extDir)) {
-                passthru("git clone $repoUrl $extDir", $ret);
+                passthru("git clone {$repoUrl} {$extDir}", $ret);
                 if ($ret != 0) {
                     $this->logger->error('Clone failed.');
 
@@ -149,7 +151,7 @@ class InstallCommand extends BaseCommand
             $provider = $extensionList->exists($extensionName);
 
             if (!$provider) {
-                throw new Exception("Could not find provider for $extensionName.");
+                throw new Exception("Could not find provider for {$extensionName}.");
             }
 
             $extensionName = $provider->getPackageName();
@@ -180,7 +182,7 @@ class InstallCommand extends BaseCommand
                 }
             }
             if (!$ext) {
-                throw new Exception("$extensionName not found.");
+                throw new Exception("{$extensionName} not found.");
             }
             $manager->installExtension($ext, $extConfig->options);
         }

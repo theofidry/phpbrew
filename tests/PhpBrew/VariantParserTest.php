@@ -1,26 +1,32 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Tests;
 
 use PhpBrew\InvalidVariantSyntaxException;
 use PhpBrew\VariantParser;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 class VariantParserTest extends TestCase
 {
-    public function test()
+    public function test(): void
     {
-        $this->assertEquals([
-            'enabled_variants'  => [
-                'pdo'      => null,
-                'sqlite'   => null,
-                'debug'    => null,
-                'apxs'     => '/opt/local/apache2/bin/apxs',
-                'calendar' => null,
+        self::assertEquals(
+            [
+                'enabled_variants' => [
+                    'pdo' => null,
+                    'sqlite' => null,
+                    'debug' => null,
+                    'apxs' => '/opt/local/apache2/bin/apxs',
+                    'calendar' => null,
+                ],
+                'disabled_variants' => ['mysql' => null],
+                'extra_options' => ['--with-icu-dir=/opt/local'],
             ],
-            'disabled_variants' => ['mysql' => null],
-            'extra_options'     => ['--with-icu-dir=/opt/local'],
-        ],
             $this->parse(
                 [
                     '+pdo',
@@ -32,38 +38,41 @@ class VariantParserTest extends TestCase
                     '--',
                     '--with-icu-dir=/opt/local',
                 ]
-            ));
+            )
+        );
     }
 
-    public function testVariantAll()
+    public function test_variant_all(): void
     {
-        $this->assertEquals([
-            'enabled_variants' => ['all' => null],
-            'disabled_variants' => [
-                'apxs2' => null,
-                'mysql' => null,
+        self::assertEquals(
+            [
+                'enabled_variants' => ['all' => null],
+                'disabled_variants' => [
+                    'apxs2' => null,
+                    'mysql' => null,
+                ],
+                'extra_options' => [],
             ],
-            'extra_options' => [],
-        ],
             $this->parse(
                 [
                     '+all',
                     '-apxs2',
                     '-mysql',
                 ]
-            ));
+            )
+        );
     }
 
     /**
      * @dataProvider variantGroupOverloadProvider
      */
-    public function testVariantGroupOverload(array $args, array $expectedEnabledVariants)
+    public function test_variant_group_overload(array $args, array $expectedEnabledVariants): void
     {
         $info = $this->parse($args);
-        $this->assertEquals($expectedEnabledVariants, $info['enabled_variants']);
+        self::assertEquals($expectedEnabledVariants, $info['enabled_variants']);
     }
 
-    public static function variantGroupOverloadProvider()
+    public static function variantGroupOverloadProvider(): iterable
     {
         return [
             'overrides default variant value' => [
@@ -111,16 +120,16 @@ class VariantParserTest extends TestCase
     }
 
     /**
-     * @link https://github.com/phpbrew/phpbrew/issues/495
+     * @see https://github.com/phpbrew/phpbrew/issues/495
      */
-    public function testBug495()
+    public function test_bug495(): void
     {
-        $this->assertEquals(
+        self::assertEquals(
             [
                 'enabled_variants' => ['gmp' => '/path/x86_64-linux-gnu'],
                 'disabled_variants' => [
                     'openssl' => null,
-                    'xdebug'  => null,
+                    'xdebug' => null,
                 ],
                 'extra_options' => [],
             ],
@@ -134,9 +143,9 @@ class VariantParserTest extends TestCase
         );
     }
 
-    public function testVariantUserValueContainsVersion()
+    public function test_variant_user_value_contains_version(): void
     {
-        $this->assertEquals(
+        self::assertEquals(
             [
                 'enabled_variants' => [
                     'openssl' => '/usr/local/Cellar/openssl/1.0.2e',
@@ -156,22 +165,23 @@ class VariantParserTest extends TestCase
 
     /**
      * @dataProvider revealCommandArgumentsProvider
+     * @param mixed $expected
      */
-    public function testRevealCommandArguments(array $info, $expected)
+    public function test_reveal_command_arguments(array $info, $expected): void
     {
-        $this->assertEquals($expected, VariantParser::revealCommandArguments($info));
+        self::assertEquals($expected, VariantParser::revealCommandArguments($info));
     }
 
-    public static function revealCommandArgumentsProvider()
+    public static function revealCommandArgumentsProvider(): iterable
     {
         return [
             [
-                ['enabled_variants'  => [
-                    'mysql'   => true,
+                ['enabled_variants' => [
+                    'mysql' => true,
                     'openssl' => '/usr',
                 ],
-                 'disabled_variants' => ['apxs2' => true],
-                 'extra_options'     => ['--with-icu-dir=/usr'],
+                    'disabled_variants' => ['apxs2' => true],
+                    'extra_options' => ['--with-icu-dir=/usr'],
                 ],
                 '+mysql +openssl=/usr -apxs2 -- --with-icu-dir=/usr',
             ],
@@ -181,8 +191,9 @@ class VariantParserTest extends TestCase
     /**
      * @dataProvider invalidSyntaxProvider
      * @requires PHPUnit 5.2
+     * @param mixed $expectedMessage
      */
-    public function testInvalidSyntax(array $args, $expectedMessage)
+    public function test_invalid_syntax(array $args, $expectedMessage): void
     {
         $this->expectException(InvalidVariantSyntaxException::class);
         $this->expectExceptionMessage($expectedMessage);
@@ -190,14 +201,14 @@ class VariantParserTest extends TestCase
         $this->parse($args);
     }
 
-    public static function invalidSyntaxProvider()
+    public static function invalidSyntaxProvider(): iterable
     {
         return [
-            'Empty argument'                => [
+            'Empty argument' => [
                 [''],
                 'Variant cannot be empty',
             ],
-            'Empty variant name'            => [
+            'Empty variant name' => [
                 ['+'],
                 'Variant name cannot be empty',
             ],
@@ -205,7 +216,7 @@ class VariantParserTest extends TestCase
                 ['-='],
                 'Variant name cannot be empty',
             ],
-            'Invalid operator'              => [
+            'Invalid operator' => [
                 ['~'],
                 'Variant must start with a + or -',
             ],

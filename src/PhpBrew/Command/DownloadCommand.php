@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Command;
 
 use CLIFramework\Command;
@@ -25,15 +27,15 @@ class DownloadCommand extends Command
         return 'phpbrew download [php-version]';
     }
 
-    public function arguments($args)
+    public function arguments($args): void
     {
-        $args->add('version')->suggestions(function () {
+        $args->add('version')->suggestions(static function () {
             $releaseList = ReleaseList::getReadyInstance();
             $releases = $releaseList->getReleases();
 
             $collection = new ValueCollection();
             foreach ($releases as $major => $versions) {
-                $collection->group($major, "PHP $major", array_keys($versions));
+                $collection->group($major, "PHP {$major}", array_keys($versions));
             }
 
             $collection->group('pseudo', 'pseudo', ['latest', 'next']);
@@ -45,7 +47,7 @@ class DownloadCommand extends Command
     /**
      * @param OptionCollection $opts
      */
-    public function options($opts)
+    public function options($opts): void
     {
         $opts->add('f|force', 'Force extraction');
         $opts->add('old', 'enable old phps (less than 5.3)');
@@ -53,13 +55,13 @@ class DownloadCommand extends Command
         DownloadFactory::addOptionsForCommand($opts);
     }
 
-    public function execute($version)
+    public function execute($version): void
     {
         $version = preg_replace('/^php-/', '', $version);
         $releaseList = ReleaseList::getReadyInstance($this->options);
         $versionInfo = $releaseList->getVersion($version);
         if (!$versionInfo) {
-            throw new Exception("Version $version not found.");
+            throw new Exception("Version {$version} not found.");
         }
         $version = $versionInfo['version'];
         $distUrlPolicy = new DistributionUrlPolicy();
@@ -85,6 +87,6 @@ class DownloadCommand extends Command
         if (!file_exists($targetDir)) {
             throw new Exception('Download failed.');
         }
-        $this->logger->info("Done, please look at: $targetDir");
+        $this->logger->info("Done, please look at: {$targetDir}");
     }
 }

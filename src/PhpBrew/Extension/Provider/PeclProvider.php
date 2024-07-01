@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Extension\Provider;
 
 use CLIFramework\Logger;
@@ -11,9 +13,9 @@ use PhpBrew\Downloader\DownloadFactory;
 class PeclProvider implements Provider
 {
     public $site = 'pecl.php.net';
-    public $owner = null;
-    public $repository = null;
-    public $packageName = null;
+    public $owner;
+    public $repository;
+    public $packageName;
     public $defaultVersion = 'stable';
 
     private $logger;
@@ -40,12 +42,12 @@ class PeclProvider implements Provider
 
         $channel = new PeclChannel($this->site);
         $baseUrl = $channel->getRestBaseUrl();
-        $url = "$baseUrl/r/" . strtolower($packageName);
+        $url = "{$baseUrl}/r/" . strtolower($packageName);
 
         $downloader = DownloadFactory::getInstance($this->logger, $this->options);
 
         // translate version name into numbers
-        if (in_array($version, ['stable', 'latest', 'beta'])) {
+        if (in_array($version, ['stable', 'latest', 'beta'], true)) {
             $stabilityTxtUrl = $url . '/' . $version . '.txt';
             if ($ret = $downloader->request($stabilityTxtUrl)) {
                 $version = (string) $ret;
@@ -64,7 +66,7 @@ class PeclProvider implements Provider
         $xml = simplexml_load_string($ret);
 
         if ($xml === false) {
-            throw new Exception("Error in XMl document: $url");
+            throw new Exception("Error in XMl document: {$url}");
         }
 
         // just use tgz format file.
@@ -76,7 +78,7 @@ class PeclProvider implements Provider
         return $this->owner;
     }
 
-    public function setOwner($owner)
+    public function setOwner($owner): void
     {
         $this->owner = $owner;
     }
@@ -86,7 +88,7 @@ class PeclProvider implements Provider
         return $this->repository;
     }
 
-    public function setRepository($repository)
+    public function setRepository($repository): void
     {
         $this->repository = $repository;
     }
@@ -96,7 +98,7 @@ class PeclProvider implements Provider
         return $this->packageName;
     }
 
-    public function setPackageName($packageName)
+    public function setPackageName($packageName): void
     {
         $this->packageName = $packageName;
     }
@@ -112,7 +114,8 @@ class PeclProvider implements Provider
 
     public function isBundled($name)
     {
-        return in_array(strtolower($name),
+        return in_array(
+            strtolower($name),
             [
                 'bcmath',
                 'bz2',
@@ -190,7 +193,8 @@ class PeclProvider implements Provider
                 'zlib',
                 'ext_skel',
                 'ext_skel_win32',
-            ]
+            ],
+            true
         );
     }
 
@@ -216,7 +220,7 @@ class PeclProvider implements Provider
         return $this->defaultVersion;
     }
 
-    public function setDefaultVersion($version)
+    public function setDefaultVersion($version): void
     {
         $this->defaultVersion = $version;
     }
@@ -245,9 +249,7 @@ class PeclProvider implements Provider
 
     public function extractPackageCommands($currentPhpExtensionDirectory, $targetFilePath)
     {
-        $cmds = ["tar -C $currentPhpExtensionDirectory -xzf $targetFilePath"];
-
-        return $cmds;
+        return ["tar -C {$currentPhpExtensionDirectory} -xzf {$targetFilePath}"];
     }
 
     public function postExtractPackageCommands($currentPhpExtensionDirectory, $targetFilePath)
@@ -256,14 +258,12 @@ class PeclProvider implements Provider
         $info = pathinfo($targetFilePath);
         $packageName = $this->getPackageName();
 
-        $cmds = [
-            "rm -rf $targetPkgDir",
+        return [
+            "rm -rf {$targetPkgDir}",
             // Move "memcached-2.2.7" to "memcached"
-            "mv $currentPhpExtensionDirectory/{$info['filename']} $currentPhpExtensionDirectory/$packageName",
+            "mv {$currentPhpExtensionDirectory}/{$info['filename']} {$currentPhpExtensionDirectory}/{$packageName}",
             // Move "ext/package.xml" to "memcached/package.xml"
-            "mv $currentPhpExtensionDirectory/package.xml $currentPhpExtensionDirectory/$packageName/package.xml",
+            "mv {$currentPhpExtensionDirectory}/package.xml {$currentPhpExtensionDirectory}/{$packageName}/package.xml",
         ];
-
-        return $cmds;
     }
 }

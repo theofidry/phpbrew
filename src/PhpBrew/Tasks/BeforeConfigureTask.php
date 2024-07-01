@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Tasks;
 
 use PhpBrew\Build;
@@ -14,7 +16,7 @@ use PhpBrew\PatchKit\Patch;
  */
 class BeforeConfigureTask extends BaseTask
 {
-    public function run(Build $build, ConfigureParameters $parameters)
+    public function run(Build $build, ConfigureParameters $parameters): void
     {
         if (!file_exists($build->getSourceDirectory() . DIRECTORY_SEPARATOR . 'configure')) {
             $this->debug("configure file not found, running './buildconf --force'...");
@@ -25,16 +27,16 @@ class BeforeConfigureTask extends BaseTask
 
         foreach ((array) $this->options->patch as $patchPath) {
             // copy patch file to here
-            $this->info("===> Applying patch file from $patchPath ...");
+            $this->info("===> Applying patch file from {$patchPath} ...");
 
             // Search for strip parameter
             for ($i = 0; $i <= 16; ++$i) {
                 ob_start();
-                system("patch -p$i --dry-run < $patchPath", $return);
+                system("patch -p{$i} --dry-run < {$patchPath}", $return);
                 ob_end_clean();
 
                 if ($return === 0) {
-                    system("patch -p$i < $patchPath");
+                    system("patch -p{$i} < {$patchPath}");
                     break;
                 }
             }
@@ -60,7 +62,7 @@ class BeforeConfigureTask extends BaseTask
                 $this->logger->info('Checking patch for ' . $patch->desc());
                 if ($patch->match($build, $this->logger)) {
                     $patched = $patch->apply($build, $this->logger);
-                    $this->logger->info("$patched changes patched.");
+                    $this->logger->info("{$patched} changes patched.");
 
                     if ($patch === $freeTypePatch || $patch === $readlinePatch) {
                         $needBuildConf = $patched;

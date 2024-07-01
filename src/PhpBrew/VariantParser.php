@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew;
 
 class VariantParser
@@ -7,9 +9,8 @@ class VariantParser
     /**
      * @param string[] $args
      *
-     * @return array
-     *
      * @throws InvalidVariantSyntaxException
+     * @return array
      */
     public static function parseCommandArguments(array $args)
     {
@@ -37,16 +38,16 @@ class VariantParser
 
             switch ($operator) {
                 case '+':
-                    $target =& $enabledVariants;
+                    $target = &$enabledVariants;
                     break;
                 case '-':
-                    $target =& $disabledVariants;
+                    $target = &$disabledVariants;
                     break;
                 default:
                     throw new InvalidVariantSyntaxException('Variant must start with a + or -');
             }
 
-            $variant            = substr($arg, 1);
+            $variant = substr($arg, 1);
             [$name, $value] = array_pad(explode('=', $variant, 2), 2, null);
 
             if ($name === '') {
@@ -57,9 +58,9 @@ class VariantParser
         }
 
         return [
-            'enabled_variants'  => $enabledVariants,
+            'enabled_variants' => $enabledVariants,
             'disabled_variants' => $disabledVariants,
-            'extra_options'     => $extra,
+            'extra_options' => $extra,
         ];
     }
 

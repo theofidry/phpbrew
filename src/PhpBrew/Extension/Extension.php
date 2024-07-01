@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Extension;
 
 use PhpBrew\Buildable;
@@ -58,7 +60,7 @@ class Extension implements Buildable
         return $this->name;
     }
 
-    public function setVersion($version)
+    public function setVersion($version): void
     {
         $this->version = $version;
     }
@@ -68,7 +70,7 @@ class Extension implements Buildable
         return $this->version;
     }
 
-    public function setZend($zendExtension = true)
+    public function setZend($zendExtension = true): void
     {
         $this->isZend = $zendExtension;
     }
@@ -78,7 +80,7 @@ class Extension implements Buildable
         return $this->isZend;
     }
 
-    public function setSharedLibraryName($n)
+    public function setSharedLibraryName($n): void
     {
         $this->sharedLibraryName = $n;
     }
@@ -97,7 +99,7 @@ class Extension implements Buildable
         return $name . '.so'; // for windows it might be a DLL.
     }
 
-    public function setExtensionName($name)
+    public function setExtensionName($name): void
     {
         $this->extensionName = $name;
     }
@@ -107,7 +109,7 @@ class Extension implements Buildable
         return $this->extensionName;
     }
 
-    public function setSourceDirectory($dir)
+    public function setSourceDirectory($dir): void
     {
         $this->sourceDirectory = $dir;
 
@@ -168,6 +170,7 @@ class Extension implements Buildable
         if ($sapi) {
             $sapiPath = '/' . $sapi;
         }
+
         return Config::getCurrentPhpConfigScanPath() . $sapiPath . '/' . $this->getName() . '.ini';
     }
 
@@ -181,7 +184,7 @@ class Extension implements Buildable
         return extension_loaded($this->extensionName);
     }
 
-    public function addConfigureOption(ConfigureOption $opt)
+    public function addConfigureOption(ConfigureOption $opt): void
     {
         $this->configureOptions[] = $opt;
     }

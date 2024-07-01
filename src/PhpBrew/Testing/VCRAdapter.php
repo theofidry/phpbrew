@@ -1,18 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Testing;
 
 use VCR\VCR;
 
 class VCRAdapter
 {
-    public static function enableVCR($testInstance)
+    public static function enableVCR($testInstance): void
     {
         VCR::turnOn();
         VCR::insertCassette(self::getVCRCassetteName($testInstance));
     }
 
-    public static function disableVCR()
+    public static function disableVCR(): void
     {
         VCR::eject();
         VCR::turnOff();
@@ -22,6 +24,6 @@ class VCRAdapter
     {
         $classname_parts = explode('\\', get_class($testInstance));
 
-        return join('/', array_slice($classname_parts, -2, 2));
+        return implode('/', array_slice($classname_parts, -2, 2));
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Tasks;
 
 use Exception;
@@ -13,13 +15,13 @@ class DownloadTask extends BaseTask
     public function download($url, $dir, $algo = 'md5', $hash = null)
     {
         if (!is_writable($dir)) {
-            throw new Exception("Directory is not writable: $dir");
+            throw new Exception("Directory is not writable: {$dir}");
         }
 
         $downloader = DownloadFactory::getInstance($this->logger, $this->options);
         $basename = $downloader->resolveDownloadFileName($url);
         if (!$basename) {
-            throw new Exception("Can not parse url: $url");
+            throw new Exception("Can not parse url: {$url}");
         }
         $targetFilePath = $dir . DIRECTORY_SEPARATOR . $basename;
 
@@ -27,7 +29,7 @@ class DownloadTask extends BaseTask
             $this->logger->info('Checking distribution checksum...');
             $hash2 = hash_file($algo, $targetFilePath);
             if ($hash && $hash2 != $hash) {
-                $this->logger->warn("Checksum mismatch: $hash2 != $hash");
+                $this->logger->warn("Checksum mismatch: {$hash2} != {$hash}");
                 $this->logger->info('Re-Downloading...');
                 $downloader->download($url, $targetFilePath);
             } else {

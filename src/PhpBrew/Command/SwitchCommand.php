@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Command;
 
 use PhpBrew\BuildFinder;
@@ -9,13 +11,12 @@ use PhpBrew\BuildFinder;
  */
 class SwitchCommand extends VirtualCommand
 {
-    public function arguments($args)
+    public function arguments($args): void
     {
         $args->add('PHP version')
-            ->validValues(function () {
+            ->validValues(static function () {
                 return BuildFinder::findInstalledVersions();
-            })
-            ;
+            });
     }
 
     public function brief()

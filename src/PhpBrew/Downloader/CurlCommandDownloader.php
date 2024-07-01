@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Downloader;
 
 use PhpBrew\Utils;
@@ -9,7 +11,7 @@ class CurlCommandDownloader extends BaseDownloader
     protected function process($url, $targetFilePath)
     {
         $this->logger->info('downloading via curl command');
-        //todo proxy setting
+        // todo proxy setting
         $command = ['curl'];
 
         if ($proxy = $this->options->{'http-proxy'}) {

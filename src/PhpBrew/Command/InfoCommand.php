@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Command;
 
 use CLIFramework\Command;
@@ -16,7 +18,7 @@ class InfoCommand extends Command
         return 'phpbrew info';
     }
 
-    public function execute()
+    public function execute(): void
     {
         $this->logger->warn(
             'The info command is deprecated and will be removed in the future.' . PHP_EOL

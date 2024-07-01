@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew;
 
 use Exception;
@@ -20,11 +22,11 @@ class VersionDslParser
 
             return [
                 'version' => $version,
-                'url'     => $this->buildGitHubUrl(
+                'url' => $this->buildGitHubUrl(
                     'php',
                     $version
                 ),
-                'is_tag'  => true,
+                'is_tag' => true,
             ];
         }
 
@@ -34,7 +36,7 @@ class VersionDslParser
         // parse github fork owner and branch
         if (
             preg_match(
-                "#https?://(www\.)?github\.com/([0-9a-zA-Z-._]+)/php-src(@([0-9a-zA-Z-._]+))?#",
+                '#https?://(www\\.)?github\\.com/([0-9a-zA-Z-._]+)/php-src(@([0-9a-zA-Z-._]+))?#',
                 $url,
                 $matches
             )
@@ -49,7 +51,7 @@ class VersionDslParser
 
             return [
                 'version' => 'php-' . $version,
-                'url'     => $this->buildGitHubUrl(
+                'url' => $this->buildGitHubUrl(
                     $owner,
                     $branch
                 ),
@@ -59,12 +61,12 @@ class VersionDslParser
         // non github url
         if (preg_match('#^https?://#', $url)) {
             if (!preg_match('#(php-(\d.\d+.\d+(?:(?:RC|alpha|beta)\d+)?)\.tar\.(?:gz|bz2))#', $url, $matches)) {
-                throw new Exception("Can not find version name from the given URL: $url");
+                throw new Exception("Can not find version name from the given URL: {$url}");
             }
 
             return [
                 'version' => "php-{$matches[2]}",
-                'url'     => $url,
+                'url' => $url,
             ];
         }
 
@@ -72,10 +74,10 @@ class VersionDslParser
     }
 
     /**
-     * Builds the URL of the package on GitHub
+     * Builds the URL of the package on GitHub.
      *
      * @param string $owner Repository owner
-     * @param string $ref Git commit reference
+     * @param string $ref   Git commit reference
      *
      * @return string
      */

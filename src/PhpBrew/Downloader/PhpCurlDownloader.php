@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Downloader;
 
 use CurlKit\CurlDownloader;
@@ -10,7 +12,7 @@ class PhpCurlDownloader extends BaseDownloader
 {
     protected function process($url, $targetFilePath)
     {
-        $this->logger->info("Downloading $url via curl extension");
+        $this->logger->info("Downloading {$url} via curl extension");
 
         $downloader = new CurlDownloader();
 
@@ -32,7 +34,7 @@ class PhpCurlDownloader extends BaseDownloader
         }
         $binary = $downloader->request($url);
         if (false === file_put_contents($targetFilePath, $binary)) {
-            throw new RuntimeException("Can't write file $targetFilePath");
+            throw new RuntimeException("Can't write file {$targetFilePath}");
         }
 
         return true;
@@ -46,7 +48,7 @@ class PhpCurlDownloader extends BaseDownloader
         if ($requireSsl) {
             $info = curl_version();
 
-            return in_array('https', $info['protocols']);
+            return in_array('https', $info['protocols'], true);
         }
 
         return true;

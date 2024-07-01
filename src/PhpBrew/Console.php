@@ -1,10 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew;
 
-use PhpBrew\Command\ListIniCommand;
-use PhpBrew\Command\SelfUpdateCommand;
-use PhpBrew\Command\SwitchOffCommand;
 use BadMethodCallException;
 use CLIFramework\Application;
 use CLIFramework\Exception\CommandArgumentNotEnoughException;
@@ -12,6 +11,9 @@ use CLIFramework\Exception\CommandNotFoundException;
 use CLIFramework\ExceptionPrinter\DevelopmentExceptionPrinter;
 use CLIFramework\ExceptionPrinter\ProductionExceptionPrinter;
 use Exception;
+use PhpBrew\Command\ListIniCommand;
+use PhpBrew\Command\SelfUpdateCommand;
+use PhpBrew\Command\SwitchOffCommand;
 use PhpBrew\Exception\SystemCommandException;
 
 class Console extends Application
@@ -19,13 +21,13 @@ class Console extends Application
     public const NAME = 'phpbrew';
     public const VERSION = '2.2.0';
 
-    public function options($opts)
+    public function options($opts): void
     {
         parent::options($opts);
         $opts->add('no-progress', 'Do not display progress bar.');
     }
 
-    public function init()
+    public function init(): void
     {
         parent::init();
 
@@ -78,7 +80,7 @@ class Console extends Application
         }
     }
 
-    public function configure()
+    public function configure(): void
     {
         // avoid warnings when web scraping possible malformed HTML from pecl
         if (extension_loaded('libxml')) {
@@ -138,7 +140,7 @@ class Console extends Application
                     echo $line , PHP_EOL;
                 }
                 $this->logger->error('Please checkout the build log file for more details:');
-                $this->logger->error("\t tail $buildLog");
+                $this->logger->error("\t tail {$buildLog}");
             }
         } catch (BadMethodCallException $e) {
             $this->logger->error($e->getMessage());

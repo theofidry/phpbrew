@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Command;
 
 class FpmCommand extends VirtualCommand
@@ -9,7 +11,7 @@ class FpmCommand extends VirtualCommand
         return 'fpm commands';
     }
 
-    public function init()
+    public function init(): void
     {
         parent::init();
 

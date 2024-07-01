@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Command;
 
 use PhpBrew\BuildFinder;
@@ -9,14 +11,13 @@ use PhpBrew\BuildFinder;
  */
 class PurgeCommand extends VirtualCommand
 {
-    public function arguments($args)
+    public function arguments($args): void
     {
         $args->add('PHP build')
-            ->validValues(function () {
+            ->validValues(static function () {
                 return BuildFinder::findInstalledBuilds();
             })
-            ->multiple()
-            ;
+            ->multiple();
     }
 
     public function brief()

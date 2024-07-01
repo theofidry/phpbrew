@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Tests;
 
 use PhpBrew\Utils;
@@ -7,32 +9,33 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @small
+ * @internal
  */
 class UtilsTest extends TestCase
 {
-    public function test()
+    public function test(): void
     {
-        $this->assertInternalType('boolean', Utils::support64bit());
+        self::assertInternalType('boolean', Utils::support64bit());
     }
 
-    public function testLookupPrefix()
+    public function test_lookup_prefix(): void
     {
-        $this->assertNotEmpty(Utils::getLookupPrefixes());
+        self::assertNotEmpty(Utils::getLookupPrefixes());
     }
 
-    public function testFindIcuPkgData()
+    public function test_find_icu_pkg_data(): void
     {
-        $this->markTestSkipped('icu/pkgdata.inc is not found on Ubuntu Linux');
-        $this->assertNotNull(Utils::findLibPrefix('icu/pkgdata.inc', 'icu/Makefile.inc'));
+        self::markTestSkipped('icu/pkgdata.inc is not found on Ubuntu Linux');
+        self::assertNotNull(Utils::findLibPrefix('icu/pkgdata.inc', 'icu/Makefile.inc'));
     }
 
-    public function testPrefix()
+    public function test_prefix(): void
     {
-        $this->assertNotNull(Utils::findIncludePrefix('openssl/opensslv.h'));
+        self::assertNotNull(Utils::findIncludePrefix('openssl/opensslv.h'));
     }
 
-    public function testFindbin()
+    public function test_findbin(): void
     {
-        $this->assertNotNull(Utils::findBin('ls'));
+        self::assertNotNull(Utils::findBin('ls'));
     }
 }

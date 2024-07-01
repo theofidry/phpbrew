@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Tasks;
 
 use PhpBrew\Build;
@@ -11,7 +13,7 @@ use PhpBrew\Exception\SystemCommandException;
  */
 class TestTask extends BaseTask
 {
-    public function run(Build $build, $nice = null)
+    public function run(Build $build, $nice = null): void
     {
         $this->info('===> Running tests...');
         $cmd = new CommandBuilder('make test');
@@ -28,7 +30,7 @@ class TestTask extends BaseTask
         $this->debug('' . $cmd);
         $code = $cmd->execute($lastline);
         if ($code !== 0) {
-            throw new SystemCommandException("Test failed: $lastline", $build);
+            throw new SystemCommandException("Test failed: {$lastline}", $build);
         }
     }
 }

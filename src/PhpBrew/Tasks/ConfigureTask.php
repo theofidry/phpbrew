@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Tasks;
 
 use PhpBrew\Build;
@@ -12,7 +14,7 @@ use PhpBrew\Exception\SystemCommandException;
  */
 class ConfigureTask extends BaseTask
 {
-    public function run(Build $build, ConfigureParameters $parameters)
+    public function run(Build $build, ConfigureParameters $parameters): void
     {
         $this->debug('Enabled variants: [' . implode(', ', array_keys($build->getEnabledVariants())) . ']');
         $this->debug('Disabled variants: [' . implode(', ', array_keys($build->getDisabledVariants())) . ']');
@@ -23,7 +25,7 @@ class ConfigureTask extends BaseTask
         $buildLogPath = $build->getBuildLogPath();
         if (file_exists($buildLogPath)) {
             $newPath = $buildLogPath . '.' . filemtime($buildLogPath);
-            $this->info("Found existing build.log, renaming it to $newPath");
+            $this->info("Found existing build.log, renaming it to {$newPath}");
             rename($buildLogPath, $newPath);
         }
 
@@ -47,7 +49,7 @@ class ConfigureTask extends BaseTask
         if (!$this->options->dryrun) {
             $code = $cmd->execute($lastline);
             if ($code !== 0) {
-                throw new SystemCommandException("Configure failed: $lastline", $build, $buildLogPath);
+                throw new SystemCommandException("Configure failed: {$lastline}", $build, $buildLogPath);
             }
         }
         $build->setState(Build::STATE_CONFIGURE);

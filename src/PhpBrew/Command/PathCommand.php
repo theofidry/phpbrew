@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Command;
 
 use CLIFramework\Command;
@@ -37,27 +39,27 @@ class PathCommand extends Command
         );
     }
 
-    public function arguments($args)
+    public function arguments($args): void
     {
         $args
             ->add('type')
             ->validValues([
-                    'root',
-                    'home',
-                    'build',
-                    'bin',
-                    'include',
-                    'etc',
-                    'ext',
-                    'ext-src',
-                    'extension-src',
-                    'extension-dir',
-                    'config-scan',
-                    'dist',
+                'root',
+                'home',
+                'build',
+                'bin',
+                'include',
+                'etc',
+                'ext',
+                'ext-src',
+                'extension-src',
+                'extension-dir',
+                'config-scan',
+                'dist',
             ]);
     }
 
-    public function execute($name)
+    public function execute($name): void
     {
         switch ($name) {
             case 'root':

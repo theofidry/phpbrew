@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Tests\Command;
 
 use PhpBrew\Testing\CommandTestCase;
@@ -7,10 +9,11 @@ use PhpBrew\Testing\CommandTestCase;
 /**
  * @large
  * @group command
+ * @internal
  */
 class ExtensionCommandTest extends CommandTestCase
 {
-    public function extensionNameProvider()
+    public static function extensionNameProvider(): iterable
     {
         return [
             [
@@ -27,41 +30,45 @@ class ExtensionCommandTest extends CommandTestCase
     /**
      * @outputBuffering enabled
      * @dataProvider extensionNameProvider
+     * @param mixed $extensionName
+     * @param mixed $extensionVersion
      */
-    public function testExtInstallCommand($extensionName, $extensionVersion)
+    public function test_ext_install_command($extensionName, $extensionVersion): void
     {
-        $this->markTestSkipped("This test can not be run against system php");
-        $this->assertTrue($this->runCommandWithStdout("phpbrew ext install $extensionName $extensionVersion"));
+        self::markTestSkipped('This test can not be run against system php');
+        self::assertTrue($this->runCommandWithStdout("phpbrew ext install {$extensionName} {$extensionVersion}"));
     }
 
     /**
      * @outputBuffering enabled
      * @dataProvider extensionNameProvider
-     * @depends testExtInstallCommand
+     * @depends test_ext_install_command
+     * @param mixed $extensionName
+     * @param mixed $extensionVersion
      */
-    public function testExtShowCommand($extensionName, $extensionVersion)
+    public function test_ext_show_command($extensionName, $extensionVersion): void
     {
-        $this->assertTrue($this->runCommandWithStdout("phpbrew ext show $extensionName"));
+        self::assertTrue($this->runCommandWithStdout("phpbrew ext show {$extensionName}"));
     }
-
-
 
     /**
      * @outputBuffering enabled
      * @dataProvider extensionNameProvider
-     * @depends testExtInstallCommand
+     * @depends test_ext_install_command
+     * @param mixed $extensionName
+     * @param mixed $extensionVersion
      */
-    public function testExtCleanCommand($extensionName, $extensionVersion)
+    public function test_ext_clean_command($extensionName, $extensionVersion): void
     {
-        $this->assertTrue($this->runCommandWithStdout("phpbrew ext clean $extensionName"));
+        self::assertTrue($this->runCommandWithStdout("phpbrew ext clean {$extensionName}"));
     }
 
     /**
      * @outputBuffering enabled
-     * @depends testExtInstallCommand
+     * @depends test_ext_install_command
      */
-    public function testExtListCommand()
+    public function test_ext_list_command(): void
     {
-        $this->assertTrue($this->runCommandWithStdout('phpbrew ext --show-path --show-options'));
+        self::assertTrue($this->runCommandWithStdout('phpbrew ext --show-path --show-options'));
     }
 }

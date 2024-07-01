@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Patches;
 
 use CLIFramework\Logger;
@@ -51,7 +53,6 @@ class Apache2ModuleNamePatch extends Patch
                     'libphp$PHP_VERSION.'
                 );
 
-
             $rules[] = RegExpPatchRule::files(['configure'])
                 ->always()
                 ->replaces(
@@ -85,18 +86,18 @@ class Apache2ModuleNamePatch extends Patch
         if (version_compare($this->targetPhpVersion, '8.0') >= 0) {
             $makefile = 'build/Makefile.global';
             $rules[] = RegExpPatchRule::files([$makefile])
-                 ->always()
-                 ->replaces(
-                     '#libphp.(a|so|la|bundle)#',
-                     'libphp$(PHP_VERSION).$1'
-                 );
+                ->always()
+                ->replaces(
+                    '#libphp.(a|so|la|bundle)#',
+                    'libphp$(PHP_VERSION).$1'
+                );
 
             $rules[] = RegExpPatchRule::files([$makefile])
-                 ->always()
-                 ->replaces(
-                     '#libphp.\$\(SHLIB_DL_SUFFIX_NAME\)#',
-                     'libphp$(PHP_VERSION).$(SHLIB_DL_SUFFIX_NAME)'
-                 );
+                ->always()
+                ->replaces(
+                    '#libphp.\$\(SHLIB_DL_SUFFIX_NAME\)#',
+                    'libphp$(PHP_VERSION).$(SHLIB_DL_SUFFIX_NAME)'
+                );
         }
 
         if (version_compare($this->targetPhpVersion, '7.4') >= 0) {

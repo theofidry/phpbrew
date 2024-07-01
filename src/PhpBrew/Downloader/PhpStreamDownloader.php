@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Downloader;
 
 use RuntimeException;
@@ -8,7 +10,7 @@ class PhpStreamDownloader extends BaseDownloader
 {
     protected function process($url, $targetFilePath)
     {
-        $this->logger->info("Downloading $url via php stream");
+        $this->logger->info("Downloading {$url} via php stream");
 
         $opts = [];
         if ($proxy = $this->options->{'http-proxy'}) {
@@ -16,7 +18,7 @@ class PhpStreamDownloader extends BaseDownloader
             $opts['http']['request_fulluri'] = true;
             $opts['http']['header'] = [];
             if ($proxyAuth = $this->options->{'http-proxy-auth'}) {
-                $opts['http']['header'][] = "Proxy-Authorization: Basic $proxyAuth";
+                $opts['http']['header'][] = "Proxy-Authorization: Basic {$proxyAuth}";
             }
         }
         if ($timeout = $this->options->{'connect-timeout'}) {
@@ -34,12 +36,12 @@ class PhpStreamDownloader extends BaseDownloader
             $binary = file_get_contents($url, null, $context);
         }
         if ($binary === false) {
-            throw new RuntimeException("Fail to request $url");
+            throw new RuntimeException("Fail to request {$url}");
         }
 
         $res = file_put_contents($targetFilePath, $binary);
         if ($res === false) {
-            throw new RuntimeException("Failed writing to $targetFilePath");
+            throw new RuntimeException("Failed writing to {$targetFilePath}");
         }
 
         return true;
@@ -52,9 +54,9 @@ class PhpStreamDownloader extends BaseDownloader
         }
         $wrappers = stream_get_wrappers();
         if ($requireSsl) {
-            return in_array('https', $wrappers);
+            return in_array('https', $wrappers, true);
         }
 
-        return in_array('http', $wrappers);
+        return in_array('http', $wrappers, true);
     }
 }

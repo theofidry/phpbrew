@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Tests\Command;
 
 use PhpBrew\Testing\CommandTestCase;
@@ -7,6 +9,7 @@ use PhpBrew\Testing\CommandTestCase;
 /**
  * @large
  * @group command
+ * @internal
  */
 class UpdateCommandTest extends CommandTestCase
 {
@@ -16,8 +19,8 @@ class UpdateCommandTest extends CommandTestCase
      * @outputBuffering enabled
      * @group mayignore
      */
-    public function testUpdateCommand()
+    public function test_update_command(): void
     {
-        $this->assertCommandSuccess("phpbrew --quiet update --old");
+        $this->assertCommandSuccess('phpbrew --quiet update --old');
     }
 }

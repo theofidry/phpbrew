@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\BuildSettings;
 
 use Exception;
@@ -37,25 +39,25 @@ class BuildSettings
     public function toArray()
     {
         return [
-            'enabled_variants'  => $this->enabledVariants,
+            'enabled_variants' => $this->enabledVariants,
             'disabled_variants' => $this->disabledVariants,
-            'extra_options'     => $this->extraOptions,
+            'extra_options' => $this->extraOptions,
         ];
     }
 
-    public function enableVariants(array $settings)
+    public function enableVariants(array $settings): void
     {
         foreach ($settings as $name => $value) {
             $this->enableVariant($name, $value);
         }
     }
 
-    public function enableVariant($name, $value = null)
+    public function enableVariant($name, $value = null): void
     {
         $this->enabledVariants[$name] = $value;
     }
 
-    public function disableVariants(array $settings)
+    public function disableVariants(array $settings): void
     {
         foreach ($settings as $name => $value) {
             $this->disableVariant($name);
@@ -67,7 +69,7 @@ class BuildSettings
      *
      * @param string $name The variant name.
      */
-    public function disableVariant($name)
+    public function disableVariant($name): void
     {
         $this->disabledVariants[$name] = null;
     }
@@ -76,7 +78,7 @@ class BuildSettings
      * Remove the enabled the variants since we've disabled
      * them.
      */
-    public function resolveVariants()
+    public function resolveVariants(): void
     {
         foreach ($this->disabledVariants as $name => $_) {
             $this->removeVariant($name);
@@ -95,8 +97,9 @@ class BuildSettings
 
     /**
      * Remove enabled variant.
+     * @param mixed $name
      */
-    public function removeVariant($name)
+    public function removeVariant($name): void
     {
         unset($this->enabledVariants[$name]);
     }
@@ -124,8 +127,9 @@ class BuildSettings
 
     /**
      * Load and return the variant info from file.
+     * @param mixed $variantFile
      */
-    public function loadVariantInfoFile($variantFile)
+    public function loadVariantInfoFile($variantFile): void
     {
         if (!is_readable($variantFile)) {
             throw new Exception(
@@ -151,7 +155,7 @@ class BuildSettings
         );
     }
 
-    public function loadVariantInfo(array $variantInfo)
+    public function loadVariantInfo(array $variantInfo): void
     {
         if (isset($variantInfo['enabled_variants'])) {
             foreach ($variantInfo['enabled_variants'] as $variant => $value) {

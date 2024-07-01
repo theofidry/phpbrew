@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\PrefixFinder;
 
 use PhpBrew\PrefixFinder;
@@ -22,9 +24,6 @@ final class UserProvidedPrefix implements PrefixFinder
         $this->prefix = $prefix;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function findPrefix()
     {
         return $this->prefix;

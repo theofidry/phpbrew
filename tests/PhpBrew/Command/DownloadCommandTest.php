@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Tests\Command;
 
 use PhpBrew\Testing\CommandTestCase;
@@ -8,11 +10,11 @@ use PhpBrew\Testing\CommandTestCase;
  * @large
  * @group command
  * @group noVCR
+ * @internal
  */
 class DownloadCommandTest extends CommandTestCase
 {
-
-    public function versionDataProvider()
+    public static function versionDataProvider(): iterable
     {
         return [
             ['7.0'],
@@ -23,18 +25,19 @@ class DownloadCommandTest extends CommandTestCase
     /**
      * @outputBuffering enabled
      * @dataProvider versionDataProvider
+     * @param mixed $versionName
      */
-    public function testDownloadCommand($versionName)
+    public function test_download_command($versionName): void
     {
         if (getenv('GITHUB_ACTIONS')) {
-            $this->markTestSkipped('Skip heavy test on Travis');
+            self::markTestSkipped('Skip heavy test on Travis');
         }
 
-        $this->assertCommandSuccess("phpbrew init");
-        $this->assertCommandSuccess("phpbrew -q download $versionName");
+        $this->assertCommandSuccess('phpbrew init');
+        $this->assertCommandSuccess("phpbrew -q download {$versionName}");
 
         // re-download should just check the checksum instead of extracting it
-        $this->assertCommandSuccess("phpbrew -q download $versionName");
-        $this->assertCommandSuccess("phpbrew -q download -f $versionName");
+        $this->assertCommandSuccess("phpbrew -q download {$versionName}");
+        $this->assertCommandSuccess("phpbrew -q download -f {$versionName}");
     }
 }

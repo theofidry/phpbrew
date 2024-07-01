@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Tasks;
 
 use PhpBrew\Build;
@@ -12,7 +14,7 @@ use PhpBrew\Patches\PHP56WithOpenSSL11Patch;
  */
 class AfterConfigureTask extends BaseTask
 {
-    public function run(Build $build)
+    public function run(Build $build): void
     {
         if (!$this->options->{'no-patch'}) {
             $this->logger->info('===> Checking patches...');
@@ -24,7 +26,7 @@ class AfterConfigureTask extends BaseTask
                 $this->logger->info('Checking patch for ' . $patch->desc());
                 if ($patch->match($build, $this->logger)) {
                     $patched = $patch->apply($build, $this->logger);
-                    $this->logger->info("$patched changes patched.");
+                    $this->logger->info("{$patched} changes patched.");
                 }
             }
         }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\PrefixFinder;
 
 use PhpBrew\PrefixFinder;
@@ -23,9 +25,6 @@ final class IncludePrefixFinder implements PrefixFinder
         $this->path = $path;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function findPrefix()
     {
         return Utils::findIncludePrefix($this->path);

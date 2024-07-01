@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew;
 
 class CommandBuilder
@@ -26,22 +28,22 @@ class CommandBuilder
         $this->script = $script;
     }
 
-    public function args($args)
+    public function args($args): void
     {
         $this->args = $args;
     }
 
-    public function addArg($arg)
+    public function addArg($arg): void
     {
         $this->args[] = $arg;
     }
 
-    public function arg($arg)
+    public function arg($arg): void
     {
         $this->args[] = $arg;
     }
 
-    public function nice($nice)
+    public function nice($nice): void
     {
         $this->nice = $nice;
     }
@@ -75,17 +77,17 @@ class CommandBuilder
         return $this->buildCommand();
     }
 
-    public function setStdout($stdout = true)
+    public function setStdout($stdout = true): void
     {
         $this->stdout = $stdout;
     }
 
-    public function setAppendLog($append = true)
+    public function setAppendLog($append = true): void
     {
         $this->append = $append;
     }
 
-    public function setLogPath($logPath)
+    public function setLogPath($logPath): void
     {
         $this->logPath = $logPath;
     }

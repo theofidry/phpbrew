@@ -14,6 +14,9 @@ COMPOSER_BIN_PLUGIN_VENDOR = vendor/bamarni/composer-bin-plugin
 RECTOR_BIN = vendor-bin/rector/vendor/bin/rector
 RECTOR = $(RECTOR_BIN)
 
+PHP_CS_FIXER_BIN = vendor-bin/php-cs-fixer/vendor/bin/php-cs-fixer
+PHP_CS_FIXER = $(PHP_CS_FIXER_BIN)
+
 
 .DEFAULT_GOAL := help
 
@@ -54,6 +57,14 @@ rector: $(RECTOR_BIN)
 rector_lint: $(RECTOR_BIN)
 	$(RECTOR) --dry-run
 
+.PHONY: php_cs_fixer
+php_cs_fixer: $(PHP_CS_FIXER_BIN)
+	$(PHP_CS_FIXER) fix
+
+.PHONY: php_cs_fixer_lint
+php_cs_fixer_lint: $(PHP_CS_FIXER_BIN)
+	$(PHP_CS_FIXER) fix --diff --dry-run
+
 test:
 	$(TEST)
 
@@ -92,4 +103,16 @@ vendor-bin/rector/vendor: vendor-bin/rector/composer.lock $(COMPOSER_BIN_PLUGIN_
 	touch -c $@
 vendor-bin/rector/composer.lock: vendor-bin/rector/composer.json
 	composer bin rector update --lock --ansi
+	touch -c $@
+
+.PHONY: php-cs-fixer_install
+php-cs-fixer_install: $(PHP_CS_FIXER_BIN)
+
+$(PHP_CS_FIXER_BIN): vendor-bin/php-cs-fixer/vendor
+	touch -c $@
+vendor-bin/php-cs-fixer/vendor: vendor-bin/php-cs-fixer/composer.lock $(COMPOSER_BIN_PLUGIN_VENDOR)
+	composer bin php-cs-fixer install --ansi
+	touch -c $@
+vendor-bin/php-cs-fixer/composer.lock: vendor-bin/php-cs-fixer/composer.json
+	composer bin php-cs-fixer update --lock --ansi
 	touch -c $@

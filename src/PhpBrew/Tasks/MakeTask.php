@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Tasks;
 
 use PhpBrew\Buildable;
@@ -28,12 +30,12 @@ class MakeTask extends BaseTask
         return $this->make($build->getSourceDirectory(), 'clean', $build);
     }
 
-    public function setBuildLogPath($buildLogPath)
+    public function setBuildLogPath($buildLogPath): void
     {
         $this->buildLogPath = $buildLogPath;
     }
 
-    public function setQuiet()
+    public function setQuiet(): void
     {
         $this->isQuiet = true;
     }
@@ -45,24 +47,27 @@ class MakeTask extends BaseTask
 
     private function isGNUMake($bin)
     {
-        return preg_match('/GNU Make/', shell_exec("$bin --version"));
+        return preg_match('/GNU Make/', shell_exec("{$bin} --version"));
     }
 
-
     /**
-     * @param Buildable $build can be PeclExtension or Build object.
+     * @param Buildable $build  can be PeclExtension or Build object.
+     * @param mixed     $path
+     * @param mixed     $target
      */
     private function make($path, $target = 'all', $build = null)
     {
         if (!file_exists($path . DIRECTORY_SEPARATOR . 'Makefile')) {
-            $this->logger->error("Makefile not found in path $path");
+            $this->logger->error("Makefile not found in path {$path}");
 
             return false;
         }
 
-        // FreeBSD make doesn't support --quiet option
-        // We should prefer GNU make instead of BSD make.
-        // @see https://github.com/phpbrew/phpbrew/issues/529
+        /**
+         * FreeBSD make doesn't support --quiet option
+         * We should prefer GNU make instead of BSD make.
+         * @see https://github.com/phpbrew/phpbrew/issues/529
+         */
         $gmake = Utils::findBin('gmake');
         $make = null;
         if (!$gmake) {
@@ -92,7 +97,7 @@ class MakeTask extends BaseTask
             $cmd[] = ' >> ' . escapeshellarg($this->buildLogPath) . ' 2>&1';
         }
 
-        $this->logger->info("===> Running make $target: " . implode(' ', $cmd));
+        $this->logger->info("===> Running make {$target}: " . implode(' ', $cmd));
 
         return Utils::system($cmd, $this->logger, $build) === 0;
     }

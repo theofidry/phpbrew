@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Patches;
 
 use CLIFramework\Logger;
@@ -24,7 +26,7 @@ class ReadlinePatch extends Patch
     }
 
     /**
-     * @link https://git.php.net/?p=php-src.git;a=commit;h=1ea58b6e78355437b79fb7b1f287ba6688fb1c57
+     * @see https://git.php.net/?p=php-src.git;a=commit;h=1ea58b6e78355437b79fb7b1f287ba6688fb1c57
      *
      * @codeCoverageIgnore
      */

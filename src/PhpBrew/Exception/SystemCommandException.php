@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Exception;
 
 use PhpBrew\Buildable;
@@ -11,7 +13,7 @@ class SystemCommandException extends RuntimeException
 
     protected $build;
 
-    public function __construct($message, Buildable $build = null, $logFile = null)
+    public function __construct($message, ?Buildable $build = null, $logFile = null)
     {
         parent::__construct($message);
         $this->build = $build;
@@ -22,7 +24,8 @@ class SystemCommandException extends RuntimeException
     {
         if ($this->logFile) {
             return $this->logFile;
-        } elseif ($this->build) {
+        }
+        if ($this->build) {
             return $this->build->getBuildLogPath();
         }
     }

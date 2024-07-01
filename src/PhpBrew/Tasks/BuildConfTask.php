@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Tasks;
 
 use PhpBrew\Build;
@@ -10,7 +12,7 @@ use PhpBrew\Exception\SystemCommandException;
  */
 class BuildConfTask extends BaseTask
 {
-    public function run(Build $build)
+    public function run(Build $build): void
     {
         $lastLine = system('./buildconf --force', $status);
 

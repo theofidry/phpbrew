@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PhpBrew\Command;
 
 use CLIFramework\Command;
@@ -12,15 +14,15 @@ class SystemCommand extends Command
         return 'Get or set the internally used PHP binary';
     }
 
-    public function arguments($args)
+    public function arguments($args): void
     {
         $args->add('php version')
-            ->suggestions(function () {
+            ->suggestions(static function () {
                 return BuildFinder::findInstalledBuilds();
             });
     }
 
-    final public function execute()
+    final public function execute(): void
     {
         $path = getenv('PHPBREW_SYSTEM_PHP');
 

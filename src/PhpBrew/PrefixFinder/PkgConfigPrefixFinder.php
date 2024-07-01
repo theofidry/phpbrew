@@ -23,9 +23,6 @@ final class PkgConfigPrefixFinder implements PrefixFinder
         $this->package = $package;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function findPrefix()
     {
         return Utils::getPkgConfigPrefix($this->package);

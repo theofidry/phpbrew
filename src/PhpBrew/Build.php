@@ -11,8 +11,8 @@ use PhpBrew\BuildSettings\BuildSettings;
  *
  * @method array getEnabledVariants()
  * @method array getDisabledVariants()
- * @method bool isEnabledVariant(string $variant)
- * @method bool isDisabledVariant(string $variant)
+ * @method bool  isEnabledVariant(string $variant)
+ * @method bool  isDisabledVariant(string $variant)
  * @method array getExtraOptions()
  * @method enableVariant(string $variant, string $value = null)
  * @method disableVariant(string $variant)
@@ -86,7 +86,7 @@ class Build implements Buildable
         }
 
         $this->version = $version;
-        $this->name    = $name;
+        $this->name = $name;
 
         if ($installPrefix) {
             $this->setInstallPrefix($installPrefix);
@@ -115,8 +115,9 @@ class Build implements Buildable
 
     /**
      * PHP Source directory, this method returns value only when source directory is set.
+     * @param mixed $dir
      */
-    public function setSourceDirectory($dir)
+    public function setSourceDirectory($dir): void
     {
         $this->sourceDirectory = $dir;
     }
@@ -137,11 +138,10 @@ class Build implements Buildable
 
     public function getBuildLogPath()
     {
-        $dir = $this->getSourceDirectory() . DIRECTORY_SEPARATOR . 'build.log';
-        return $dir;
+        return $this->getSourceDirectory() . DIRECTORY_SEPARATOR . 'build.log';
     }
 
-    public function setInstallPrefix($prefix)
+    public function setInstallPrefix($prefix): void
     {
         $this->installPrefix = $prefix;
     }
@@ -171,7 +171,7 @@ class Build implements Buildable
         return $this->installPrefix . DIRECTORY_SEPARATOR . $subpath;
     }
 
-    public function setBuildSettings(BuildSettings $settings)
+    public function setBuildSettings(BuildSettings $settings): void
     {
         $this->settings = $settings;
         if (!$this->getInstallPrefix()) {
@@ -203,8 +203,6 @@ class Build implements Buildable
             // a installation exists
             return new self($name, null, $prefix);
         }
-
-        return;
     }
 
     /**
@@ -226,7 +224,7 @@ class Build implements Buildable
         }
     }
 
-    public function setState($state)
+    public function setState($state): void
     {
         $this->state = $state;
         if ($path = $this->getStateFile()) {
@@ -241,7 +239,7 @@ class Build implements Buildable
         }
         if ($path = $this->getStateFile()) {
             if (file_exists($path)) {
-                return $this->state = intval(file_get_contents($path)) || self::STATE_NONE;
+                return $this->state = (int) file_get_contents($path) || self::STATE_NONE;
             }
         }
 

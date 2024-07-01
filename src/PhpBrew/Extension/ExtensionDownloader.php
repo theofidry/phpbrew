@@ -37,7 +37,7 @@ class ExtensionDownloader
             mkdir($extensionDir, 0755, true);
         }
 
-        $this->logger->info("===> Extracting to $currentPhpExtensionDirectory...");
+        $this->logger->info("===> Extracting to {$currentPhpExtensionDirectory}...");
 
         $cmds = array_merge(
             $provider->extractPackageCommands($currentPhpExtensionDirectory, $targetFilePath),
@@ -61,7 +61,7 @@ class ExtensionDownloader
         return $provider->parseKnownReleasesResponse($info);
     }
 
-    public function renameSourceDirectory(Extension $ext)
+    public function renameSourceDirectory(Extension $ext): void
     {
         $currentPhpExtensionDirectory = Config::getBuildDir() . '/' . Config::getCurrentPhpName() . '/ext';
         $extName = $ext->getExtensionName();
@@ -70,11 +70,11 @@ class ExtensionDownloader
         $extensionExtractDir = $currentPhpExtensionDirectory . DIRECTORY_SEPARATOR . $name;
 
         if ($name != $extName) {
-            $this->logger->info("===> Rename source directory to $extensionDir...");
+            $this->logger->info("===> Rename source directory to {$extensionDir}...");
 
             $cmds = [
-                "rm -rf $extensionDir",
-                "mv $extensionExtractDir $extensionDir",
+                "rm -rf {$extensionDir}",
+                "mv {$extensionExtractDir} {$extensionDir}",
             ];
 
             foreach ($cmds as $cmd) {

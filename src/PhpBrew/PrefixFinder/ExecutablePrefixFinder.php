@@ -23,9 +23,6 @@ final class ExecutablePrefixFinder implements PrefixFinder
         $this->name = $name;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function findPrefix()
     {
         $bin = Utils::findBin($this->name);

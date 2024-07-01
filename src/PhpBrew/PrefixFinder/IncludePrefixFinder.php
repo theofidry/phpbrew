@@ -23,9 +23,6 @@ final class IncludePrefixFinder implements PrefixFinder
         $this->path = $path;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function findPrefix()
     {
         return Utils::findIncludePrefix($this->path);

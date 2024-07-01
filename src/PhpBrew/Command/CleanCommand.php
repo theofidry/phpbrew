@@ -21,21 +21,20 @@ class CleanCommand extends Command
         return 'phpbrew clean [-a|--all] [php-version]';
     }
 
-    public function options($opts)
+    public function options($opts): void
     {
         $opts->add('a|all', 'Remove all the files in the source directory of the PHP distribution.');
     }
 
-    public function arguments($args)
+    public function arguments($args): void
     {
         $args->add('PHP build')
-            ->validValues(function () {
+            ->validValues(static function () {
                 return BuildFinder::findInstalledBuilds();
-            })
-            ;
+            });
     }
 
-    public function execute($version)
+    public function execute($version): void
     {
         $buildDir = Config::getBuildDir() . DIRECTORY_SEPARATOR . $version;
         if ($this->options->all) {

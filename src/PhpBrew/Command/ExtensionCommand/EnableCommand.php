@@ -17,24 +17,24 @@ class EnableCommand extends BaseCommand
         return 'Enable PHP extension';
     }
 
-    public function options($opts)
+    public function options($opts): void
     {
         $opts->add('s|sapi:=string', 'Enable extension for SAPI name.');
     }
 
-    public function arguments($args)
+    public function arguments($args): void
     {
         $args->add('extensions')
-            ->suggestions(function () {
+            ->suggestions(static function () {
                 $extension = '.ini.disabled';
 
-                return array_map(function ($path) use ($extension) {
+                return array_map(static function ($path) use ($extension) {
                     return basename($path, $extension);
                 }, glob(Config::getCurrentPhpDir() . "/var/db/*{$extension}"));
             });
     }
 
-    public function execute($extensionName)
+    public function execute($extensionName): void
     {
         $sapi = null;
         if ($this->options->sapi) {

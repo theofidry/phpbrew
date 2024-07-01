@@ -20,27 +20,27 @@ class ShowCommand extends BaseCommand
         return 'Show information of a PHP extension';
     }
 
-    public function options($opts)
+    public function options($opts): void
     {
         $opts->add('download', 'Download the extension source if extension not found.');
     }
 
-    public function arguments($args)
+    public function arguments($args): void
     {
         $args->add('extension')
-            ->suggestions(function () {
+            ->suggestions(static function () {
                 $extdir = Config::getBuildDir() . '/' . Config::getCurrentPhpName() . '/ext';
 
                 return array_filter(
                     scandir($extdir),
-                    function ($d) use ($extdir) {
+                    static function ($d) use ($extdir) {
                         return $d != '.' && $d != '..' && is_dir($extdir . DIRECTORY_SEPARATOR . $d);
                     }
                 );
             });
     }
 
-    public function describeExtension(Extension $ext)
+    public function describeExtension(Extension $ext): void
     {
         $info = [
             'Name' => $ext->getExtensionName(),
@@ -80,7 +80,7 @@ class ShowCommand extends BaseCommand
         }
     }
 
-    public function execute($extensionName)
+    public function execute($extensionName): void
     {
         $ext = ExtensionFactory::lookup($extensionName);
 
@@ -102,7 +102,7 @@ class ShowCommand extends BaseCommand
             $ext = ExtensionFactory::lookupRecursive($extensionName, [$extDir]);
         }
         if (!$ext) {
-            throw new Exception("$extensionName extension not found.");
+            throw new Exception("{$extensionName} extension not found.");
         }
         $this->describeExtension($ext);
     }

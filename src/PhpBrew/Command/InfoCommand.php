@@ -16,7 +16,7 @@ class InfoCommand extends Command
         return 'phpbrew info';
     }
 
-    public function execute()
+    public function execute(): void
     {
         $this->logger->warn(
             'The info command is deprecated and will be removed in the future.' . PHP_EOL

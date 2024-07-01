@@ -14,7 +14,7 @@ class ListCommand extends Command
         return 'List installed PHPs';
     }
 
-    public function options($opts)
+    public function options($opts): void
     {
         $opts->add('d|dir', 'Show php directories.');
         $opts->add('v|variants', 'Show used variants.');
@@ -29,7 +29,7 @@ class ListCommand extends Command
             return $this->logger->notice('Please install at least one PHP with your preferred version.');
         }
 
-        if ($currentBuild === false or !in_array($currentBuild, $builds)) {
+        if ($currentBuild === false || !in_array($currentBuild, $builds, true)) {
             $this->logger->writeln('* (system)');
         }
 

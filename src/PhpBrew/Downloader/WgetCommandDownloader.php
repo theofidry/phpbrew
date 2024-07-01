@@ -11,14 +11,14 @@ class WgetCommandDownloader extends BaseDownloader
 
     /**
      * @param string $url
-     *
-     * @return bool|string
+     * @param mixed  $targetFilePath
      *
      * @throws RuntimeException
+     * @return bool|string
      */
     protected function process($url, $targetFilePath)
     {
-        $this->logger->info("Downloading $url via wget command");
+        $this->logger->info("Downloading {$url} via wget command");
 
         $proxy = '';
         if (!empty($this->options->{'http-proxy'})) {

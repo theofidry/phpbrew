@@ -15,7 +15,7 @@ class BuildFinder
             return [];
         }
 
-        $names = array_filter(scandir($path), function ($name) use ($path) {
+        $names = array_filter(scandir($path), static function ($name) use ($path) {
             return $name != '.'
                 && $name != '..'
                 && file_exists(
@@ -37,7 +37,7 @@ class BuildFinder
      */
     public static function findInstalledVersions()
     {
-        return array_map(function ($name) {
+        return array_map(static function ($name) {
             return preg_replace('/^php-(?=(\d+\.\d+\.\d+(-dev|((alpha|beta|RC)\d+))?)$)/', '', $name);
         }, self::findInstalledBuilds());
     }

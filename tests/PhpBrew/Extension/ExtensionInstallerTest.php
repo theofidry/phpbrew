@@ -16,10 +16,10 @@ use PhpBrew\Testing\CommandTestCase;
  *
  * @large
  * @group extension
+ * @internal
  */
 class ExtensionInstallerTest extends CommandTestCase
 {
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -30,10 +30,10 @@ class ExtensionInstallerTest extends CommandTestCase
     /**
      * @group noVCR
      */
-    public function testPackageUrl()
+    public function test_package_url(): void
     {
         if (getenv('GITHUB_ACTIONS')) {
-            $this->markTestSkipped('Skipping since VCR cannot properly record this request');
+            self::markTestSkipped('Skipping since VCR cannot properly record this request');
         }
 
         $logger = new Logger();
@@ -42,10 +42,10 @@ class ExtensionInstallerTest extends CommandTestCase
         $downloader = new ExtensionDownloader($logger, new OptionResult());
         $peclProvider->setPackageName('APCu');
         $extractPath = $downloader->download($peclProvider, 'latest');
-        $this->assertFileExists($extractPath);
+        self::assertFileExists($extractPath);
     }
 
-    public function packageNameProvider()
+    public static function packageNameProvider(): iterable
     {
         return [
             // xdebug requires at least php 5.4
@@ -56,11 +56,16 @@ class ExtensionInstallerTest extends CommandTestCase
 
     /**
      * @dataProvider packageNameProvider
+     * @param mixed $build
+     * @param mixed $extensionName
+     * @param mixed $extensionVersion
+     * @param mixed $options
      */
-    public function testInstallPackages($build, $extensionName, $extensionVersion, $options)
+    public function test_install_packages($build, $extensionName, $extensionVersion, $options): void
     {
         if (!$build) {
-            $this->markTestSkipped('skip extension build test');
+            self::markTestSkipped('skip extension build test');
+
             return;
         }
         $logger = new Logger();
@@ -71,7 +76,7 @@ class ExtensionInstallerTest extends CommandTestCase
         $peclProvider->setPackageName($extensionName);
         $downloader->download($peclProvider, $extensionVersion);
         $ext = ExtensionFactory::lookup($extensionName);
-        $this->assertNotNull($ext);
+        self::assertNotNull($ext);
         $manager->installExtension($ext, $options);
     }
 }

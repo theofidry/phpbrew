@@ -7,7 +7,7 @@ use PhpBrew\Config;
 
 class PrepareDirectoryTask extends BaseTask
 {
-    public function run(Build $build = null)
+    public function run(?Build $build = null): void
     {
         $dirs = [];
         $dirs[] = Config::getRoot();
@@ -20,7 +20,7 @@ class PrepareDirectoryTask extends BaseTask
         }
         foreach ($dirs as $dir) {
             if (!file_exists($dir)) {
-                $this->logger->debug("Creating directory $dir");
+                $this->logger->debug("Creating directory {$dir}");
                 mkdir($dir, 0755, true);
             }
         }

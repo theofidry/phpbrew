@@ -8,7 +8,7 @@ class PeclExtension extends Extension
 {
     public $package;
 
-    public function setPackage(Package $pkg)
+    public function setPackage(Package $pkg): void
     {
         $this->package = $pkg;
         $this->setVersion($pkg->getReleaseVersion());

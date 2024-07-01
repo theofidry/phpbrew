@@ -3,19 +3,19 @@
 namespace PhpBrew;
 
 /**
- * An immutable object representing the parameters used to call `./configure'
+ * An immutable object representing the parameters used to call `./configure'.
  */
 final class ConfigureParameters
 {
     /**
-     * Command line options and their values
+     * Command line options and their values.
      *
      * @var array<string,string|null>
      */
     private $options = [];
 
     /**
-     * Paths passed to the command via the PKG_CONFIG_PATH environment variable
+     * Paths passed to the command via the PKG_CONFIG_PATH environment variable.
      *
      * @var array<string,null>
      */

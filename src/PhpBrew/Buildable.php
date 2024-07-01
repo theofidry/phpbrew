@@ -10,7 +10,7 @@ interface Buildable
     public function getSourceDirectory();
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isBuildable();
 

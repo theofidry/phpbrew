@@ -9,13 +9,12 @@ use PhpBrew\BuildFinder;
  */
 class UseCommand extends VirtualCommand
 {
-    public function arguments($args)
+    public function arguments($args): void
     {
         $args->add('PHP version')
-            ->validValues(function () {
+            ->validValues(static function () {
                 return BuildFinder::findInstalledVersions();
-            })
-            ;
+            });
     }
 
     public function brief()

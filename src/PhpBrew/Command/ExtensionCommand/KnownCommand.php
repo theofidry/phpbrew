@@ -24,27 +24,27 @@ class KnownCommand extends Command
     /**
      * @param OptionSpecCollection $opts
      */
-    public function options($opts)
+    public function options($opts): void
     {
         DownloadFactory::addOptionsForCommand($opts);
     }
 
-    public function arguments($args)
+    public function arguments($args): void
     {
         $args->add('extensions')
-            ->suggestions(function () {
+            ->suggestions(static function () {
                 $extdir = Config::getBuildDir() . '/' . Config::getCurrentPhpName() . '/ext';
 
                 return array_filter(
                     scandir($extdir),
-                    function ($d) use ($extdir) {
+                    static function ($d) use ($extdir) {
                         return $d != '.' && $d != '..' && is_dir($extdir . DIRECTORY_SEPARATOR . $d);
                     }
                 );
             });
     }
 
-    public function execute($extensionName)
+    public function execute($extensionName): void
     {
         $extensionList = new ExtensionList($this->logger, $this->options);
 
@@ -56,7 +56,7 @@ class KnownCommand extends Command
             $this->logger->info(PHP_EOL);
             $this->logger->writeln(wordwrap(implode(', ', $versionList), 80, PHP_EOL));
         } else {
-            $this->logger->info("Can not determine host or unsupported of $extensionName " . PHP_EOL);
+            $this->logger->info("Can not determine host or unsupported of {$extensionName} " . PHP_EOL);
         }
     }
 }

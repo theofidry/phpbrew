@@ -23,9 +23,6 @@ final class BrewPrefixFinder implements PrefixFinder
         $this->formula = $formula;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function findPrefix()
     {
         $brew = Utils::findBin('brew');

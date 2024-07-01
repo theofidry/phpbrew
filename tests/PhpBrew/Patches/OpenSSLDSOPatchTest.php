@@ -9,13 +9,14 @@ use PhpBrew\Testing\PatchTestCase;
 
 /**
  * @small
+ * @internal
  */
 class OpenSSLDSOPatchTest extends PatchTestCase
 {
-    public function testPatch()
+    public function test_patch(): void
     {
-        if (PHP_OS !== "Darwin") {
-            $this->markTestSkipped('openssl DSO patch test only runs on darwin platform');
+        if (PHP_OS !== 'Darwin') {
+            self::markTestSkipped('openssl DSO patch test only runs on darwin platform');
         }
 
         $logger = new Logger();
@@ -29,12 +30,12 @@ class OpenSSLDSOPatchTest extends PatchTestCase
         $build = new Build($fromVersion);
         $build->setSourceDirectory($sourceDirectory);
         $build->enableVariant('openssl');
-        $this->assertTrue($build->isEnabledVariant('openssl'));
+        self::assertTrue($build->isEnabledVariant('openssl'));
 
         $patch = new OpenSSLDSOPatch();
         $matched = $patch->match($build, $logger);
-        $this->assertTrue($matched, 'patch matched');
+        self::assertTrue($matched, 'patch matched');
         $patchedCount = $patch->apply($build, $logger);
-        $this->assertEquals(10, $patchedCount);
+        self::assertEquals(10, $patchedCount);
     }
 }

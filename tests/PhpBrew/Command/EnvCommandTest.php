@@ -7,6 +7,7 @@ use PhpBrew\Testing\CommandTestCase;
 
 /**
  * @group command
+ * @internal
  */
 class EnvCommandTest extends CommandTestCase
 {
@@ -25,8 +26,8 @@ class EnvCommandTest extends CommandTestCase
     /**
      * @outputBuffering enabled
      */
-    public function testEnvCommand()
+    public function test_env_command(): void
     {
-        $this->assertCommandSuccess("phpbrew env");
+        $this->assertCommandSuccess('phpbrew env');
     }
 }

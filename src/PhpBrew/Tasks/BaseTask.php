@@ -18,7 +18,7 @@ abstract class BaseTask
 
     public $finishedAt;
 
-    public function __construct(Logger $logger, OptionResult $options = null)
+    public function __construct(Logger $logger, ?OptionResult $options = null)
     {
         $this->startedAt = microtime(true);
         $this->logger = $logger;
@@ -29,14 +29,14 @@ abstract class BaseTask
         }
     }
 
-    public function info($msg)
+    public function info($msg): void
     {
         if ($this->logger) {
             $this->logger->info($msg);
         }
     }
 
-    public function debug($msg)
+    public function debug($msg): void
     {
         if ($this->logger) {
             $this->logger->debug($msg);

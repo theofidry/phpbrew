@@ -14,13 +14,13 @@ class ExtensionInstaller
 
     public $options;
 
-    public function __construct(Logger $logger, OptionResult $options = null)
+    public function __construct(Logger $logger, ?OptionResult $options = null)
     {
         $this->logger = $logger;
         $this->options = $options ?: new OptionResult();
     }
 
-    public function install(Extension $ext, array $configureOptions = [])
+    public function install(Extension $ext, array $configureOptions = []): void
     {
         $sourceDir = $ext->getSourceDirectory();
         $pwd = getcwd();
@@ -29,9 +29,9 @@ class ExtensionInstaller
 
         $make->setBuildLogPath($buildLogPath);
 
-        $this->logger->info("Log stored at: $buildLogPath");
+        $this->logger->info("Log stored at: {$buildLogPath}");
 
-        $this->logger->info("Changing directory to $sourceDir");
+        $this->logger->info("Changing directory to {$sourceDir}");
         chdir($sourceDir);
 
         if (!$this->options->{'no-clean'} && $ext->isBuildable()) {
@@ -46,13 +46,13 @@ class ExtensionInstaller
 
         // If the php version is specified, we should get phpize with the correct version.
         $this->logger->info('===> Phpize...');
-        Utils::system("phpize > $buildLogPath 2>&1", $this->logger);
+        Utils::system("phpize > {$buildLogPath} 2>&1", $this->logger);
 
         $this->logger->info('===> Configuring...');
 
         $phpConfig = Config::getCurrentPhpConfigBin();
         if (file_exists($phpConfig)) {
-            $this->logger->debug("Appending argument: --with-php-config=$phpConfig");
+            $this->logger->debug("Appending argument: --with-php-config={$phpConfig}");
             $configureOptions[] = '--with-php-config=' . $phpConfig;
         }
 

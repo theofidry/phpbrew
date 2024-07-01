@@ -6,12 +6,13 @@ use PhpBrew\Extension\Provider\RepositoryDslParser;
 use PHPUnit\Framework\TestCase;
 
 /**
- * ExtensionDslParserTest
+ * ExtensionDslParserTest.
  *
  * @small
  * @group extension
+ * @internal
  */
-class ExtensionDslParserTest extends TestCase
+class RepositoryDslParserTest extends TestCase
 {
     protected $parser;
 
@@ -20,7 +21,7 @@ class ExtensionDslParserTest extends TestCase
         $this->parser = new RepositoryDslParser();
     }
 
-    public static function dslProvider()
+    public static function dslProvider(): iterable
     {
         return [
             // pecl
@@ -64,14 +65,18 @@ class ExtensionDslParserTest extends TestCase
 
     /**
      * @dataProvider dslProvider
+     * @param mixed $dsl
+     * @param mixed $repo
+     * @param mixed $owner
+     * @param mixed $package
      */
-    public function testGithubDsl($dsl, $repo, $owner, $package)
+    public function test_github_dsl($dsl, $repo, $owner, $package): void
     {
-        $this->assertSame(
+        self::assertSame(
             [
                 'repository' => $repo,
-                'owner'      => $owner,
-                'package'    => $package,
+                'owner' => $owner,
+                'package' => $package,
             ],
             $this->parser->parse($dsl)
         );

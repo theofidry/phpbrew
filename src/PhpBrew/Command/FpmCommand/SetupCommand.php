@@ -18,14 +18,14 @@ class SetupCommand extends Command
         return 'phpbrew fpm setup [--systemctl|--initd|--launchctl] [--stdout] [<build name>]';
     }
 
-    public function options($opts)
+    public function options($opts): void
     {
         $opts->add(
             'systemctl',
-            "Generate systemd service entry. " .
-            "This option only works for systemd-based Linux. " .
-            "To use this option, be sure to compile PHP with --with-fpm-systemd option. " .
-            "Start from 1.22, phpbrew automatically add --with-fpm-systemd when systemd is detected."
+            'Generate systemd service entry. ' .
+            'This option only works for systemd-based Linux. ' .
+            'To use this option, be sure to compile PHP with --with-fpm-systemd option. ' .
+            'Start from 1.22, phpbrew automatically add --with-fpm-systemd when systemd is detected.'
         );
         $opts->add(
             'initd',
@@ -38,31 +38,31 @@ class SetupCommand extends Command
         $opts->add('stdout', 'Print config to STDOUT instead of writing to the file.');
     }
 
-    public function arguments($args)
+    public function arguments($args): void
     {
         $args->add('buildName')->optional();
     }
 
-    public function execute($buildName = null)
+    public function execute($buildName = null): void
     {
         if (!$buildName) {
             $buildName = Config::getCurrentPhpName();
         }
         if (!$buildName) {
-            throw new Exception("PHPBREW_PHP is not set. You should provide the build name in the command.");
+            throw new Exception('PHPBREW_PHP is not set. You should provide the build name in the command.');
         }
 
         fprintf(
             STDERR,
-            "*WARNING* php-fpm --pid option requires php >= 5.6. "
-            . "You need to update your php-fpm.conf for the pid file location." . PHP_EOL
+            '*WARNING* php-fpm --pid option requires php >= 5.6. '
+            . 'You need to update your php-fpm.conf for the pid file location.' . PHP_EOL
         );
 
         $root = Config::getRoot();
-        $fpmBin = "$root/php/$buildName/sbin/php-fpm";
+        $fpmBin = "{$root}/php/{$buildName}/sbin/php-fpm";
 
         if (!file_exists($fpmBin)) {
-            throw new Exception("$fpmBin doesn't exist.");
+            throw new Exception("{$fpmBin} doesn't exist.");
         }
 
         // TODO: require sudo permission
@@ -71,61 +71,67 @@ class SetupCommand extends Command
 
             if ($this->options->stdout) {
                 echo $content;
+
                 return;
             }
 
             $file = '/lib/systemd/system/phpbrew-fpm.service';
             if (!is_writable(dirname($file))) {
-                $this->logger->error("$file is not writable.");
+                $this->logger->error("{$file} is not writable.");
+
                 return;
             }
 
-            $this->logger->info("Writing systemctl service entry: $file");
+            $this->logger->info("Writing systemctl service entry: {$file}");
             file_put_contents($file, $content);
 
-            $this->logger->info("To reload systemctl service:");
-            $this->logger->info("    systemctl daemon-reload");
+            $this->logger->info('To reload systemctl service:');
+            $this->logger->info('    systemctl daemon-reload');
 
-            $this->logger->info("Ensure that $buildName was built with --fpm-systemd option");
+            $this->logger->info("Ensure that {$buildName} was built with --fpm-systemd option");
         } elseif ($this->options->initd) {
             $content = $this->generateInitD($buildName, $fpmBin);
 
             if ($this->options->stdout) {
                 echo $content;
+
                 return;
             }
 
             $file = '/etc/init.d/phpbrew-fpm';
             if (!is_writable(dirname($file))) {
-                $this->logger->error("$file is not writable.");
+                $this->logger->error("{$file} is not writable.");
+
                 return;
             }
 
-            $this->logger->info("Writing init.d script: $file");
+            $this->logger->info("Writing init.d script: {$file}");
             file_put_contents($file, $content);
             chmod($file, 0755); // make it executable
 
-            $this->logger->info("To setup the startup item, remember to run update-rc.d to link the init script:");
-            $this->logger->info("    sudo update-rc.d phpbrew-fpm defaults");
+            $this->logger->info('To setup the startup item, remember to run update-rc.d to link the init script:');
+            $this->logger->info('    sudo update-rc.d phpbrew-fpm defaults');
         } elseif ($this->options->launchctl) {
             $content = $this->generateLaunchctlService($buildName, $fpmBin);
 
             if ($this->options->stdout) {
                 echo $content;
+
                 return;
             }
 
             $file = '/Library/LaunchDaemons/org.phpbrew.fpm.plist';
             if (!is_writable(dirname($file))) {
-                $this->logger->error("$file is not writable.");
+                $this->logger->error("{$file} is not writable.");
+
                 return;
             }
 
-            $this->logger->info("Writing launchctl plist file: $file");
+            $this->logger->info("Writing launchctl plist file: {$file}");
             file_put_contents($file, $content);
 
-            $this->logger->info("To load the service:");
-            $this->logger->info("    sudo launchctl load $file");
+            $this->logger->info('To load the service:');
+            $this->logger->info("    sudo launchctl load {$file}");
         } else {
             $this->logger->info(
                 'Please use one of the options [--systemctl, --initd, --launchctl] to setup system fpm service.'
@@ -135,9 +141,10 @@ class SetupCommand extends Command
 
     protected function generateLaunchctlService($buildName, $fpmBin)
     {
-        $root   = Config::getRoot();
-        $phpdir = "$root/php/$buildName";
-        $config = <<<"EOS"
+        $root = Config::getRoot();
+        $phpdir = "{$root}/php/{$buildName}";
+
+        return <<<"EOS"
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -148,12 +155,12 @@ class SetupCommand extends Command
     <string>org.phpbrew.fpm</string>
     <key>ProgramArguments</key>
     <array>
-        <string>$fpmBin</string>
+        <string>{$fpmBin}</string>
         <string>--nodaemonize</string>
         <string>--php-ini</string>
-        <string>$phpdir/etc/php.ini</string>
+        <string>{$phpdir}/etc/php.ini</string>
         <string>--fpm-config</string>
-        <string>$phpdir/etc/php-fpm.conf</string>
+        <string>{$phpdir}/etc/php-fpm.conf</string>
     </array>
     <key>RunAtLoad</key>
     <true/>
@@ -162,39 +169,37 @@ class SetupCommand extends Command
   </dict>
 </plist>
 EOS;
-        return $config;
     }
-
 
     protected function generateSystemctlService($buildName, $fpmBin)
     {
-        $root   = Config::getRoot();
-        $phpdir = "$root/php/$buildName";
+        $root = Config::getRoot();
+        $phpdir = "{$root}/php/{$buildName}";
         $pidFile = $phpdir . '/var/run/php-fpm.pid';
-        $config = <<<"EOS"
+
+        return <<<"EOS"
 [Unit]
 Description=The PHPBrew FastCGI Process Manager
 After=network.target
 
 [Service]
 Type=notify
-PIDFile=$pidFile
-ExecStart=$fpmBin --nodaemonize --fpm-config $phpdir/etc/php-fpm.conf --pid $pidFile
+PIDFile={$pidFile}
+ExecStart={$fpmBin} --nodaemonize --fpm-config {$phpdir}/etc/php-fpm.conf --pid {$pidFile}
 ExecReload=/bin/kill -USR2 \$MAINPID
 
 [Install]
 WantedBy=multi-user.target
 EOS;
-        return $config;
     }
-
 
     protected function generateInitD($buildName, $fpmBin)
     {
-        $root   = Config::getRoot();
-        $phpdir = "$root/php/$buildName";
+        $root = Config::getRoot();
+        $phpdir = "{$root}/php/{$buildName}";
         $pidFile = $phpdir . '/var/run/php-fpm.pid';
-        $config = <<<"EOS"
+
+        return <<<"EOS"
 #!/bin/sh
 ### BEGIN INIT INFO
 # Provides:          phpbrew-fpm
@@ -209,12 +214,12 @@ EOS;
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
 DESC="PHPBrew FastCGI Process Manager"
 NAME=phpbrew-fpm
-PHP_VERSION=$buildName
-PHPBREW_ROOT=$root
-CONFFILE=$phpdir/etc/php-fpm.conf
-DAEMON=$fpmBin
-DAEMON_ARGS="--daemonize --fpm-config \$CONFFILE --pid $pidFile"
-PIDFILE=$pidFile
+PHP_VERSION={$buildName}
+PHPBREW_ROOT={$root}
+CONFFILE={$phpdir}/etc/php-fpm.conf
+DAEMON={$fpmBin}
+DAEMON_ARGS="--daemonize --fpm-config \$CONFFILE --pid {$pidFile}"
+PIDFILE={$pidFile}
 TIMEOUT=30
 SCRIPTNAME=/etc/init.d/\$NAME
 
@@ -250,10 +255,10 @@ do_start()
 	#   0 if daemon has been started
 	#   1 if daemon was already running
 	#   2 if daemon could not be started
-	start-stop-daemon --start --quiet --pidfile \$PIDFILE --exec \$DAEMON --test > /dev/null \
+	start-stop-daemon --start --quiet --pidfile \$PIDFILE --exec \$DAEMON --test > /dev/null \\
 		|| return 1
-	start-stop-daemon --start --quiet --pidfile \$PIDFILE --exec \$DAEMON -- \
-		\$DAEMON_ARGS 2>/dev/null \
+	start-stop-daemon --start --quiet --pidfile \$PIDFILE --exec \$DAEMON -- \\
+		\$DAEMON_ARGS 2>/dev/null \\
 		|| return 2
 	# Add code here, if necessary, that waits for the process to be ready
 	# to handle requests from services started subsequently which depend
@@ -363,7 +368,7 @@ case "\$1" in
 	;;
     reopen-logs)
 	log_daemon_msg "Reopening \$DESC logs" \$NAME
-	if start-stop-daemon --stop --signal USR1 --oknodo --quiet \
+	if start-stop-daemon --stop --signal USR1 --oknodo --quiet \\
 	    --pidfile \$PIDFILE --exec \$DAEMON
 	then
 	    log_end_msg 0
@@ -399,6 +404,5 @@ case "\$1" in
 esac
 :
 EOS;
-        return $config;
     }
 }

@@ -10,6 +10,6 @@ if (!class_exists('PHPUnit_Framework_TestCase')) {
 }
 
 VCR::configure()
-  ->setCassettePath('tests/fixtures/vcr_cassettes')
-  ->enableLibraryHooks(['curl', 'stream_wrapper'])
-  ->setStorage('json');
+    ->setCassettePath('tests/fixtures/vcr_cassettes')
+    ->enableLibraryHooks(['curl', 'stream_wrapper'])
+    ->setStorage('json');

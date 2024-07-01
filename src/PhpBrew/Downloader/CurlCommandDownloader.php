@@ -9,7 +9,7 @@ class CurlCommandDownloader extends BaseDownloader
     protected function process($url, $targetFilePath)
     {
         $this->logger->info('downloading via curl command');
-        //todo proxy setting
+        // todo proxy setting
         $command = ['curl'];
 
         if ($proxy = $this->options->{'http-proxy'}) {

@@ -9,33 +9,34 @@ use PHPUnit\Framework\TestCase;
 /**
  * @small
  * @group macosIncompatible
+ * @internal
  */
 class VariantBuilderTest extends TestCase
 {
-    public function variantOptionProvider()
+    public static function variantOptionProvider(): iterable
     {
         return [
-            'apxs2'      => [
+            'apxs2' => [
                 ['apxs2'],
                 ['--with-apxs2'],
             ],
-            'bz2'        => [
+            'bz2' => [
                 ['bz2'],
                 ['--with-bz2'],
             ],
-            'curl'       => [
+            'curl' => [
                 ['curl'],
                 ['--with-curl'],
             ],
-            'debug'      => [
+            'debug' => [
                 ['debug'],
                 ['--enable-debug'],
             ],
-            'editline'   => [
+            'editline' => [
                 ['editline'],
                 ['--with-libedit'],
             ],
-            'gd'         => [
+            'gd' => [
                 ['gd'],
                 [
                     '--with-gd',
@@ -43,53 +44,53 @@ class VariantBuilderTest extends TestCase
                     '--with-jpeg-dir',
                 ],
             ],
-            'gettext'    => [
+            'gettext' => [
                 ['gettext'],
                 ['--with-gettext'],
             ],
-            'gmp'        => [
+            'gmp' => [
                 ['gmp'],
                 ['--with-gmp'],
             ],
-            'iconv'      => [
+            'iconv' => [
                 ['iconv'],
                 ['--with-iconv'],
             ],
-            'intl'       => [
+            'intl' => [
                 ['intl'],
                 ['--enable-intl'],
             ],
-            'ipc'        => [
+            'ipc' => [
                 ['ipc'],
                 [
                     '--enable-shmop',
                     '--enable-sysvshm',
                 ],
             ],
-            'mcrypt'     => [
+            'mcrypt' => [
                 ['mcrypt'],
                 ['--with-mcrypt'],
             ],
-            'mhash'      => [
+            'mhash' => [
                 ['mhash'],
                 ['--with-mhash'],
             ],
-            'mysql'      => [
+            'mysql' => [
                 ['mysql'],
                 ['--with-mysqli'],
             ],
-            'openssl'    => [
+            'openssl' => [
                 ['openssl'],
                 ['--with-openssl'],
             ],
-            'pdo-mysql'  => [
+            'pdo-mysql' => [
                 [
                     'mysql',
                     'pdo',
                 ],
                 ['--with-pdo-mysql'],
             ],
-            'pdo-pgsql'  => [
+            'pdo-pgsql' => [
                 [
                     'pgsql',
                     'pdo',
@@ -103,19 +104,19 @@ class VariantBuilderTest extends TestCase
                 ],
                 ['--with-pdo-sqlite'],
             ],
-            'pgsql'      => [
+            'pgsql' => [
                 ['pgsql'],
                 ['--with-pgsql'],
             ],
-            'readline'   => [
+            'readline' => [
                 ['readline'],
                 ['--with-readline'],
             ],
-            'sqlite'     => [
+            'sqlite' => [
                 ['sqlite'],
                 ['--with-sqlite3'],
             ],
-            'xml'        => [
+            'xml' => [
                 ['xml'],
                 [
                     '--enable-dom',
@@ -124,11 +125,11 @@ class VariantBuilderTest extends TestCase
                     '--with-libxml-dir',
                 ],
             ],
-            'zlib'       => [
+            'zlib' => [
                 ['zlib'],
                 ['--with-zlib'],
             ],
-            'snmp'       => [
+            'snmp' => [
                 ['snmp'],
                 ['--with-snmp'],
             ],
@@ -137,13 +138,14 @@ class VariantBuilderTest extends TestCase
 
     /**
      * @dataProvider variantOptionProvider
+     * @param mixed $expectedOptions
      */
-    public function testVariantOption(array $variants, $expectedOptions)
+    public function test_variant_option(array $variants, $expectedOptions): void
     {
         $build = new Build('5.5.0');
         foreach ($variants as $variant) {
-            if (getenv('GITHUB_ACTIONS') && in_array($variant, ["apxs2", "gd", "editline"])) {
-                $this->markTestSkipped("GitHub actions doesn't support $variant}.");
+            if (getenv('GITHUB_ACTIONS') && in_array($variant, ['apxs2', 'gd', 'editline'], true)) {
+                self::markTestSkipped("GitHub actions doesn't support {$variant}}.");
             }
 
             $build->enableVariant($variant);
@@ -153,11 +155,11 @@ class VariantBuilderTest extends TestCase
         $options = $variantBuilder->build($build)->getOptions();
 
         foreach ($expectedOptions as $expectedOption) {
-            $this->assertArrayHasKey($expectedOption, $options);
+            self::assertArrayHasKey($expectedOption, $options);
         }
     }
 
-    public function test()
+    public function test(): void
     {
         $variants = new VariantBuilder();
         $build = new Build('5.3.0');
@@ -171,20 +173,20 @@ class VariantBuilderTest extends TestCase
         $build->resolveVariants();
         $options = $variants->build($build)->getOptions();
 
-        $this->assertArrayHasKey('--enable-debug', $options);
-        $this->assertArrayHasKey('--enable-libxml', $options);
-        $this->assertArrayHasKey('--enable-simplexml', $options);
+        self::assertArrayHasKey('--enable-debug', $options);
+        self::assertArrayHasKey('--enable-libxml', $options);
+        self::assertArrayHasKey('--enable-simplexml', $options);
 
-        $this->assertArrayHasKey('--with-apxs2', $options);
-        $this->assertSame('/opt/local/apache2/apxs2', $options['--with-apxs2']);
+        self::assertArrayHasKey('--with-apxs2', $options);
+        self::assertSame('/opt/local/apache2/apxs2', $options['--with-apxs2']);
 
-        $this->assertArrayHasKey('--without-sqlite3', $options);
-        $this->assertArrayHasKey('--without-mysql', $options);
-        $this->assertArrayHasKey('--without-mysqli', $options);
-        $this->assertArrayHasKey('--disable-all', $options);
+        self::assertArrayHasKey('--without-sqlite3', $options);
+        self::assertArrayHasKey('--without-mysql', $options);
+        self::assertArrayHasKey('--without-mysqli', $options);
+        self::assertArrayHasKey('--disable-all', $options);
     }
 
-    public function testEverything()
+    public function test_everything(): void
     {
         $variants = new VariantBuilder();
 
@@ -195,12 +197,12 @@ class VariantBuilderTest extends TestCase
 
         $options = $variants->build($build)->getOptions();
 
-        $this->assertArrayNotHasKey('--enable-all', $options);
-        $this->assertArrayNotHasKey('--with-apxs2', $options);
-        $this->assertArrayNotHasKey('--with-openssl', $options);
+        self::assertArrayNotHasKey('--enable-all', $options);
+        self::assertArrayNotHasKey('--with-apxs2', $options);
+        self::assertArrayNotHasKey('--with-openssl', $options);
     }
 
-    public function testMysqlPdoVariant()
+    public function test_mysql_pdo_variant(): void
     {
         $variants = new VariantBuilder();
 
@@ -211,17 +213,17 @@ class VariantBuilderTest extends TestCase
         $build->resolveVariants();
 
         $options = $variants->build($build)->getOptions();
-        $this->assertArrayHasKey('--enable-pdo', $options);
-        $this->assertArrayHasKey('--with-mysql', $options);
-        $this->assertSame('mysqlnd', $options['--with-mysql']);
-        $this->assertArrayHasKey('--with-mysqli', $options);
-        $this->assertSame('mysqlnd', $options['--with-mysqli']);
-        $this->assertArrayHasKey('--with-pdo-mysql', $options);
-        $this->assertSame('mysqlnd', $options['--with-pdo-mysql']);
-        $this->assertArrayHasKey('--with-pdo-sqlite', $options);
+        self::assertArrayHasKey('--enable-pdo', $options);
+        self::assertArrayHasKey('--with-mysql', $options);
+        self::assertSame('mysqlnd', $options['--with-mysql']);
+        self::assertArrayHasKey('--with-mysqli', $options);
+        self::assertSame('mysqlnd', $options['--with-mysqli']);
+        self::assertArrayHasKey('--with-pdo-mysql', $options);
+        self::assertSame('mysqlnd', $options['--with-pdo-mysql']);
+        self::assertArrayHasKey('--with-pdo-sqlite', $options);
     }
 
-    public function testAllVariant()
+    public function test_all_variant(): void
     {
         $variants = new VariantBuilder();
         $build = new Build('5.3.0');
@@ -231,15 +233,15 @@ class VariantBuilderTest extends TestCase
         $build->resolveVariants();
 
         $options = $variants->build($build)->getOptions();
-        $this->assertArrayHasKey('--enable-all', $options);
-        $this->assertArrayHasKey('--without-apxs2', $options);
-        $this->assertArrayHasKey('--without-mysql', $options);
+        self::assertArrayHasKey('--enable-all', $options);
+        self::assertArrayHasKey('--without-apxs2', $options);
+        self::assertArrayHasKey('--without-mysql', $options);
     }
 
     /**
      * A test case for `neutral' virtual variant.
      */
-    public function testNeutralVirtualVariant()
+    public function test_neutral_virtual_variant(): void
     {
         $variants = new VariantBuilder();
         $build = new Build('5.3.0');
@@ -251,7 +253,7 @@ class VariantBuilderTest extends TestCase
         // ignore `--with-libdir` because this option should be set depending on client environments
         unset($options['--with-libdir']);
 
-        $this->assertEquals([], $options);
+        self::assertEquals([], $options);
     }
 
     /**
@@ -260,7 +262,7 @@ class VariantBuilderTest extends TestCase
      *
      * @dataProvider libXmlProvider
      */
-    public function testLibXml($version, $expected)
+    public function test_lib_xml($version, $expected): void
     {
         $build = new Build($version);
         $build->enableVariant('xml');
@@ -268,10 +270,10 @@ class VariantBuilderTest extends TestCase
         $builder = new VariantBuilder();
         $options = $builder->build($build)->getOptions();
 
-        $this->assertArrayHasKey($expected, $options);
+        self::assertArrayHasKey($expected, $options);
     }
 
-    public static function libXmlProvider()
+    public static function libXmlProvider(): iterable
     {
         return [
             ['7.3.0', '--enable-libxml'],
@@ -286,7 +288,7 @@ class VariantBuilderTest extends TestCase
      *
      * @dataProvider zipProvider
      */
-    public function testZip($version, $expected)
+    public function test_zip($version, $expected): void
     {
         $build = new Build($version);
         $build->enableVariant('zip');
@@ -294,10 +296,10 @@ class VariantBuilderTest extends TestCase
         $builder = new VariantBuilder();
         $options = $builder->build($build)->getOptions();
 
-        $this->assertArrayHasKey($expected, $options);
+        self::assertArrayHasKey($expected, $options);
     }
 
-    public static function zipProvider()
+    public static function zipProvider(): iterable
     {
         return [
             ['7.3.0', '--enable-zip'],
@@ -312,7 +314,7 @@ class VariantBuilderTest extends TestCase
      *
      * @dataProvider ztsProvider
      */
-    public function testZts($version, $expected)
+    public function test_zts($version, $expected): void
     {
         $build = new Build($version);
         $build->enableVariant('zts');
@@ -320,10 +322,10 @@ class VariantBuilderTest extends TestCase
         $builder = new VariantBuilder();
         $options = $builder->build($build)->getOptions();
 
-        $this->assertArrayHasKey($expected, $options);
+        self::assertArrayHasKey($expected, $options);
     }
 
-    public static function ztsProvider()
+    public static function ztsProvider(): iterable
     {
         return [
             [
@@ -371,7 +373,7 @@ class VariantBuilderTest extends TestCase
      *
      * @dataProvider snmpProvider
      */
-    public function testSnmp($version, $expected)
+    public function test_snmp($version, $expected): void
     {
         $build = new Build($version);
         $build->enableVariant('snmp');
@@ -379,10 +381,10 @@ class VariantBuilderTest extends TestCase
         $builder = new VariantBuilder();
         $options = $builder->build($build)->getOptions();
 
-        $this->assertArrayHasKey($expected, $options);
+        self::assertArrayHasKey($expected, $options);
     }
 
-    public static function snmpProvider()
+    public static function snmpProvider(): iterable
     {
         return [
             [

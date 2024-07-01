@@ -2,12 +2,12 @@
 
 namespace PhpBrew\Extension;
 
-use RuntimeException;
 use CLIFramework\Logger;
 use Exception;
 use PhpBrew\Config;
 use PhpBrew\Tasks\MakeTask;
 use PhpBrew\Utils;
+use RuntimeException;
 
 class ExtensionManager
 {
@@ -31,14 +31,14 @@ class ExtensionManager
         $this->logger = $logger;
     }
 
-    public function purgeExtension(Extension $ext)
+    public function purgeExtension(Extension $ext): void
     {
         if ($sourceDir = $ext->getSourceDirectory()) {
             $currentPhpExtensionDirectory = Config::getBuildDir() . '/' . Config::getCurrentPhpName() . '/ext';
             $extName = $ext->getExtensionName();
             $extensionDir = $currentPhpExtensionDirectory . DIRECTORY_SEPARATOR . $extName;
             if (file_exists($extensionDir)) {
-                Utils::system("rm -rvf $extensionDir");
+                Utils::system("rm -rvf {$extensionDir}");
             }
         }
     }
@@ -47,9 +47,9 @@ class ExtensionManager
     {
         $make = new MakeTask($this->logger);
         $make->setQuiet();
-        $code = !is_dir($sourceDir = $ext->getSourceDirectory()) ||
-                !$ext->isBuildable() ||
-                !$make->clean($ext);
+        $code = !is_dir($sourceDir = $ext->getSourceDirectory())
+                || !$ext->isBuildable()
+                || !$make->clean($ext);
 
         if ($code != 0) {
             $this->logger->error("Could not clean extension: {$ext->getName()}.");
@@ -70,13 +70,13 @@ class ExtensionManager
         $name = $ext->getName();
 
         if (!file_exists($sourceDir)) {
-            throw new Exception("Source directory $sourceDir does not exist.");
+            throw new Exception("Source directory {$sourceDir} does not exist.");
         }
 
         // Install local extension
         $installer = new ExtensionInstaller($this->logger);
         $this->logger->info("===> Installing {$name} extension...");
-        $this->logger->debug("Extension path $sourceDir");
+        $this->logger->debug("Extension path {$sourceDir}");
         // $installer->runInstall($name, $sourceDir, $options);
         $installer->install($ext, $options);
 
@@ -102,7 +102,7 @@ class ExtensionManager
             return true;
         }
 
-        // @see https://github.com/php/php-src/commit/0def1ca59a
+        /** @see https://github.com/php/php-src/commit/0def1ca59a */
         $content = sprintf(
             '%s=%s' . PHP_EOL,
             $ext->isZend() ? 'zend_extension' : 'extension',
@@ -129,9 +129,8 @@ class ExtensionManager
         }
         if ($ext) {
             return $this->disableExtension($ext, $sapi);
-        } else {
-            $this->logger->info("{$extensionName} extension is not installed. ");
         }
+        $this->logger->info("{$extensionName} extension is not installed. ");
     }
 
     public function enable($extensionName, $sapi = null)
@@ -142,20 +141,20 @@ class ExtensionManager
         }
         if ($ext) {
             return $this->enableExtension($ext, $sapi);
-        } else {
-            $this->logger->info("{$extensionName} extension is not installed. ");
         }
+        $this->logger->info("{$extensionName} extension is not installed. ");
     }
 
     /**
      * Enables ini file for current extension.
      *
+     * @param  null|mixed $sapi
      * @return bool
      */
     public function enableExtension(Extension $ext, $sapi = null)
     {
         $name = $ext->getExtensionName();
-        $this->logger->info("===> Enabling extension $name");
+        $this->logger->info("===> Enabling extension {$name}");
 
         if ($sapi) {
             return $this->enableSapiExtension($ext, $name, $sapi, true);
@@ -208,6 +207,7 @@ class ExtensionManager
             }
 
             $this->logger->info("[*] {$name} extension is re-enabled for SAPI {$sapi}.");
+
             return true;
         }
 
@@ -225,6 +225,7 @@ class ExtensionManager
     /**
      * Disables ini file for current extension.
      *
+     * @param  null|mixed $sapi
      * @return bool
      */
     public function disableExtension(Extension $ext, $sapi = null)
@@ -269,8 +270,9 @@ class ExtensionManager
 
     /**
      * Disable extensions known to conflict with current one.
+     * @param null|mixed $sapi
      */
-    public function disableAntagonists(Extension $ext, $sapi = null)
+    public function disableAntagonists(Extension $ext, $sapi = null): void
     {
         $name = $ext->getName();
         if (isset($this->conflicts[$name])) {

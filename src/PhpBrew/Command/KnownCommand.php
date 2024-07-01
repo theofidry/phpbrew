@@ -19,7 +19,7 @@ class KnownCommand extends Command
     /**
      * @param OptionSpecCollection $opts
      */
-    public function options($opts)
+    public function options($opts): void
     {
         $opts->add('m|more', 'Show more older versions');
         $opts->add('o|old', 'List old phps (less than 5.3)');
@@ -28,11 +28,11 @@ class KnownCommand extends Command
         DownloadFactory::addOptionsForCommand($opts);
     }
 
-    public function execute()
+    public function execute(): void
     {
         $releaseList = new ReleaseList();
 
-        //always fetch list from remote when --old presents, because the local file may not contain the old versions
+        // always fetch list from remote when --old presents, because the local file may not contain the old versions
         // and --old is seldom used.
         if (!$releaseList->foundLocalReleaseList() || $this->options->update || $this->options->old) {
             $fetchTask = new FetchReleaseListTask($this->logger, $this->options);

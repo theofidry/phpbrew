@@ -14,16 +14,15 @@ class CtagsCommand extends Command
         return 'Run ctags at current php source dir for extension development.';
     }
 
-    public function arguments($args)
+    public function arguments($args): void
     {
         $args->add('PHP build')
-            ->validValues(function () {
+            ->validValues(static function () {
                 return BuildFinder::findInstalledBuilds();
-            })
-            ;
+            });
     }
 
-    public function execute($versionName = null)
+    public function execute($versionName = null): void
     {
         $args = func_get_args();
         array_shift($args);
@@ -32,7 +31,8 @@ class CtagsCommand extends Command
             $sourceDir = Config::getBuildDir() . DIRECTORY_SEPARATOR . $versionName;
         } else {
             if (!getenv('PHPBREW_PHP')) {
-                $this->logger->error(<<<EOF
+                $this->logger->error(
+                    <<<'EOF'
 Error: PHPBREW_PHP environment variable is not defined.
   This command requires you specify a PHP version from your build list.
   And it looks like you haven't switched to a version from the builds that were built with PHPBrew.
@@ -45,7 +45,7 @@ EOF
             $sourceDir = Config::getCurrentBuildDir();
         }
         if (!file_exists($sourceDir)) {
-            $this->logger->error("$sourceDir does not exist.");
+            $this->logger->error("{$sourceDir} does not exist.");
 
             return;
         }

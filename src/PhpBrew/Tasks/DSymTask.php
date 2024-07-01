@@ -9,8 +9,6 @@ class DSymTask extends BaseTask
     // Fix php.dSYM
     /* Check if php.dSYM exists */
     /**
-     * @param Build $build
-     *
      * @return bool
      */
     public function check(Build $build)
@@ -21,7 +19,7 @@ class DSymTask extends BaseTask
         return !file_exists($phpbin) && file_exists($dSYM);
     }
 
-    public function patch(Build $build, $options)
+    public function patch(Build $build, $options): void
     {
         if ($this->check($build)) {
             $this->logger->info('---> Moving php.dSYM to php ');

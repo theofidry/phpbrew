@@ -5,128 +5,131 @@ namespace PhpBrew\Tests\BuildSettings;
 use PhpBrew\BuildSettings\BuildSettings;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 class BuildSettingsTest extends TestCase
 {
-    public function testConstructorWithEnabledVariants()
+    public function test_constructor_with_enabled_variants(): void
     {
         $settings = new BuildSettings([
             'enabled_variants' => ['sqlite' => null],
         ]);
 
-        $this->assertTrue($settings->isEnabledVariant('sqlite'));
+        self::assertTrue($settings->isEnabledVariant('sqlite'));
     }
 
-    public function testConstructorWithDisabledVariants()
+    public function test_constructor_with_disabled_variants(): void
     {
         $settings = new BuildSettings([
             'disabled_variants' => ['sqlite' => true],
         ]);
 
-        $this->assertFalse($settings->isEnabledVariant('sqlite'));
+        self::assertFalse($settings->isEnabledVariant('sqlite'));
     }
 
-    public function testToArray()
+    public function test_to_array(): void
     {
         $enabledVariants = ['sqlite' => null, 'curl' => 'yes'];
         $disabledVariants = ['dom' => null];
         $extraOptions = [];
         $settings = new BuildSettings([
-            'enabled_variants'  => $enabledVariants,
+            'enabled_variants' => $enabledVariants,
             'disabled_variants' => $disabledVariants,
-            'extra_options'     => $extraOptions,
+            'extra_options' => $extraOptions,
         ]);
 
         $expected = [
-            'enabled_variants'  => $enabledVariants,
+            'enabled_variants' => $enabledVariants,
             'disabled_variants' => $disabledVariants,
-            'extra_options'     => $extraOptions,
+            'extra_options' => $extraOptions,
         ];
-        $this->assertEquals($expected, $settings->toArray());
+        self::assertEquals($expected, $settings->toArray());
     }
 
-    public function testEnableVariant()
+    public function test_enable_variant(): void
     {
         $settings = new BuildSettings();
         $settings->enableVariant('curl');
 
-        $this->assertTrue($settings->isEnabledVariant('curl'));
+        self::assertTrue($settings->isEnabledVariant('curl'));
     }
 
-    public function testEnableVariants()
+    public function test_enable_variants(): void
     {
         $variants = [
             'sqlite' => null,
-            'curl'   => 'yes',
-            'dom'    => null,
+            'curl' => 'yes',
+            'dom' => null,
         ];
         $settings = new BuildSettings();
         $settings->enableVariants($variants);
 
-        $this->assertEquals($variants, $settings->getEnabledVariants());
+        self::assertEquals($variants, $settings->getEnabledVariants());
     }
 
-    public function testDisableVariants()
+    public function test_disable_variants(): void
     {
         $variants = [
-            'sqlite' => null, 'curl'   => 'yes', 'dom'    => null];
+            'sqlite' => null, 'curl' => 'yes', 'dom' => null];
         $settings = new BuildSettings();
         $settings->disableVariants($variants);
 
         $expected = [
             'sqlite' => null,
-            'curl'   => null,
-            'dom'    => null,
+            'curl' => null,
+            'dom' => null,
         ];
-        $this->assertEquals($expected, $settings->getDisabledVariants());
+        self::assertEquals($expected, $settings->getDisabledVariants());
     }
 
-    public function testIsEnabledVariant()
+    public function test_is_enabled_variant(): void
     {
         $settings = new BuildSettings();
         $settings->enableVariant('sqlite');
         $settings->disableVariant('curl');
 
-        $this->assertTrue($settings->isEnabledVariant('sqlite'));
-        $this->assertFalse($settings->isEnabledVariant('curl'));
+        self::assertTrue($settings->isEnabledVariant('sqlite'));
+        self::assertFalse($settings->isEnabledVariant('curl'));
     }
 
-    public function testRemoveVariant()
+    public function test_remove_variant(): void
     {
         $settings = new BuildSettings();
         $settings->enableVariant('sqlite');
 
-        $this->assertTrue($settings->isEnabledVariant('sqlite'));
+        self::assertTrue($settings->isEnabledVariant('sqlite'));
         $settings->removeVariant('sqlite');
-        $this->assertFalse($settings->isEnabledVariant('sqlite'));
+        self::assertFalse($settings->isEnabledVariant('sqlite'));
     }
 
-    public function testResolveVariants()
+    public function test_resolve_variants(): void
     {
         $settings = new BuildSettings();
         $settings->enableVariant('sqlite');
         $settings->disableVariant('sqlite');
         $settings->resolveVariants();
 
-        $this->assertEquals([], $settings->getEnabledVariants());
+        self::assertEquals([], $settings->getEnabledVariants());
     }
 
-    public function testGetVariants()
+    public function test_get_variants(): void
     {
         $settings = new BuildSettings();
         $settings->enableVariant('sqlite');
         $settings->enableVariant('curl');
         $settings->disableVariant('dom');
 
-        $this->assertEquals(['sqlite' => null, 'curl' => null], $settings->getEnabledVariants());
+        self::assertEquals(['sqlite' => null, 'curl' => null], $settings->getEnabledVariants());
     }
 
-    public function testGetDisabledVariants()
+    public function test_get_disabled_variants(): void
     {
         $settings = new BuildSettings();
         $settings->enableVariant('sqlite');
         $settings->enableVariant('curl');
         $settings->disableVariant('dom');
 
-        $this->assertEquals(['dom' => null], $settings->getDisabledVariants());
+        self::assertEquals(['dom' => null], $settings->getDisabledVariants());
     }
 }

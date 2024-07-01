@@ -22,9 +22,6 @@ final class UserProvidedPrefix implements PrefixFinder
         $this->prefix = $prefix;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function findPrefix()
     {
         return $this->prefix;

@@ -7,9 +7,12 @@ use PhpBrew\Build;
 use PhpBrew\Patches\IntlWith64bitPatch;
 use PhpBrew\Testing\PatchTestCase;
 
+/**
+ * @internal
+ */
 class IntlWith64bitPatchTest extends PatchTestCase
 {
-    public function testPatch()
+    public function test_patch(): void
     {
         $logger = new Logger();
         $logger->setQuiet();
@@ -19,7 +22,7 @@ class IntlWith64bitPatchTest extends PatchTestCase
         $sourceDirectory = getenv('PHPBREW_BUILD_PHP_DIR');
 
         if (!is_dir($sourceDirectory)) {
-            $this->markTestSkipped("$sourceDirectory does not exist.");
+            self::markTestSkipped("{$sourceDirectory} does not exist.");
         }
 
         // Copy the source Makefile to the Makefile
@@ -29,15 +32,15 @@ class IntlWith64bitPatchTest extends PatchTestCase
         $build = new Build($fromVersion);
         $build->setSourceDirectory($sourceDirectory);
         $build->enableVariant('intl');
-        $this->assertTrue($build->isEnabledVariant('intl'));
+        self::assertTrue($build->isEnabledVariant('intl'));
 
         $patch = new IntlWith64bitPatch();
         $matched = $patch->match($build, $logger);
-        $this->assertTrue($matched, 'patch matched');
+        self::assertTrue($matched, 'patch matched');
         $patchedCount = $patch->apply($build, $logger);
-        $this->assertEquals(3, $patchedCount);
+        self::assertEquals(3, $patchedCount);
 
         $sourceExpectedDirectory = getenv('PHPBREW_EXPECTED_PHP_DIR') . DIRECTORY_SEPARATOR . $fromVersion;
-        $this->assertFileEquals($sourceExpectedDirectory . '/Makefile', $sourceDirectory . '/Makefile');
+        self::assertFileEquals($sourceExpectedDirectory . '/Makefile', $sourceDirectory . '/Makefile');
     }
 }

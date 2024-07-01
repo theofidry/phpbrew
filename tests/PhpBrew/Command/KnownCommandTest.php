@@ -7,6 +7,7 @@ use PhpBrew\Testing\CommandTestCase;
 /**
  * @large
  * @group command
+ * @internal
  */
 class KnownCommandTest extends CommandTestCase
 {
@@ -16,7 +17,7 @@ class KnownCommandTest extends CommandTestCase
      * @outputBuffering enabled
      * @group mayignore
      */
-    public function testCommand()
+    public function test_command(): void
     {
         $this->assertCommandSuccess('phpbrew --quiet known');
     }
@@ -25,7 +26,7 @@ class KnownCommandTest extends CommandTestCase
      * @outputBuffering enabled
      * @group mayignore
      */
-    public function testMoreOption()
+    public function test_more_option(): void
     {
         $this->assertCommandSuccess('phpbrew --quiet known --more');
     }
@@ -34,17 +35,16 @@ class KnownCommandTest extends CommandTestCase
      * @outputBuffering enabled
      * @group mayignore
      */
-    public function testOldMoreOption()
+    public function test_old_more_option(): void
     {
         $this->assertCommandSuccess('phpbrew --quiet known --old --more');
     }
-
 
     /**
      * @outputBuffering enabled
      * @group mayignore
      */
-    public function testKnownUpdateCommand()
+    public function test_known_update_command(): void
     {
         $this->assertCommandSuccess('phpbrew --quiet known --update');
         $this->assertCommandSuccess('phpbrew --quiet known -u');

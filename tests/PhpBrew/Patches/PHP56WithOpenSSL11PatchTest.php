@@ -7,12 +7,16 @@ use PhpBrew\Build;
 use PhpBrew\Patches\PHP56WithOpenSSL11Patch;
 use PhpBrew\Testing\PatchTestCase;
 
+/**
+ * @internal
+ */
 class PHP56WithOpenSSL11PatchTest extends PatchTestCase
 {
     /**
      * @dataProvider versionProvider
+     * @param mixed $version
      */
-    public function testPatchVersion($version)
+    public function test_patch_version($version): void
     {
         $logger = new Logger();
         $logger->setQuiet();
@@ -24,12 +28,12 @@ class PHP56WithOpenSSL11PatchTest extends PatchTestCase
         $build = new Build($version);
         $build->setSourceDirectory($sourceDirectory);
         $build->enableVariant('openssl');
-        $this->assertTrue($build->isEnabledVariant('openssl'));
+        self::assertTrue($build->isEnabledVariant('openssl'));
 
         $patch = new PHP56WithOpenSSL11Patch();
-        $this->assertTrue($patch->match($build, $logger));
+        self::assertTrue($patch->match($build, $logger));
 
-        $this->assertGreaterThan(0, $patch->apply($build, $logger));
+        self::assertGreaterThan(0, $patch->apply($build, $logger));
 
         $expectedDirectory = getenv('PHPBREW_EXPECTED_PHP_DIR') . '/' . $version . '-php56-openssl11-patch';
 
@@ -40,14 +44,14 @@ class PHP56WithOpenSSL11PatchTest extends PatchTestCase
                 'ext/phar/util.c',
             ] as $path
         ) {
-            $this->assertFileEquals(
+            self::assertFileEquals(
                 $expectedDirectory . '/' .  $path,
                 $sourceDirectory . '/' . $path
             );
         }
     }
 
-    public static function versionProvider()
+    public static function versionProvider(): iterable
     {
         return [['5.6.40']];
     }

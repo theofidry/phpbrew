@@ -9,10 +9,11 @@ use PhpBrew\Testing\VCRAdapter;
 use PHPUnit\Framework\TestCase;
 
 /**
- * ExtensionManagerTest
+ * ExtensionManagerTest.
  *
  * @large
  * @group extension
+ * @internal
  */
 class ExtensionManagerTest extends TestCase
 {
@@ -32,9 +33,9 @@ class ExtensionManagerTest extends TestCase
         VCRAdapter::disableVCR();
     }
 
-    public function testCleanExtension()
+    public function test_clean_extension(): void
     {
         $ext = ExtensionFactory::lookup('xdebug', [getenv('PHPBREW_EXTENSION_DIR')]);
-        $this->assertTrue($this->manager->cleanExtension($ext));
+        self::assertTrue($this->manager->cleanExtension($ext));
     }
 }

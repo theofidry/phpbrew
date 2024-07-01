@@ -22,9 +22,8 @@ abstract class BaseDownloader
      * @param string $url            the url to be downloaded
      * @param string $targetFilePath the path where file to be saved. null means auto-generated temp path
      *
-     * @return bool|string if download successfully, return target file path, otherwise return false.
-     *
      * @throws RuntimeException
+     * @return bool|string      if download successfully, return target file path, otherwise return false.
      */
     public function download($url, $targetFilePath = null)
     {
@@ -39,15 +38,15 @@ abstract class BaseDownloader
             }
         }
         if (!is_writable($targetFilePath)) {
-            throw new RuntimeException("Target path ($targetFilePath) is not writable!");
+            throw new RuntimeException("Target path ({$targetFilePath}) is not writable!");
         }
         if ($this->process($url, $targetFilePath)) {
-            $this->logger->debug("$url => $targetFilePath");
+            $this->logger->debug("{$url} => {$targetFilePath}");
 
             return $targetFilePath;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**
@@ -55,9 +54,8 @@ abstract class BaseDownloader
      *
      * @param string $url The url to be downloaded
      *
-     * @return bool|string return content if download successfully, otherwise false is returned
-     *
      * @throws RuntimeException
+     * @return bool|string      return content if download successfully, otherwise false is returned
      */
     public function request($url)
     {

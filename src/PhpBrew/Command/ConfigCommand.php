@@ -18,7 +18,7 @@ class ConfigCommand extends Command
         return 'Edit your current php.ini in your favorite $EDITOR';
     }
 
-    public function options($opts)
+    public function options($opts): void
     {
         $opts->add('s|sapi:=string', 'Edit php.ini for SAPI name.');
     }

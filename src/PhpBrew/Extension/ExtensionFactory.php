@@ -16,6 +16,7 @@ class ExtensionFactory
     /**
      * One extension directory might contains multiple config*.m4 file, like
      * memcache extension.
+     * @param mixed $extensionDir
      */
     public static function configM4Exists($extensionDir)
     {
@@ -300,8 +301,8 @@ class ExtensionFactory
                     $defaultValue = $allMatches[6][$i];
 
                     $opt = new ConfigureOption(
-                        ($option ?: '--with-' . $name),
-                        ($desc ?: $optionDesc),
+                        $option ?: '--with-' . $name,
+                        $desc ?: $optionDesc,
                         $optionValueHint
                     );
 
@@ -313,9 +314,9 @@ class ExtensionFactory
             }
 
             return $ext;
-        } else {
-            throw new Exception("Can not parse config.m4: $m4Path");
         }
+
+        throw new Exception("Can not parse config.m4: {$m4Path}");
     }
 
     public static function createPeclExtension($packageName, $packageXmlPath)

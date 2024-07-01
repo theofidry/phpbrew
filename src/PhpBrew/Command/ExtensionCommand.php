@@ -27,7 +27,7 @@ class ExtensionCommand extends BaseCommand
         return 'List extensions or execute extension subcommands';
     }
 
-    public function init()
+    public function init(): void
     {
         $this->command('enable');
         $this->command('install');
@@ -41,13 +41,13 @@ class ExtensionCommand extends BaseCommand
     /**
      * @param OptionCollection $opts
      */
-    public function options($opts)
+    public function options($opts): void
     {
         $opts->add('so|show-options', 'Show extension configure options');
         $opts->add('sp|show-path', 'Show extension config.m4 path');
     }
 
-    public function describeExtension(Extension $ext)
+    public function describeExtension(Extension $ext): void
     {
         $this->logger->write(sprintf(
             ' [%s] %-12s %-12s',
@@ -81,7 +81,7 @@ class ExtensionCommand extends BaseCommand
         }
     }
 
-    public function execute()
+    public function execute(): void
     {
         $buildDir = Config::getCurrentBuildDir();
         $extDir = $buildDir . DIRECTORY_SEPARATOR . 'ext';
@@ -94,7 +94,7 @@ class ExtensionCommand extends BaseCommand
         $lookupDirectories = ['', 'ext', 'extension'];
 
         if (file_exists($extDir) && is_dir($extDir)) {
-            $this->logger->debug("Scanning $extDir...");
+            $this->logger->debug("Scanning {$extDir}...");
             foreach (scandir($extDir) as $extName) {
                 if ($extName == '.' || $extName == '..') {
                     continue;
@@ -103,7 +103,7 @@ class ExtensionCommand extends BaseCommand
                 foreach ($lookupDirectories as $lookupDirectory) {
                     $extensionDir = $dir . (empty($lookupDirectory) ? '' : DIRECTORY_SEPARATOR . $lookupDirectory);
                     if ($m4files = ExtensionFactory::configM4Exists($extensionDir)) {
-                        $this->logger->debug("Loading extension information $extName from $extensionDir");
+                        $this->logger->debug("Loading extension information {$extName} from {$extensionDir}");
 
                         foreach ($m4files as $m4file) {
                             try {

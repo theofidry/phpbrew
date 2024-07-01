@@ -10,7 +10,7 @@ use PhpBrew\Exception\SystemCommandException;
  */
 class BuildConfTask extends BaseTask
 {
-    public function run(Build $build)
+    public function run(Build $build): void
     {
         $lastLine = system('./buildconf --force', $status);
 

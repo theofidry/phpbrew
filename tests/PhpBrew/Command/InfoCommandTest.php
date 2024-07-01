@@ -7,14 +7,15 @@ use PhpBrew\Testing\CommandTestCase;
 /**
  * @large
  * @group command
+ * @internal
  */
 class InfoCommandTest extends CommandTestCase
 {
     /**
      * @outputBuffering enabled
      */
-    public function testInfoCommand()
+    public function test_info_command(): void
     {
-        $this->assertCommandSuccess("phpbrew info");
+        $this->assertCommandSuccess('phpbrew info');
     }
 }

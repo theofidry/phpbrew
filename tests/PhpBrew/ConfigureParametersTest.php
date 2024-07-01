@@ -5,6 +5,9 @@ namespace PhpBrew\Tests;
 use PhpBrew\ConfigureParameters;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 final class ConfigureParametersTest extends TestCase
 {
     private $configureParameters;
@@ -14,44 +17,44 @@ final class ConfigureParametersTest extends TestCase
         $this->configureParameters = new ConfigureParameters();
     }
 
-    public function testDefaults()
+    public function test_defaults(): void
     {
-        $this->assertSame([], $this->configureParameters->getOptions());
-        $this->assertSame([], $this->configureParameters->getPkgConfigPaths());
+        self::assertSame([], $this->configureParameters->getOptions());
+        self::assertSame([], $this->configureParameters->getPkgConfigPaths());
     }
 
-    public function testWithOptionAndValue()
+    public function test_with_option_and_value(): void
     {
-        $this->assertSame(['--with-foo' => 'bar'], $this->configureParameters
+        self::assertSame(['--with-foo' => 'bar'], $this->configureParameters
             ->withOption('--with-foo', 'bar')
             ->getOptions());
     }
 
-    public function testWithOptionAndNoValue()
+    public function test_with_option_and_no_value(): void
     {
-        $this->assertSame(['--with-foo' => null], $this->configureParameters
+        self::assertSame(['--with-foo' => null], $this->configureParameters
             ->withOption('--with-foo')
             ->getOptions());
     }
 
-    public function testWithSameOptionAndValue()
+    public function test_with_same_option_and_value(): void
     {
-        $this->assertSame(['--with-foo' => 'bar'], $this->configureParameters
+        self::assertSame(['--with-foo' => 'bar'], $this->configureParameters
             ->withOption('--with-foo', 'bar')
             ->withOption('--with-foo', 'bar')
             ->getOptions());
     }
 
-    public function testWithPkgConfigPath()
+    public function test_with_pkg_config_path(): void
     {
-        $this->assertSame(['/usr/lib/pkgconfig'], $this->configureParameters
+        self::assertSame(['/usr/lib/pkgconfig'], $this->configureParameters
             ->withPkgConfigPath('/usr/lib/pkgconfig')
             ->getPkgConfigPaths());
     }
 
-    public function testWithSamePkgConfigPath()
+    public function test_with_same_pkg_config_path(): void
     {
-        $this->assertSame(['/usr/lib/pkgconfig'], $this->configureParameters
+        self::assertSame(['/usr/lib/pkgconfig'], $this->configureParameters
             ->withPkgConfigPath('/usr/lib/pkgconfig')
             ->withPkgConfigPath('/usr/lib/pkgconfig')
             ->getPkgConfigPaths());

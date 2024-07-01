@@ -11,7 +11,7 @@ class HelpCommand extends BaseHelpCommand
         $args = func_get_args();
 
         if (empty($args)) {
-            $headline = <<<EOS
+            $headline = <<<'EOS'
   ______ _   _ ____________                   
   | ___ \ | | || ___ \ ___ \                  
   | |_/ / |_| || |_/ / |_/ /_ __ _____      __

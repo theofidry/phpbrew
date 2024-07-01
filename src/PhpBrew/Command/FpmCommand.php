@@ -9,7 +9,7 @@ class FpmCommand extends VirtualCommand
         return 'fpm commands';
     }
 
-    public function init()
+    public function init(): void
     {
         parent::init();
 

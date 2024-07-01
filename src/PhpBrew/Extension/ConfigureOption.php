@@ -34,7 +34,7 @@ class ConfigureOption
         return $this->valueHint;
     }
 
-    public function setDefaultValue($value)
+    public function setDefaultValue($value): void
     {
         $this->defaultValue = $value;
     }

@@ -11,7 +11,7 @@ use PhpBrew\Exception\SystemCommandException;
  */
 class InstallTask extends BaseTask
 {
-    public function install(Build $build)
+    public function install(Build $build): void
     {
         $this->info('Installing...');
 
@@ -20,7 +20,7 @@ class InstallTask extends BaseTask
             if (!$this->options->dryrun) {
                 $code = $cmd->passthru($lastline);
                 if ($code !== 0) {
-                    throw new SystemCommandException("Install failed: $lastline", $build, $build->getBuildLogPath());
+                    throw new SystemCommandException("Install failed: {$lastline}", $build, $build->getBuildLogPath());
                 }
             }
         } else {
@@ -31,7 +31,7 @@ class InstallTask extends BaseTask
             if (!$this->options->dryrun) {
                 $code = $cmd->execute($lastline);
                 if ($code !== 0) {
-                    throw new SystemCommandException("Install failed: $lastline", $build, $build->getBuildLogPath());
+                    throw new SystemCommandException("Install failed: {$lastline}", $build, $build->getBuildLogPath());
                 }
             }
         }

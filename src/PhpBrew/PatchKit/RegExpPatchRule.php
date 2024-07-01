@@ -35,7 +35,7 @@ class RegExpPatchRule implements PatchRule
      */
     public function allOf(array $patterns)
     {
-        $this->predicator = function ($line) use ($patterns) {
+        $this->predicator = static function ($line) use ($patterns) {
             foreach ($patterns as $pattern) {
                 if (!preg_match($pattern, $line)) {
                     return false;
@@ -53,7 +53,7 @@ class RegExpPatchRule implements PatchRule
         if (count($patterns) === 0) {
             $this->predicator = true;
         }
-        $this->predicator = function ($line) use ($patterns) {
+        $this->predicator = static function ($line) use ($patterns) {
             foreach ($patterns as $pattern) {
                 if (preg_match($pattern, $line)) {
                     return true;
@@ -103,6 +103,7 @@ class RegExpPatchRule implements PatchRule
      * This method can only be used for text format files.
      *
      * @param string $content the target of the text content.
+     * @param mixed  $patched
      */
     protected function applyTextContent($content, &$patched)
     {
@@ -110,19 +111,20 @@ class RegExpPatchRule implements PatchRule
         return $this->applyLines(preg_split("/(?:\r\n|\n|\r)/", $content), $patched);
     }
 
-    public function backup(Buildable $build, Logger $logger)
+    public function backup(Buildable $build, Logger $logger): void
     {
         foreach ($this->files as $file) {
             $path = $build->getSourceDirectory() . DIRECTORY_SEPARATOR . $file;
             if (!file_exists($path)) {
-                $logger->error("file $path doesn't exist in the build directory.");
+                $logger->error("file {$path} doesn't exist in the build directory.");
+
                 continue;
             }
             $this->backupFile($path);
         }
     }
 
-    protected function backupFile($path)
+    protected function backupFile($path): void
     {
         $bakPath = $path . '.' . time() . '.bak';
         copy($path, $bakPath);
@@ -134,13 +136,14 @@ class RegExpPatchRule implements PatchRule
         foreach ($this->files as $file) {
             $path = $build->getSourceDirectory() . DIRECTORY_SEPARATOR . $file;
             if (!file_exists($path)) {
-                $logger->error("file $path doesn't exist in the build directory.");
+                $logger->error("file {$path} doesn't exist in the build directory.");
+
                 continue;
             }
             if ($content = file_get_contents($path)) {
                 $content = $this->applyTextContent($content, $patched);
                 if (false === file_put_contents($path, $content)) {
-                    $logger->error("Patch on $path write failed.");
+                    $logger->error("Patch on {$path} write failed.");
                 }
             }
         }

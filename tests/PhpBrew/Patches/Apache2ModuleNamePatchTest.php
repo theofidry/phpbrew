@@ -9,11 +9,11 @@ use PhpBrew\Testing\PatchTestCase;
 
 /**
  * @small
+ * @internal
  */
 class Apache2ModuleNamePatchTest extends PatchTestCase
 {
-
-    public function versionProvider()
+    public static function versionProvider(): iterable
     {
         return [
             [
@@ -31,8 +31,11 @@ class Apache2ModuleNamePatchTest extends PatchTestCase
 
     /**
      * @dataProvider versionProvider
+     * @param mixed $version
+     * @param mixed $expectedPatchedCount
+     * @param mixed $makefile
      */
-    public function testPatchVersion($version, $expectedPatchedCount, $makefile)
+    public function test_patch_version($version, $expectedPatchedCount, $makefile): void
     {
         $logger = new Logger();
         $logger->setQuiet();
@@ -40,7 +43,7 @@ class Apache2ModuleNamePatchTest extends PatchTestCase
         $sourceDirectory = getenv('PHPBREW_BUILD_PHP_DIR');
 
         if (!is_dir($sourceDirectory)) {
-            $this->markTestSkipped("$sourceDirectory does not exist.");
+            self::markTestSkipped("{$sourceDirectory} does not exist.");
         }
 
         $this->setupBuildDirectory($version);
@@ -48,16 +51,16 @@ class Apache2ModuleNamePatchTest extends PatchTestCase
         $build = new Build($version);
         $build->setSourceDirectory($sourceDirectory);
         $build->enableVariant('apxs2');
-        $this->assertTrue($build->isEnabledVariant('apxs2'));
+        self::assertTrue($build->isEnabledVariant('apxs2'));
 
         $patch = new Apache2ModuleNamePatch($version);
         $matched = $patch->match($build, $logger);
-        $this->assertTrue($matched, 'patch matched');
+        self::assertTrue($matched, 'patch matched');
         $patchedCount = $patch->apply($build, $logger);
 
         $sourceExpectedDirectory = getenv('PHPBREW_EXPECTED_PHP_DIR') . DIRECTORY_SEPARATOR . $version . '-apxs-patch';
-        $this->assertEquals($expectedPatchedCount, $patchedCount);
-        $this->assertFileEquals($sourceExpectedDirectory . $makefile, $sourceDirectory . $makefile);
-        $this->assertFileEquals($sourceExpectedDirectory . '/configure', $sourceDirectory . '/configure');
+        self::assertEquals($expectedPatchedCount, $patchedCount);
+        self::assertFileEquals($sourceExpectedDirectory . $makefile, $sourceDirectory . $makefile);
+        self::assertFileEquals($sourceExpectedDirectory . '/configure', $sourceDirectory . '/configure');
     }
 }

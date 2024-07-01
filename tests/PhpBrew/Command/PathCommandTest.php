@@ -7,40 +7,40 @@ use PhpBrew\Testing\CommandTestCase;
 /**
  * @large
  * @group command
+ * @internal
  */
 class PathCommandTest extends CommandTestCase
 {
-
-    public function argumentsProvider()
+    public static function argumentsProvider(): iterable
     {
         return [
             [
-                "build",
-                "#\.phpbrew/build/.+#",
+                'build',
+                '#\\.phpbrew/build/.+#',
             ],
             [
-                "ext-src",
-                "#\.phpbrew/build/.+/ext$#",
+                'ext-src',
+                '#\\.phpbrew/build/.+/ext$#',
             ],
             [
-                "include",
-                "#\.phpbrew/php/.+/include$#",
+                'include',
+                '#\\.phpbrew/php/.+/include$#',
             ],
             [
-                "etc",
-                "#\.phpbrew/php/.+/etc$#",
+                'etc',
+                '#\\.phpbrew/php/.+/etc$#',
             ],
             [
-                "dist",
-                "#\.phpbrew/distfiles$#",
+                'dist',
+                '#\\.phpbrew/distfiles$#',
             ],
             [
-                "root",
-                "#\.phpbrew$#",
+                'root',
+                '#\\.phpbrew$#',
             ],
             [
-                "home",
-                "#\.phpbrew$#",
+                'home',
+                '#\\.phpbrew$#',
             ],
         ];
     }
@@ -48,14 +48,16 @@ class PathCommandTest extends CommandTestCase
     /**
      * @outputBuffering enabled
      * @dataProvider argumentsProvider
+     * @param mixed $arg
+     * @param mixed $pattern
      */
-    public function testPathCommand($arg, $pattern)
+    public function test_path_command($arg, $pattern): void
     {
         putenv('PHPBREW_PHP=7.4.0');
 
         ob_start();
-        $this->runCommandWithStdout("phpbrew path $arg");
+        $this->runCommandWithStdout("phpbrew path {$arg}");
         $path = ob_get_clean();
-        $this->assertRegExp($pattern, $path);
+        self::assertRegExp($pattern, $path);
     }
 }

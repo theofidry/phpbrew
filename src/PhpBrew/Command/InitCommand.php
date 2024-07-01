@@ -13,7 +13,7 @@ class InitCommand extends Command
         return 'Initialize phpbrew config file.';
     }
 
-    public function options($opts)
+    public function options($opts): void
     {
         $opts->add(
             'c|config:',
@@ -30,7 +30,7 @@ class InitCommand extends Command
         )->isa('dir');
     }
 
-    public function execute()
+    public function execute(): void
     {
         // $currentVersion;
         $root = $this->options->root ?: Config::getRoot();
@@ -40,7 +40,7 @@ class InitCommand extends Command
         // $versionBuildPrefix = Config::getVersionInstallPrefix($version);
         // $versionBinPath     = Config::getVersionBinPath($version);
 
-        $this->logger->info("Using root: $root");
+        $this->logger->info("Using root: {$root}");
         if (!file_exists($root)) {
             mkdir($root, 0755, true);
         }
@@ -51,12 +51,12 @@ class InitCommand extends Command
         $paths[] = $buildDir;
         $paths[] = $buildPrefix;
         foreach ($paths as $p) {
-            $this->logger->debug("Checking directory $p");
+            $this->logger->debug("Checking directory {$p}");
             if (!file_exists($p)) {
-                $this->logger->debug("Creating directory $p");
+                $this->logger->debug("Creating directory {$p}");
                 mkdir($p, 0755, true);
             } else {
-                $this->logger->debug("Directory $p is already created.");
+                $this->logger->debug("Directory {$p} is already created.");
             }
         }
 
@@ -73,11 +73,11 @@ class InitCommand extends Command
 
         if ($configFile = $this->options->{'config'}) {
             if (!file_exists($configFile)) {
-                $this->logger->error("config file '$configFile' does not exist.");
+                $this->logger->error("config file '{$configFile}' does not exist.");
 
                 return;
             }
-            $this->logger->debug("Using yaml config from '$configFile'");
+            $this->logger->debug("Using yaml config from '{$configFile}'");
             copy($configFile, $root . DIRECTORY_SEPARATOR . 'config.yaml');
         }
 
@@ -99,14 +99,14 @@ class InitCommand extends Command
 Paste the following line(s) to the end of your ~/.config/fish/config.fish and start a
 new shell, phpbrew should be up and fully functional from there:
 
-    source $home/phpbrew.fish
+    source {$home}/phpbrew.fish
 EOS;
         } else {
             $initConfig = <<<EOS
 Paste the following line(s) to the end of your ~/.bashrc and start a
 new shell, phpbrew should be up and fully functional from there:
 
-    source $home/bashrc
+    source {$home}/bashrc
 
 To enable PHP version info in your shell prompt, please set PHPBREW_SET_PROMPT=1
 in your `~/.bashrc` before you source `~/.phpbrew/bashrc`
@@ -123,9 +123,9 @@ EOS;
         echo <<<EOS
 Phpbrew environment is initialized, required directories are created under
 
-    $home
+    {$home}
 
-$initConfig
+{$initConfig}
 
 For further instructions, simply run `phpbrew` to see the help message.
 

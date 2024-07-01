@@ -18,17 +18,17 @@ class ConfigCommand extends BaseCommand
         return 'Edit extension-specific configuration file';
     }
 
-    public function arguments($args)
+    public function arguments($args): void
     {
         $args->add('extensions')
-            ->suggestions(function () {
-                return array_map(function ($path) {
+            ->suggestions(static function () {
+                return array_map(static function ($path) {
                     return basename(basename($path, '.disabled'), '.ini');
                 }, glob(Config::getCurrentPhpDir() . '/var/db/*.{ini,disabled}', GLOB_BRACE));
             });
     }
 
-    public function options($opts)
+    public function options($opts): void
     {
         $opts->add('s|sapi:=string', 'Edit extension for SAPI name.');
     }
@@ -42,7 +42,7 @@ class ConfigCommand extends BaseCommand
 
         $ext = ExtensionFactory::lookup($extensionName);
         if (!$ext) {
-            return $this->error("Extension $extensionName not found.");
+            return $this->error("Extension {$extensionName} not found.");
         }
         $file = $ext->getConfigFilePath($sapi);
         $this->logger->info("Looking for {$file} file...");

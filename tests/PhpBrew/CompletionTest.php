@@ -4,12 +4,16 @@ namespace PhpBrew\Tests;
 
 use PhpBrew\Testing\CommandTestCase;
 
+/**
+ * @internal
+ */
 class CompletionTest extends CommandTestCase
 {
     /**
      * @dataProvider completionProvider
+     * @param mixed $shell
      */
-    public function testCompletion($shell)
+    public function test_completion($shell): void
     {
         $this->expectOutputString(
             file_get_contents(__DIR__ . '/../../completion/' . $shell . '/_phpbrew')
@@ -18,11 +22,11 @@ class CompletionTest extends CommandTestCase
         $this->app->run(['phpbrew', $shell, '--bind', 'phpbrew', '--program', 'phpbrew']);
     }
 
-    public static function completionProvider()
+    public static function completionProvider(): iterable
     {
         return [
             'bash' => ['bash'],
-            'zsh'  => ['zsh'],
+            'zsh' => ['zsh'],
         ];
     }
 }

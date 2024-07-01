@@ -3,7 +3,7 @@
 namespace PhpBrew;
 
 /**
- * A strategy of finding prefix
+ * A strategy of finding prefix.
  */
 interface PrefixFinder
 {

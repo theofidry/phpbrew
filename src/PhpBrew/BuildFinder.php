@@ -12,7 +12,7 @@ class BuildFinder
         $path = Config::getRoot() . DIRECTORY_SEPARATOR . 'php';
 
         if (!file_exists($path)) {
-            return array();
+            return [];
         }
 
         $names = array_filter(scandir($path), function ($name) use ($path) {

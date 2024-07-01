@@ -22,6 +22,33 @@ jobs:
 
             -   run: make composer_validate
 
+    rector_lint:
+        runs-on: ubuntu-latest
+        name: Rector Lint
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v4
+
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: '8.3'
+                    tools: composer
+                    coverage: none
+
+            -   name: Install dependencies
+                uses: ramsey/composer-install@v2
+
+            -   name: Install Rector dependencies
+                uses: ramsey/composer-install@v2
+                with:
+                    working-directory: vendor-bin/rector
+
+            -   name: Ensure the make targets are up to date
+                run: make rector_install
+
+            -   run: make rector_lint
+
 
     # This is a "trick", a meta task which does not change, and we can use in
     # the protected branch rules as opposed to the tests one above which

@@ -8,22 +8,22 @@ use GetOptionKit\OptionResult;
 
 class DownloadFactory
 {
-    const METHOD_PHP_CURL = 'php_curl';
-    const METHOD_PHP_STREAM = 'php_stream';
-    const METHOD_WGET = 'wget';
-    const METHOD_CURL = 'curl';
+    private const METHOD_PHP_CURL = 'php_curl';
+    private const METHOD_PHP_STREAM = 'php_stream';
+    private const METHOD_WGET = 'wget';
+    private const METHOD_CURL = 'curl';
 
-    private static $availableDownloaders = array(
-        self::METHOD_PHP_CURL => 'PhpBrew\Downloader\PhpCurlDownloader',
-        self::METHOD_PHP_STREAM => 'PhpBrew\Downloader\PhpStreamDownloader',
-        self::METHOD_WGET => 'PhpBrew\Downloader\WgetCommandDownloader',
-        self::METHOD_CURL => 'PhpBrew\Downloader\CurlCommandDownloader',
-    );
+    private static $availableDownloaders = [
+        self::METHOD_PHP_CURL   => PhpCurlDownloader::class,
+        self::METHOD_PHP_STREAM => PhpStreamDownloader::class,
+        self::METHOD_WGET       => WgetCommandDownloader::class,
+        self::METHOD_CURL       => CurlCommandDownloader::class,
+    ];
 
     /**
      * When php built-in extensions don't support openssl, we can use curl or wget instead.
      */
-    private static $fallbackDownloaders = array('curl', 'wget');
+    private static $fallbackDownloaders = ['curl', 'wget'];
 
     /**
      * @param Logger       $logger      is used for creating downloader
@@ -59,10 +59,10 @@ class DownloadFactory
     {
         if (is_string($downloader)) {
             //if we specific a downloader class clearly, then it's the only choice
-            if (class_exists($downloader) && is_subclass_of($downloader, 'PhpBrew\Downloader\BaseDownloader')) {
+            if (class_exists($downloader) && is_subclass_of($downloader, BaseDownloader::class)) {
                 return new $downloader($logger, $options);
             }
-            $downloader = array($downloader);
+            $downloader = [$downloader];
         }
         if (empty($downloader)) {
             $downloader = array_keys(self::$availableDownloaders);
@@ -72,7 +72,7 @@ class DownloadFactory
         //even if the caller specific downloader by alias/array
         if ($options->has('downloader')) {
             $logger->info("Found --downloader option, try to use {$options->downloader} as default downloader.");
-            $downloader = array_merge(array($options->downloader), $downloader);
+            $downloader = array_merge([$options->downloader], $downloader);
         }
 
         $instance = self::create($logger, $options, $downloader);

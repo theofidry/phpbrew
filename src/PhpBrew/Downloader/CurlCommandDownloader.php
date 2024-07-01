@@ -10,7 +10,7 @@ class CurlCommandDownloader extends BaseDownloader
     {
         $this->logger->info('downloading via curl command');
         //todo proxy setting
-        $command = array('curl');
+        $command = ['curl'];
 
         if ($proxy = $this->options->{'http-proxy'}) {
             $this->logger->warn('http proxy is not support by this download.');

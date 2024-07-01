@@ -54,11 +54,7 @@ class BeforeConfigureTask extends BaseTask
             $needBuildConf = false;
 
             /** @var Patch[] $patches */
-            $patches = array(
-                new Apache2ModuleNamePatch($build->getVersion()),
-                $freeTypePatch,
-                $readlinePatch
-            );
+            $patches = [new Apache2ModuleNamePatch($build->getVersion()), $freeTypePatch, $readlinePatch];
 
             foreach ($patches as $patch) {
                 $this->logger->info('Checking patch for ' . $patch->desc());

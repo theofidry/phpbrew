@@ -4,3 +4,4 @@
 /build
 /phpbrew
 /phpbrew.asc
+/vendor-bin/*/vendor/

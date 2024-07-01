@@ -16,7 +16,7 @@ class AfterConfigureTask extends BaseTask
     {
         if (!$this->options->{'no-patch'}) {
             $this->logger->info('===> Checking patches...');
-            $patches = array();
+            $patches = [];
             $patches[] = new IntlWith64bitPatch();
             $patches[] = new OpenSSLDSOPatch();
             $patches[] = new PHP56WithOpenSSL11Patch();

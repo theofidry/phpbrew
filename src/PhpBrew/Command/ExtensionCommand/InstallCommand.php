@@ -10,7 +10,6 @@ use PhpBrew\Extension\ExtensionDownloader;
 use PhpBrew\Extension\ExtensionFactory;
 use PhpBrew\Extension\ExtensionManager;
 use PhpBrew\ExtensionList;
-use PhpBrew\Utils;
 
 class InstallCommand extends BaseCommand
 {
@@ -53,7 +52,7 @@ class InstallCommand extends BaseCommand
     protected function getExtConfig($args)
     {
         $version = null;
-        $options = array();
+        $options = [];
 
         if (count($args) > 0) {
             $pos = array_search('--', $args);
@@ -66,10 +65,10 @@ class InstallCommand extends BaseCommand
             }
         }
 
-        return (object) array(
+        return (object)[
             'version' => $version,
             'options' => $options,
-        );
+        ];
     }
 
     public function prepare()
@@ -126,7 +125,7 @@ class InstallCommand extends BaseCommand
         }
 
         // Expand extensionset from config
-        $extensions = array();
+        $extensions = [];
         if (substr($extName, 0, 1) === '+') {
             $config = Config::getConfigParam('extensions');
             $extName = ltrim($extName, '+');

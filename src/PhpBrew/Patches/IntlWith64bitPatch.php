@@ -57,13 +57,13 @@ class IntlWith64bitPatch extends Patch
 
     public function rules()
     {
-        $rules = array();
+        $rules = [];
         $rules[] = RegExpPatchRule::files('Makefile')
-            ->allOf(array('/^BUILD_/'))
+            ->allOf(['/^BUILD_/'])
             ->replaces('/\$\(CC\)/', '$(CXX)');
 
         $rules[] = RegExpPatchRule::files('Makefile')
-            ->allOf(array('/^EXTRA_LIBS =/'))
+            ->allOf(['/^EXTRA_LIBS =/'])
             ->replaces('/^(.*)$/', '$1 -lstdc++');
 
         return $rules;

@@ -2,6 +2,9 @@
 
 namespace PhpBrew;
 
+use PhpBrew\Extension\Provider\GithubProvider;
+use PhpBrew\Extension\Provider\BitbucketProvider;
+use PhpBrew\Extension\Provider\PeclProvider;
 use CLIFramework\Logger;
 use GetOptionKit\OptionResult;
 use PhpBrew\Extension\Provider\Provider;
@@ -28,11 +31,14 @@ class ExtensionList
         if ($providers) {
             return $providers;
         }
-        $providers = array(
-            new Extension\Provider\GithubProvider(),
-            new Extension\Provider\BitbucketProvider(),
-            new Extension\Provider\PeclProvider($this->logger, $this->options),
-        );
+        $providers = [
+            new GithubProvider(),
+            new BitbucketProvider(),
+            new PeclProvider(
+                $this->logger,
+                $this->options
+            ),
+        ];
 
         return $providers;
     }

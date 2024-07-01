@@ -38,11 +38,9 @@ class Extension implements Buildable
      *
      * Contains [($name, $desc), .... ] pairs
      */
-    protected $configureOptions = array();
+    protected $configureOptions = [];
 
-    protected static $nameMap = array(
-        'libsodium' => 'sodium',
-    );
+    protected static $nameMap = ['libsodium' => 'sodium'];
 
     public function __construct($name)
     {

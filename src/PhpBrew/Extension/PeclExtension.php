@@ -23,7 +23,7 @@ class PeclExtension extends Extension
         }
 
         if ($options = $pkg->getConfigureOptions()) {
-            $this->configureOptions = array();
+            $this->configureOptions = [];
             foreach ($options as $option) {
                 $this->addConfigureOption(new ConfigureOption('--' . $option->name, $option->prompt, $option->default));
             }

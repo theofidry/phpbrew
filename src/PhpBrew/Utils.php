@@ -80,16 +80,21 @@ class Utils
             /opt/foo/lib/sparc-solaris/
             /opt/bar/include/sparc-solaris/
          */
-        $multiArchs = array(
+        $multiArchs = [
             'lib/lib64',
             'lib/lib32',
-            'lib64', // Linux Fedora
-            'lib', // CentOS
-            'lib/ia64-linux-gnu', // Linux IA-64
-            'lib/x86_64-linux-gnu', // Linux x86_64
-            'lib/x86_64-kfreebsd-gnu', // FreeBSD
+            'lib64',
+            // Linux Fedora
+            'lib',
+            // CentOS
+            'lib/ia64-linux-gnu',
+            // Linux IA-64
+            'lib/x86_64-linux-gnu',
+            // Linux x86_64
+            'lib/x86_64-kfreebsd-gnu',
+            // FreeBSD
             'lib/i386-linux-gnu',
-        );
+        ];
 
         return array_filter($multiArchs, function ($archName) use ($prefix) {
             return file_exists($prefix . '/' . $archName);
@@ -98,13 +103,14 @@ class Utils
 
     public static function getLookupPrefixes()
     {
-        $prefixes = array(
+        $prefixes = [
             '/usr',
             '/usr/local',
-            '/usr/local/opt', // homebrew link
+            '/usr/local/opt',
+            // homebrew link
             '/opt',
             '/opt/local',
-        );
+        ];
 
         if ($pathStr = getenv('PHPBREW_LOOKUP_PREFIX')) {
             $paths = explode(':', $pathStr);

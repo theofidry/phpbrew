@@ -45,7 +45,7 @@ class PeclProvider implements Provider
         $downloader = DownloadFactory::getInstance($this->logger, $this->options);
 
         // translate version name into numbers
-        if (in_array($version, array('stable', 'latest', 'beta'))) {
+        if (in_array($version, ['stable', 'latest', 'beta'])) {
             $stabilityTxtUrl = $url . '/' . $version . '.txt';
             if ($ret = $downloader->request($stabilityTxtUrl)) {
                 $version = (string) $ret;
@@ -112,20 +112,86 @@ class PeclProvider implements Provider
 
     public function isBundled($name)
     {
-        return in_array(strtolower($name), array(
-            'bcmath', 'bz2', 'calendar', 'com_dotnet', 'ctype', 'curl', 'date',
-            'dba', 'dom', 'enchant', 'exif', 'fileinfo', 'filter', 'ftp', 'gd',
-            'gettext', 'gmp', 'hash', 'iconv', 'imap', 'interbase', 'intl',
-            'json', 'ldap', 'libxml', 'mbstring', 'mcrypt', 'mssql', 'mysqli',
-            'mysqlnd', 'oci8', 'odbc', 'opcache', 'openssl', 'pcntl', 'pcre',
-            'pdo', 'pdo_dblib', 'pdo_firebird', 'pdo_mysql', 'pdo_oci', 'pdo_odbc',
-            'pdo_pgsql', 'pdo_sqlite', 'pgsql', 'phar', 'posix', 'pspell',
-            'readline', 'recode', 'reflection', 'session', 'shmop', 'simplexml',
-            'skeleton', 'snmp', 'soap', 'sockets', 'spl', 'sqlite3', 'standard',
-            'sysvmsg', 'sysvsem', 'sysvshm', 'tidy', 'tokenizer', 'wddx', 'xml',
-            'xmlreader', 'xmlrpc', 'xmlwriter', 'xsl', 'zip', 'zlib', 'ext_skel',
-            'ext_skel_win32',
-        ));
+        return in_array(strtolower($name),
+            [
+                'bcmath',
+                'bz2',
+                'calendar',
+                'com_dotnet',
+                'ctype',
+                'curl',
+                'date',
+                'dba',
+                'dom',
+                'enchant',
+                'exif',
+                'fileinfo',
+                'filter',
+                'ftp',
+                'gd',
+                'gettext',
+                'gmp',
+                'hash',
+                'iconv',
+                'imap',
+                'interbase',
+                'intl',
+                'json',
+                'ldap',
+                'libxml',
+                'mbstring',
+                'mcrypt',
+                'mssql',
+                'mysqli',
+                'mysqlnd',
+                'oci8',
+                'odbc',
+                'opcache',
+                'openssl',
+                'pcntl',
+                'pcre',
+                'pdo',
+                'pdo_dblib',
+                'pdo_firebird',
+                'pdo_mysql',
+                'pdo_oci',
+                'pdo_odbc',
+                'pdo_pgsql',
+                'pdo_sqlite',
+                'pgsql',
+                'phar',
+                'posix',
+                'pspell',
+                'readline',
+                'recode',
+                'reflection',
+                'session',
+                'shmop',
+                'simplexml',
+                'skeleton',
+                'snmp',
+                'soap',
+                'sockets',
+                'spl',
+                'sqlite3',
+                'standard',
+                'sysvmsg',
+                'sysvsem',
+                'sysvshm',
+                'tidy',
+                'tokenizer',
+                'wddx',
+                'xml',
+                'xmlreader',
+                'xmlrpc',
+                'xmlwriter',
+                'xsl',
+                'zip',
+                'zlib',
+                'ext_skel',
+                'ext_skel_win32',
+            ]
+        );
     }
 
     public function buildKnownReleasesUrl()
@@ -136,7 +202,7 @@ class PeclProvider implements Provider
     public function parseKnownReleasesResponse($content)
     {
         $xml = simplexml_load_string($content);
-        $releases = array();
+        $releases = [];
 
         foreach ($xml->r as $r) {
             $releases[] = (string) $r->v;
@@ -179,9 +245,7 @@ class PeclProvider implements Provider
 
     public function extractPackageCommands($currentPhpExtensionDirectory, $targetFilePath)
     {
-        $cmds = array(
-            "tar -C $currentPhpExtensionDirectory -xzf $targetFilePath",
-        );
+        $cmds = ["tar -C $currentPhpExtensionDirectory -xzf $targetFilePath"];
 
         return $cmds;
     }
@@ -192,13 +256,13 @@ class PeclProvider implements Provider
         $info = pathinfo($targetFilePath);
         $packageName = $this->getPackageName();
 
-        $cmds = array(
+        $cmds = [
             "rm -rf $targetPkgDir",
             // Move "memcached-2.2.7" to "memcached"
             "mv $currentPhpExtensionDirectory/{$info['filename']} $currentPhpExtensionDirectory/$packageName",
             // Move "ext/package.xml" to "memcached/package.xml"
             "mv $currentPhpExtensionDirectory/package.xml $currentPhpExtensionDirectory/$packageName/package.xml",
-        );
+        ];
 
         return $cmds;
     }

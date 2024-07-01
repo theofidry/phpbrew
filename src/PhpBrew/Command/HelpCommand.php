@@ -25,6 +25,6 @@ EOS;
         }
 
         // Compatibility: Calling parent::method by call_user_func_array is only supported from 5.3.0
-        return call_user_func_array(array($this, 'parent::execute'), func_get_args());
+        return call_user_func_array([$this, 'parent::execute'], func_get_args());
     }
 }

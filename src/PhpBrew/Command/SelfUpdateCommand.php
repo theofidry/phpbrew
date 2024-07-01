@@ -46,7 +46,7 @@ class SelfUpdateCommand extends Command
         $downloader = DownloadFactory::getInstance(
             $this->logger,
             $this->options,
-            array(DownloadFactory::METHOD_CURL, DownloadFactory::METHOD_WGET)
+            [DownloadFactory::METHOD_CURL, DownloadFactory::METHOD_WGET]
         );
         $tempFile = $downloader->download($url);
 

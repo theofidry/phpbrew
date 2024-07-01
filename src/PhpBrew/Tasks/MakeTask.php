@@ -73,7 +73,7 @@ class MakeTask extends BaseTask
         }
 
         // Prefer 'gmake' rather than 'make'
-        $cmd = array($gmake ?: $make, '-C', escapeshellarg($path));
+        $cmd = [$gmake ?: $make, '-C', escapeshellarg($path)];
 
         if ($this->isQuiet()) {
             if ($gmake) {

@@ -20,7 +20,7 @@ class ExtensionInstaller
         $this->options = $options ?: new OptionResult();
     }
 
-    public function install(Extension $ext, array $configureOptions = array())
+    public function install(Extension $ext, array $configureOptions = [])
     {
         $sourceDir = $ext->getSourceDirectory();
         $pwd = getcwd();

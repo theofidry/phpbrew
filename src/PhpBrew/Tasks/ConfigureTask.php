@@ -4,7 +4,6 @@ namespace PhpBrew\Tasks;
 
 use PhpBrew\Build;
 use PhpBrew\CommandBuilder;
-use PhpBrew\Config;
 use PhpBrew\ConfigureParameters;
 use PhpBrew\Exception\SystemCommandException;
 
@@ -56,7 +55,7 @@ class ConfigureTask extends BaseTask
 
     private function renderOptions(ConfigureParameters $parameters)
     {
-        $args = array();
+        $args = [];
 
         foreach ($parameters->getOptions() as $option => $value) {
             $arg = $option;

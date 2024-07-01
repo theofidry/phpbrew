@@ -13,9 +13,9 @@ class VariantParser
      */
     public static function parseCommandArguments(array $args)
     {
-        $extra = array();
-        $enabledVariants = array();
-        $disabledVariants = array();
+        $extra = [];
+        $enabledVariants = [];
+        $disabledVariants = [];
 
         while (true) {
             $arg = array_shift($args);
@@ -47,7 +47,7 @@ class VariantParser
             }
 
             $variant            = substr($arg, 1);
-            list($name, $value) = array_pad(explode('=', $variant, 2), 2, null);
+            [$name, $value] = array_pad(explode('=', $variant, 2), 2, null);
 
             if ($name === '') {
                 throw new InvalidVariantSyntaxException('Variant name cannot be empty');
@@ -56,11 +56,11 @@ class VariantParser
             $target[$name] = $value;
         }
 
-        return array(
-            'enabled_variants' => $enabledVariants,
+        return [
+            'enabled_variants'  => $enabledVariants,
             'disabled_variants' => $disabledVariants,
-            'extra_options' => $extra,
-        );
+            'extra_options'     => $extra,
+        ];
     }
 
     /**
@@ -68,7 +68,7 @@ class VariantParser
      */
     public static function revealCommandArguments(array $info)
     {
-        $args = array();
+        $args = [];
 
         foreach ($info['enabled_variants'] as $k => $v) {
             $arg = '+' . $k;
@@ -87,7 +87,7 @@ class VariantParser
         }
 
         if (!empty($info['extra_options'])) {
-            $args = array_merge($args, array('--'), $info['extra_options']);
+            $args = array_merge($args, ['--'], $info['extra_options']);
         }
 
         return implode(' ', $args);

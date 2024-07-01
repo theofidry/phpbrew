@@ -18,11 +18,11 @@ class ReleaseList
      * $releases['5.4'] = [ {},... ]
      * $releases['5.5'] = [ {},... ].
      */
-    public $releases = array();
+    public $releases = [];
 
-    public $versions = array();
+    public $versions = [];
 
-    public function __construct($releases = array())
+    public function __construct($releases = [])
     {
         $this->setReleases($releases);
     }
@@ -159,11 +159,13 @@ class ReleaseList
 
     private static function downloadReleaseListFromOfficialSite($version, $max, OptionResult $options)
     {
-        $url = 'https://www.php.net/releases/index.php?' . http_build_query(array(
-            'json'    => true,
-            'version' => $version,
-            'max'     => $max,
-        ));
+        $url = 'https://www.php.net/releases/index.php?' . http_build_query(
+                [
+                    'json' => true,
+                    'version' => $version,
+                    'max' => $max,
+                ]
+            );
 
         $file = DownloadFactory::getInstance(Logger::getInstance(), $options)->download($url);
         $json = file_get_contents($file);
@@ -182,11 +184,11 @@ class ReleaseList
             $obj = array_merge($obj, self::downloadReleaseListFromOfficialSite(5, 1000, $options));
         }
 
-        $releaseVersions = array();
+        $releaseVersions = [];
         foreach ($obj as $k => $v) {
             if (preg_match('/^(\d+)\.(\d+)\./', $k, $matches)) {
-                list(, $major, $minor) = $matches;
-                $release = array('version' => $k);
+                [, $major, $minor] = $matches;
+                $release = ['version' => $k];
                 if (isset($v['announcement']['English'])) {
                     $release['announcement'] = 'https://php.net' . $v['announcement']['English'];
                 }

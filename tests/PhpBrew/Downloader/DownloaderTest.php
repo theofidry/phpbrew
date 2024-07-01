@@ -2,6 +2,10 @@
 
 namespace PhpBrew\Tests\Downloader;
 
+use PhpBrew\Downloader\WgetCommandDownloader;
+use PhpBrew\Downloader\CurlCommandDownloader;
+use PhpBrew\Downloader\PhpCurlDownloader;
+use PhpBrew\Downloader\PhpStreamDownloader;
 use CLIFramework\Logger;
 use GetOptionKit\OptionResult;
 use PhpBrew\Config;
@@ -34,7 +38,7 @@ class DownloaderTest extends TestCase
      */
     public function testDownloadByWgetCommand()
     {
-        $this->assertDownloaderWorks('PhpBrew\Downloader\WgetCommandDownloader');
+        $this->assertDownloaderWorks(WgetCommandDownloader::class);
     }
 
     /**
@@ -42,17 +46,17 @@ class DownloaderTest extends TestCase
      */
     public function testDownloadByCurlCommand()
     {
-        $this->assertDownloaderWorks('PhpBrew\Downloader\CurlCommandDownloader');
+        $this->assertDownloaderWorks(CurlCommandDownloader::class);
     }
 
     public function testDownloadByCurlExtension()
     {
-        $this->assertDownloaderWorks('PhpBrew\Downloader\PhpCurlDownloader');
+        $this->assertDownloaderWorks(PhpCurlDownloader::class);
     }
 
     public function testDownloadByFileFunction()
     {
-        $this->assertDownloaderWorks('PhpBrew\Downloader\PhpStreamDownloader');
+        $this->assertDownloaderWorks(PhpStreamDownloader::class);
     }
 
     private function assertDownloaderWorks($downloader)

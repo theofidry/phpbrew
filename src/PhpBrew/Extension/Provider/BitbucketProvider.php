@@ -118,9 +118,7 @@ class BitbucketProvider implements Provider
 
     public function extractPackageCommands($currentPhpExtensionDirectory, $targetFilePath)
     {
-        $cmds = array(
-            "tar -C $currentPhpExtensionDirectory -xzf $targetFilePath",
-        );
+        $cmds = ["tar -C $currentPhpExtensionDirectory -xzf $targetFilePath"];
 
         return $cmds;
     }
@@ -135,10 +133,10 @@ class BitbucketProvider implements Provider
             . $this->getRepository()
             . '-*';
 
-        $cmds = array(
+        $cmds = [
             "rm -rf $targetPkgDir",
             "mv $extractDir $targetPkgDir",
-        );
+        ];
 
         return $cmds;
     }

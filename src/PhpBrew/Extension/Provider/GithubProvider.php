@@ -142,9 +142,7 @@ class GithubProvider implements Provider
 
     public function extractPackageCommands($currentPhpExtensionDirectory, $targetFilePath)
     {
-        $cmds = array(
-            "tar -C $currentPhpExtensionDirectory -xzf $targetFilePath",
-        );
+        $cmds = ["tar -C $currentPhpExtensionDirectory -xzf $targetFilePath"];
 
         return $cmds;
     }
@@ -154,10 +152,10 @@ class GithubProvider implements Provider
         $targetPkgDir = $currentPhpExtensionDirectory . DIRECTORY_SEPARATOR . $this->getPackageName();
         $extractDir = $currentPhpExtensionDirectory . DIRECTORY_SEPARATOR . $this->getRepository() . '-*';
 
-        $cmds = array(
+        $cmds = [
             "rm -rf $targetPkgDir",
             "mv $extractDir $targetPkgDir",
-        );
+        ];
 
         return $cmds;
     }

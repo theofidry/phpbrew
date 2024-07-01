@@ -2,6 +2,7 @@
 
 namespace PhpBrew\Command;
 
+use RuntimeException;
 use CLIFramework\Command;
 use CLIFramework\ValueCollection;
 use Exception;
@@ -27,7 +28,6 @@ use PhpBrew\Tasks\TestTask;
 use PhpBrew\VariantBuilder;
 use PhpBrew\VariantParser;
 use PhpBrew\VersionDslParser;
-use SplFileInfo;
 
 class InstallCommand extends Command
 {
@@ -38,7 +38,7 @@ class InstallCommand extends Command
 
     public function aliases()
     {
-        return array('i', 'ins');
+        return ['i', 'ins'];
     }
 
     public function usage()
@@ -57,7 +57,7 @@ class InstallCommand extends Command
                 $collection->group($major, "PHP $major", array_keys($versions));
             }
 
-            $collection->group('pseudo', 'pseudo', array('latest', 'next'));
+            $collection->group('pseudo', 'pseudo', ['latest', 'next']);
 
             return $collection;
         });
@@ -74,13 +74,13 @@ class InstallCommand extends Command
 
     public function parseSemanticOptions(array &$args)
     {
-        $settings = array();
+        $settings = [];
 
-        $definitions = array(
-            'as' => '*',
-            'like' => '*',
+        $definitions = [
+            'as'    => '*',
+            'like'  => '*',
             'using' => '*+',
-        );
+        ];
 
         // XXX: support 'using'
         foreach ($definitions as $k => $requirement) {
@@ -89,7 +89,7 @@ class InstallCommand extends Command
             if ($idx !== false) {
                 if ($requirement == '*') {
                     // Find the value next to the position
-                    list($key, $val) = array_splice($args, $idx, 2);
+                    [$key, $val] = array_splice($args, $idx, 2);
                     $settings[$key] = $val;
                 } elseif ($requirement == '*+') {
                     $values = array_splice($args, $idx, 2);
@@ -194,7 +194,7 @@ class InstallCommand extends Command
             sleep(3);
         }
         $distUrl = null;
-        $versionInfo = array();
+        $versionInfo = [];
         $releaseList = ReleaseList::getReadyInstance($this->options);
         $versionDslParser = new VersionDslParser();
         $clean = new MakeTask($this->logger, $this->options);
@@ -244,12 +244,12 @@ class InstallCommand extends Command
         array_shift($args); // shift the version name
 
         $semanticOptions = $this->parseSemanticOptions($args);
-        $buildAs = isset($semanticOptions['as']) ? $semanticOptions['as'] : $this->options->name;
-        $buildLike = isset($semanticOptions['like']) ? $semanticOptions['like'] : $this->options->like;
+        $buildAs = $semanticOptions['as'] ?? $this->options->name;
+        $buildLike = $semanticOptions['like'] ?? $this->options->like;
 
         // convert patch to realpath
         if ($this->options->patch) {
-            $patchPaths = array();
+            $patchPaths = [];
             foreach ($this->options->patch as $patch) {
                 /* @var SplFileInfo $patch */
                 $patchPath = realpath($patch);
@@ -267,7 +267,7 @@ class InstallCommand extends Command
         $installPrefix = Config::getInstallPrefix() . DIRECTORY_SEPARATOR . $build->getName();
         if (!file_exists($installPrefix)) {
             if (!mkdir($installPrefix, 0755, true) && !is_dir($installPrefix)) {
-                throw new \RuntimeException(sprintf('Directory "%s" was not created', $installPrefix));
+                throw new RuntimeException(sprintf('Directory "%s" was not created', $installPrefix));
             }
         }
         $build->setInstallPrefix($installPrefix);
@@ -335,7 +335,7 @@ class InstallCommand extends Command
         $buildDir = $this->options->{'build-dir'} ?: Config::getBuildDir();
         if (!file_exists($buildDir)) {
             if (!mkdir($buildDir, 0755, true) && !is_dir($buildDir)) {
-                throw new \RuntimeException(sprintf('Directory "%s" was not created', $buildDir));
+                throw new RuntimeException(sprintf('Directory "%s" was not created', $buildDir));
             }
         }
 
@@ -423,40 +423,40 @@ class InstallCommand extends Command
             $this->logger->warn("Can't store variant info.");
         }
 
-        $targetPaths = array();
+        $targetPaths = [];
         if (!$this->options->{'no-configure'}) {
             $options = $parameters->getOptions();
             // https://gist.github.com/tvlooy/953a7c0658e70b573ab4
-            $sapis = array('cli' => array(
-                'enable' => array('--enable-cli'),
-                'disable' => array('--disable-cli')
-            ));
+            $sapis = [
+                'cli' => [
+                    'enable' => ['--enable-cli'],
+                    'disable' => ['--disable-cli'],
+                ],
+            ];
 
             if ($build->isEnabledVariant('apxs2')) {
-                $sapis['apache2'] = array(
-                    'enable' => array('--with-apxs2'),
-                    'disable' => array(),
-                );
+                $sapis['apache2'] = ['enable'  => ['--with-apxs2'],
+                                     'disable' => [],
+                ];
             }
             if ($build->isEnabledVariant('fpm')) {
-                $addedOptions = array('--enable-fpm');
+                $addedOptions = ['--enable-fpm'];
                 if (PHP_OS === 'Linux') {
                     $addedOptions[] = '--with-fpm-systemd';
                 }
-                $sapis['fpm'] = array(
-                    'enable' => $addedOptions,
-                    'disable' => array(),
-                );
+                $sapis['fpm'] = ['enable'  => $addedOptions,
+                                 'disable' => [],
+                ];
             }
 
             foreach ($sapis as $sapi => $enableDisable) {
                 $this->logger->info('Running make clean to ensure everything will be rebuilt.');
                 $clean->clean($build);
 
-                $addedOptions = $removedOptions = array();
+                $addedOptions = $removedOptions = [];
 
                 foreach ($sapis as $sapiName => $sapiEnableDisable) {
-                    list($addedOptions, $removedOptions) = $this->enableDisable(
+                    [$addedOptions, $removedOptions] = $this->enableDisable(
                         $parameters,
                         $sapiEnableDisable,
                         $sapiName === $sapi,
@@ -517,7 +517,7 @@ class InstallCommand extends Command
                     $this->installAs("$etcDirectory/php-fpm.conf.default", "$etcDirectory/php-fpm.conf");
                     $this->installAs("$etcDirectory/php-fpm.d/www.conf.default", "$etcDirectory/php-fpm.d/www.conf");
 
-                    $patchingFiles = array("$etcDirectory/php-fpm.d/www.conf", "$etcDirectory/php-fpm.conf");
+                    $patchingFiles = ["$etcDirectory/php-fpm.d/www.conf", "$etcDirectory/php-fpm.conf"];
                     foreach ($patchingFiles as $patchingFile) {
                         if (file_exists($patchingFile)) {
                             $this->logger->info("---> Found $patchingFile");
@@ -739,7 +739,7 @@ EOT;
      */
     private function enableDisable(&$parameters, $sapiSettings, $currentSapi, $defaults)
     {
-        $addedOptions = $removedOptions = array();
+        $addedOptions = $removedOptions = [];
 
         $enableOptions = $currentSapi ? $sapiSettings['enable'] : $sapiSettings['disable'];
         $disableOptions = $currentSapi ? $sapiSettings['disable'] : $sapiSettings['enable'];
@@ -757,6 +757,6 @@ EOT;
             $parameters = $parameters->withoutOption($configOption);
         }
 
-        return array($addedOptions, $removedOptions);
+        return [$addedOptions, $removedOptions];
     }
 }

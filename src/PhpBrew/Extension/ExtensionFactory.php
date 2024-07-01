@@ -19,7 +19,7 @@ class ExtensionFactory
      */
     public static function configM4Exists($extensionDir)
     {
-        $files = array();
+        $files = [];
         $configM4Path = $extensionDir . DIRECTORY_SEPARATOR . 'config.m4';
         if (file_exists($configM4Path)) {
             $files[] = $configM4Path;
@@ -80,7 +80,7 @@ class ExtensionFactory
         }
     }
 
-    public static function lookupRecursive($packageName, array $lookupDirs = array(), $fallback = true)
+    public static function lookupRecursive($packageName, array $lookupDirs = [], $fallback = true)
     {
         if ($fallback) {
             // Always push the PHP source directory to the end of the list for the fallback.
@@ -121,7 +121,7 @@ class ExtensionFactory
         }
     }
 
-    public static function lookup($packageName, array $lookupDirectories = array(), $fallback = true)
+    public static function lookup($packageName, array $lookupDirectories = [], $fallback = true)
     {
         if ($fallback) {
             // Always push the PHP source directory to the end of the list for the fallback.

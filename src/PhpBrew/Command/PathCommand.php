@@ -4,6 +4,7 @@ namespace PhpBrew\Command;
 
 use CLIFramework\Command;
 use PhpBrew\Config;
+use function sprintf;
 
 class PathCommand extends Command
 {
@@ -14,40 +15,46 @@ class PathCommand extends Command
 
     public function usage()
     {
-        return 'phpbrew path ['
-            . implode(', ', array(
-                'root',
-                'home',
-                'build',
-                'bin',
-                'include',
-                'etc',
-                'ext',
-                'ext-src',
-                'extension-src',
-                'extension-dir',
-                'config-scan',
-                'dist'
-            )) . ']';
+        return sprintf(
+            'phpbrew path [%s]',
+            implode(
+                ', ',
+                [
+                    'root',
+                    'home',
+                    'build',
+                    'bin',
+                    'include',
+                    'etc',
+                    'ext',
+                    'ext-src',
+                    'extension-src',
+                    'extension-dir',
+                    'config-scan',
+                    'dist',
+                ]
+            )
+        );
     }
 
     public function arguments($args)
     {
-        $args->add('type')
-            ->validValues(array(
-                'root',
-                'home',
-                'build',
-                'bin',
-                'include',
-                'etc',
-                'ext',
-                'ext-src',
-                'extension-src',
-                'extension-dir',
-                'config-scan',
-                'dist',
-            ));
+        $args
+            ->add('type')
+            ->validValues([
+                    'root',
+                    'home',
+                    'build',
+                    'bin',
+                    'include',
+                    'etc',
+                    'ext',
+                    'ext-src',
+                    'extension-src',
+                    'extension-dir',
+                    'config-scan',
+                    'dist',
+            ]);
     }
 
     public function execute($name)

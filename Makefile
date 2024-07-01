@@ -105,8 +105,8 @@ vendor-bin/rector/composer.lock: vendor-bin/rector/composer.json
 	composer bin rector update --lock --ansi
 	touch -c $@
 
-.PHONY: php-cs-fixer_install
-php-cs-fixer_install: $(PHP_CS_FIXER_BIN)
+.PHONY: php_cs_fixer_installg
+php_cs_fixer_install: $(PHP_CS_FIXER_BIN)
 
 $(PHP_CS_FIXER_BIN): vendor-bin/php-cs-fixer/vendor
 	touch -c $@

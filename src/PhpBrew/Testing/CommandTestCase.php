@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace PhpBrew\Testing;
 
 use CLIFramework\Testing\CommandTestCase as BaseCommandTestCase;

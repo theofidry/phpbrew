@@ -27,6 +27,7 @@ $config->addRules([
     'trailing_comma_in_multiline' => false,
     'use_arrow_functions' => false,
 
+    'declare_strict_types' => false,   // TODO: requires some work to be done
     'concat_space' => false,
     'mb_str_functions' => false,
     'no_trailing_whitespace_in_string' => false,

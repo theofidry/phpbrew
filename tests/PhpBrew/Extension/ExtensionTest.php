@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace PhpBrew\Tests\Extension;
 
 use PhpBrew\Extension\Extension;

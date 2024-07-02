@@ -1,5 +1,8 @@
 name: AutoReview
 
+env:
+    PHP_VERSION: '$PHP_VERSION'
+
 on:
     push:
         branches: [ main, master ]
@@ -16,7 +19,7 @@ jobs:
             -   name: Setup PHP
                 uses: shivammathur/setup-php@v2
                 with:
-                    php-version: '8.2'
+                    php-version: '$PHP_VERSION'
                     tools: composer
                     coverage: none
 
@@ -32,7 +35,7 @@ jobs:
             -   name: Setup PHP
                 uses: shivammathur/setup-php@v2
                 with:
-                    php-version: '8.3'
+                    php-version: '$PHP_VERSION'
                     tools: composer
                     coverage: none
 
@@ -59,7 +62,7 @@ jobs:
             -   name: Setup PHP
                 uses: shivammathur/setup-php@v2
                 with:
-                    php-version: '8.3'
+                    php-version: '$PHP_VERSION'
                     tools: composer
                     coverage: none
 
@@ -86,7 +89,7 @@ jobs:
         needs:
             - composer-validate
             - php-cs-fixer-lint
-            - rector-lint
+            - rector-lints
         if: always()
         steps:
             - name: Successful run

@@ -16,31 +16,31 @@ class PathCommandTest extends CommandTestCase
         return [
             [
                 'build',
-                '#\\.phpbrew/build/.+#',
+                '#\.phpbrew/build/.+#',
             ],
             [
                 'ext-src',
-                '#\\.phpbrew/build/.+/ext$#',
+                '#\.phpbrew/build/.+/ext$#',
             ],
             [
                 'include',
-                '#\\.phpbrew/php/.+/include$#',
+                '#\.phpbrew/php/.+/include$#',
             ],
             [
                 'etc',
-                '#\\.phpbrew/php/.+/etc$#',
+                '#\.phpbrew/php/.+/etc$#',
             ],
             [
                 'dist',
-                '#\\.phpbrew/distfiles$#',
+                '#\.phpbrew/distfiles$#',
             ],
             [
                 'root',
-                '#\\.phpbrew$#',
+                '#\.phpbrew$#',
             ],
             [
                 'home',
-                '#\\.phpbrew$#',
+                '#\.phpbrew$#',
             ],
         ];
     }

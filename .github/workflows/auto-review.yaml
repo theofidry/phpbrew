@@ -19,7 +19,7 @@ jobs:
             -   name: Setup PHP
                 uses: shivammathur/setup-php@v2
                 with:
-                    php-version: '$PHP_VERSION'
+                    php-version: ${{ env.PHP_VERSION }}
                     tools: composer
                     coverage: none
 
@@ -35,7 +35,7 @@ jobs:
             -   name: Setup PHP
                 uses: shivammathur/setup-php@v2
                 with:
-                    php-version: '$PHP_VERSION'
+                    php-version: ${{ env.PHP_VERSION }}
                     tools: composer
                     coverage: none
 
@@ -62,7 +62,7 @@ jobs:
             -   name: Setup PHP
                 uses: shivammathur/setup-php@v2
                 with:
-                    php-version: '$PHP_VERSION'
+                    php-version: ${{ env.PHP_VERSION }}
                     tools: composer
                     coverage: none
 

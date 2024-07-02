@@ -22,7 +22,7 @@ jobs:
 
             -   run: make composer_validate
 
-    php_cs_fixer-lint:
+    php-cs-fixer-lint:
         runs-on: ubuntu-latest
         name: PHP-CS-Fixer Lint
         steps:
@@ -49,7 +49,7 @@ jobs:
 
             -   run: make php_cs_fixer_lint
 
-    rector_lint:
+    rector-lint:
         runs-on: ubuntu-latest
         name: Rector Lint
         steps:
@@ -85,6 +85,8 @@ jobs:
         runs-on: ubuntu-latest
         needs:
             - composer-validate
+            - php-cs-fixer-lint
+            - rector-lint
         if: always()
         steps:
             - name: Successful run

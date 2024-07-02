@@ -89,7 +89,7 @@ jobs:
         needs:
             - composer-validate
             - php-cs-fixer-lint
-            - rector-lints
+            - rector-lint
         if: always()
         steps:
             - name: Successful run

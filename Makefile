@@ -17,6 +17,9 @@ RECTOR = $(RECTOR_BIN)
 PHP_CS_FIXER_BIN = vendor-bin/php-cs-fixer/vendor/bin/php-cs-fixer
 PHP_CS_FIXER = $(PHP_CS_FIXER_BIN)
 
+PHPSTAN_BIN = vendor/phpstan/phpstan/phpstan
+PHPSTAN = $(PHPSTAN_BIN)
+
 
 .DEFAULT_GOAL := help
 
@@ -57,6 +60,17 @@ rector: $(RECTOR_BIN)
 rector_lint: $(RECTOR_BIN)
 	$(RECTOR) --dry-run
 
+.PHONY: phpstan
+phpstan: phpstan_src phpstan_tests
+
+.PHONY: phpstan_src
+phpstan_src: $(PHPSTAN_BIN)
+	$(PHPSTAN) analyse --configuration phpstan-src.neon
+
+.PHONY: phpstan_tests
+phpstan_tests: $(PHPSTAN_BIN)
+	$(PHPSTAN) analyse --configuration phpstan-tests.neon
+
 .PHONY: php_cs_fixer
 php_cs_fixer: $(PHP_CS_FIXER_BIN)
 	$(PHP_CS_FIXER) fix
@@ -83,10 +97,13 @@ vendor_install:
 	composer install --ansi
 	touch -c composer.lock
 	touch -c vendor
+	touch -c $(PHPSTAN_BIN)
 
 composer.lock: composer.json
 	composer update --lock
 	touch -c $@
+	touch -c vendor
+	touch -c $(PHPSTAN_BIN)
 vendor: composer.lock
 	$(MAKE) vendor_install
 
@@ -105,7 +122,7 @@ vendor-bin/rector/composer.lock: vendor-bin/rector/composer.json
 	composer bin rector update --lock --ansi
 	touch -c $@
 
-.PHONY: php_cs_fixer_installg
+.PHONY: php_cs_fixer_install
 php_cs_fixer_install: $(PHP_CS_FIXER_BIN)
 
 $(PHP_CS_FIXER_BIN): vendor-bin/php-cs-fixer/vendor
@@ -116,3 +133,5 @@ vendor-bin/php-cs-fixer/vendor: vendor-bin/php-cs-fixer/composer.lock $(COMPOSER
 vendor-bin/php-cs-fixer/composer.lock: vendor-bin/php-cs-fixer/composer.json
 	composer bin php-cs-fixer update --lock --ansi
 	touch -c $@
+
+$(PHPSTAN_BIN): vendor

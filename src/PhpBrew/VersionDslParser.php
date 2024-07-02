@@ -34,7 +34,7 @@ class VersionDslParser
         // parse github fork owner and branch
         if (
             preg_match(
-                '#https?://(www\\.)?github\\.com/([0-9a-zA-Z-._]+)/php-src(@([0-9a-zA-Z-._]+))?#',
+                '#https?://(www\.)?github\.com/([0-9a-zA-Z-._]+)/php-src(@([0-9a-zA-Z-._]+))?#',
                 $url,
                 $matches
             )
